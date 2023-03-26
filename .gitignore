@@ -7,3 +7,7 @@ HELP.md
 *.iml
 *.iws
 *.ipr
+
+# LightLMS
+!groups/
+!subjects/
