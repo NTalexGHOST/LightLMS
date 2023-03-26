@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>MultimediaAI - Login</title>
+		<!-- Файл стилей исключительно для страницы входа -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+	</head>
+	<body>
+		<div class="login-container">
+			<div class="logo">
+				<img th:src="@{/images/logo.png}">
+			</div>
+			<div class="title">Multimedia<span>AI</span></div>
+			<div class="tab-list">
+				<button class="tab-links" onclick="openTab(event, 'teacher-login')">Преподаватель</button>
+				<button class="tab-links active" onclick="openTab(event, 'student-login')">Студент</button>
+			</div>
+			<form th:action="@{/login}" class="tab-content" method="post" id="teacher-login">
+				<div class="teacher-list">
+					<select style="form-control teacher-select" name="username">
+						<option th:each="teacher : ${teachers}" th:value="${teacher}" th:text="${teacher}"></option>
+					</select>
+				</div>
+				<div class="password-field">
+					<input type="password" name="password" placeholder="Пароль"/>
+				</div>
+				<div class="login-button">
+					<input type="submit" value="Войти"/>
+				</div>
+			</form>
+			<form th:action="@{/login}" class="tab-content" method="post" id="student-login" style="display:block;">
+            	<div class="group-list">
+					<select id="groups" onchange="getStudentsByGroup()" onloaddata="getStudentsByGroup()">
+						<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+					</select>
+				</div>
+				<div class="student-list">
+					<select id="students" name="username">
+					</select>
+				</div>
+        		<div class="password-field">
+          			<input type="password" name="password" placeholder="Пароль" />
+        		</div>
+        		<div class="login-button">
+          			<input type="submit" value="Войти"/>
+				</div>
+      		</form>
+		</div>
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- Скрипт для переключения между типами входа -->
+		<script type="text/javascript" th:src="@{/scripts/login.js}"></script>
+	</body>
+</html>

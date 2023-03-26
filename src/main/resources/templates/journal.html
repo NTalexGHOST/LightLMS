@@ -1,0 +1,265 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8">
+		<title>MultimediaAI - Journal</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+	</head>
+	<body>
+		<div class="main-container">
+			<aside>
+				<div class="top">
+					<!-- Логотип -->
+					<div class="logo">
+						<img src="./images/logo.png">
+						<h2>Multimedia<span class="logo-color">AI</span></h2>
+					</div>
+					<div class="close" id="close-button">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+				</div>
+				<!-- Боковое меню -->
+				<div class="sidebar">
+					<a href="/">
+						<i class="fa-solid fa-house"></i>
+						<h3>Главная</h3>
+					</a>
+					<div class="sidebar-category">
+						<i class="fa-solid fa-bars"></i>
+						<h3>Теория</h3>
+					</div>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-book"></i>
+						<h3>Учебники</h3>
+					</a>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-file-powerpoint"></i>
+						<h3>Презентации</h3>
+					</a>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-film"></i>
+						<h3>Видеоматериалы</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-file"></i>
+						<h3>Примеры</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-clipboard"></i>
+						<h3>Задания</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-list-check"></i>
+						<h3>Тест</h3>
+					</a>
+					<a href="/journal" class="active" sec:authorize="hasRole('Преподаватель')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Журнал</h3>
+					</a>
+				</div>
+			</aside>
+			<div class="content-container">
+				<div class="title-profile-container">
+					<!-- Заголовок страницы -->
+					<h1>Электронный журнал</h1>
+					<div class="right">
+						<div class="top">
+							<button id="menu-button">
+								<i class="fa-solid fa-bars"></i>
+							</button>
+							<div class="profile">
+								<div class="info">
+									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
+									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
+								</div>
+								<div class="profile-photo">
+									<img th:if="${authorizedUser.getRole().getName() == 'Студент'}" src="./images/profile-user.png">
+									<img th:if="${authorizedUser.getRole().getName() == 'Преподаватель'}" src="./images/profile-teacher.png">
+									<img th:if="${authorizedUser.getRole().getName() == 'Администратор'}" src="./images/profile-admin.png">
+								</div>
+								<form th:action="@{/logout}" class="profile-logout" method="post">
+									<i class="fa-solid fa-right-from-bracket"></i>
+									<input type="submit" value="Выйти из аккаунта"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<main sec:authorize="hasRole('Преподаватель')">
+					<!-- Выбор нужной вкладки журнала -->
+					<div class="tab-list">
+						<button class="tab-links active" onclick="openTab(event, 'student-performance', 'tab-content', 'tab-links')">Успеваемость</button>
+						<button class="tab-links" onclick="openTab(event, 'groups-and-students', 'tab-content', 'tab-links')">Группы и студенты</button>
+						<button class="tab-links" onclick="openTab(event, 'theory-materials', 'tab-content', 'tab-links')">Теоретические материалы</button>
+						<button class="tab-links" onclick="openTab(event, 'tasks', 'tab-content', 'tab-links')">Задания</button>
+						<button class="tab-links" onclick="openTab(event, 'test', 'tab-content', 'tab-links')" style="width: calc(99.1% - 100% * 4 / 5);">Тест</button>
+					</div>
+					<!-- Вкладка успеваемости студентов -->
+					<div class="tab-content student-performance" style="display:block;" id="student-performance">
+						<h2>Выберите конкретную группу</h2>
+						<select>
+							<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+						</select>
+						<table>
+							<thead>
+								<tr>
+									<th>ФИО</th>
+									<th>Почта</th>
+									<th>Выполнено заданий</th>
+									<th>Тестирование</th>
+									<th>Итоговый балл</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="copied">Иванов Иван Иванович</td>
+									<td class="copied">ivanovii@mail.ru</td>
+									<td><span class="success">2</span> сдано / <span class="success">2</span> проверено / 2 всего</td>
+									<td class="danger"><i class="fa-solid fa-xmark"></i> (2.0)</td>
+									<td class="success">3.9</td>
+								</tr>
+								<tr>
+									<td class="copied">Дмитриев Дмитрий Дмитриевич</td>
+									<td class="copied">dmitriev@mail.ru</td>
+									<td><span class="success">2</span> сдано / <span class="warning">1</span> проверено / 2 всего</td>
+									<td class="warning"><i class="fa-solid fa-check"></i> (3.3)</td>
+									<td class="success">4.6</td>
+								</tr>
+								<tr>
+									<td class="copied">Петров Петр Петрович</td>
+									<td class="copied">petrov@mail.ru</td>
+									<td><span class="warning">1</span> сдано / <span class="danger">0</span> проверено / 2 всего</td>
+									<td class="success"><i class="fa-solid fa-check"></i> (5.0)</td>
+									<td class="warning">3.2</td>
+								</tr>
+								<tr>
+									<td class="copied">Андреев Андрей Андреевич</td>
+									<td class="copied">andreev@mail.ru</td>
+									<td><span class="danger">0</span> сдано / <span class="danger">0</span> проверено / 2 всего</td>
+									<td class="success"><i class="fa-solid fa-check"></i> (4.0)</td>
+									<td class="danger">2.1</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- Вкладка взаимодействия с группами и студентами -->
+					<div class="tab-content groups-and-students" id="groups-and-students">
+						<div class="groups-and-students-container">
+							<!-- Форма взаимодействия с группами -->
+							<div class="groups-container">
+								<h2>Взаимодействие с группами</h2>
+								<div class="group-list">
+									<select name="change-group">
+										<option>Добавить</option>
+										<option>Изменить</option>
+										<option>Удалить</option>
+									</select>
+								</div>
+								<form th:action="@{/login}" method="post">
+									<div class="group-list">
+          								<select name="change-group">
+											<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+										</select>
+									</div>
+        							<div class="add-group-field">
+          								<input type="text" name="add-group-name" placeholder="Название группы" />
+        							</div>
+        							<div class="add-group-button">
+          								<input type="submit" value="Выполнить действие"/>
+        							</div>
+      							</form>
+							</div>
+							<!-- Форма взаимодействия со студентами -->
+							<div class="students-container">
+								<h2>Взаимодействие со студентами</h2>
+								<div class="group-list">
+									<select name="change-group">
+										<option>Добавить</option>
+										<option>Изменить</option>
+										<option>Удалить</option>
+									</select>
+								</div>
+								<form method="post">
+									<div class="group-list">
+          								<select name="change-group">
+											<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+										</select>
+									</div>
+        							<div class="change-group-field">
+          								<input type="text" name="add-group-name" placeholder="ФИО" />
+        							</div>
+        							<div class="change-group-field">
+          								<input type="text" name="add-group-name" placeholder="Почта" />
+        							</div>
+        							<div class="change-group-field">
+          								<input type="password" name="add-group-name" placeholder="Пароль" />
+        							</div>
+        							<div class="change-group-button">
+          								<input type="submit" value="Выполнить действие"/>
+        							</div>
+      							</form>
+							</div>
+							<!-- Таблица с информацией всех групп -->
+							<div class="groups-container-list">
+								<table>
+									<thead>
+										<tr>
+											<th>Название группы</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="group : ${groups}">
+											<td class="copied" th:text="${group}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- Таблица с информацией всех студентов -->
+							<div class="student-container-list">
+								<table>
+									<thead>
+										<tr>
+											<th>Группа</th>
+											<th>ФИО</th>
+											<th>Почта</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="user : ${users}">
+											<td class="copied" th:if="${user.getGroup() != null}" th:text="${user.getGroup().getName()}" ></td>
+											<td th:unless="${user.getGroup() != null}" th:text="${user.getRole().getName()}"></td>
+											<td class="copied" th:text="${user.getFullName()}"></td>
+											<td class="copied" th:text="${user.getEmail()}"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- Вкладка взаимодействиями с теоретическими материалами -->
+					<div class="tab-content theory-materials" id="theory-materials">
+
+					</div>
+					<!-- Вкладка взаимодействия с заданиями -->
+					<div class="tab-content tasks" id="tasks">
+						
+					</div>
+					<!-- Вкладка взаимодействия с тестом -->
+					<div class="tab-content test" id="test">
+						
+					</div>
+				</main>
+			</div>
+		</div>
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- JavaScripts -->
+		<!-- TippyJS для реализации всплывающих tooltip элементов -->
+		<script src="https://unpkg.com/@popperjs/core@2"></script>
+		<script src="https://unpkg.com/tippy.js@6"></script>
+		<!-- Скрипт для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
+		<script type="text/javascript" th:src="@{/scripts/journal.js}"></script>
+	</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8">
+		<title>MultimediaAI - Home</title>
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+	</head>
+	<body>
+		<div class="main-container">
+			<aside>
+				<div class="top">
+					<!-- Логотип -->
+					<div class="logo">
+						<img src="./images/logo.png">
+						<h2>Multimedia<span class="logo-color">AI</span></h2>
+					</div>
+					<div class="close" id="close-button">
+						<i class="fa-solid fa-xmark"></i>
+					</div>
+				</div>
+				<!-- Боковое меню -->
+				<div class="sidebar">
+					<a href="/" class="active">
+						<i class="fa-solid fa-house"></i>
+						<h3>Главная</h3>
+					</a>
+					<div class="sidebar-category">
+						<i class="fa-solid fa-bars"></i>
+						<h3>Теория</h3>
+					</div>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-book"></i>
+						<h3>Учебники</h3>
+					</a>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-file-powerpoint"></i>
+						<h3>Презентации</h3>
+					</a>
+					<a href="" class="sidebar-category-item">
+						<i class="fa-solid fa-film"></i>
+						<h3>Видеоматериалы</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-file"></i>
+						<h3>Примеры</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-clipboard"></i>
+						<h3>Задания</h3>
+					</a>
+					<a href="">
+						<i class="fa-solid fa-list-check"></i>
+						<h3>Тест</h3>
+					</a>
+					<a href="/journal" sec:authorize="hasRole('Преподаватель')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Журнал</h3>
+					</a>
+				</div>
+			</aside>
+			<div class="content-container">
+				<div class="title-profile-container">
+					<!-- Заголовок страницы -->
+					<h1>Мультимедиа технологий</h1>
+					<div class="right">
+						<div class="top">
+							<button id="menu-button">
+								<i class="fa-solid fa-bars"></i>
+							</button>
+							<div class="profile">
+								<div class="info">
+									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
+									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
+								</div>
+								<div class="profile-photo">
+									<img th:if="${authorizedUser.getRole().getName() == 'Студент'}" src="./images/profile-user.png">
+									<img th:if="${authorizedUser.getRole().getName() == 'Преподаватель'}" src="./images/profile-teacher.png">
+									<img th:if="${authorizedUser.getRole().getName() == 'Администратор'}" src="./images/profile-admin.png">
+								</div>
+								<form th:action="@{/logout}" class="profile-logout" method="post">
+									<i class="fa-solid fa-right-from-bracket"></i>
+									<input type="submit" value="Выйти из аккаунта"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<main>
+					<!-- Выбор нужной вкладки журнала -->
+					<div class="tab-list">
+						<button class="tab-links active" onclick="openTab(event, '1')">1</button>
+						<button class="tab-links" onclick="openTab(event, '2')">2</button>
+						<button class="tab-links" onclick="openTab(event, '3')">3</button>
+						<button class="tab-links" onclick="openTab(event, '4')">4</button>
+						<button class="tab-links" onclick="openTab(event, '5')" style="width: calc(99.1% - 100% * 4 / 5);">5</button>
+					</div>
+					<!-- Вкладка успеваемости студентов -->
+					<div class="tab-content" style="display:block;" id="1">
+
+					</div>
+					<div class="tab-content" id="2">
+
+					</div>
+					<div class="tab-content" id="3">
+
+					</div>
+					<div class="tab-content" id="4">
+						
+					</div>
+					<div class="tab-content" id="5">
+						
+					</div>
+				</main>
+			</div>
+		</div>
+		<!-- JavaScripts -->
+		<!-- TippyJS для реализации всплывающих tooltip элементов -->
+		<script src="https://unpkg.com/@popperjs/core@2"></script>
+		<script src="https://unpkg.com/tippy.js@6"></script>
+		<!-- Скрипт для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
+		<script type="text/javascript" th:src="@{/scripts/journal.js}"></script>
+	</body>
+</html>

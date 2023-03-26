@@ -1,0 +1,199 @@
+
+/* Шрифты */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+/* Основные тэги и классы */
+
+:root {
+	--color-primary: #7380ec;
+	--color-logo: #68a2d7;
+	--color-white: #fff;
+	--color-dark: #363949;
+	--color-dark-variant: #677483;
+	--color-light: rgba(132, 139, 200, 0.18);
+	--color-background: #f6f6f9;
+	--color-tab: #fafafc;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	font-family: poppins, sans-serif;
+	font-weight: 700;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #555;
+	background-color: var(--color-background);
+}
+
+
+/* Анимация появления элементов */
+
+@keyframes fadeIn {
+     from {
+          opacity: 0;
+     }
+
+     to {
+          opacity: 1;
+     }
+}
+
+
+/* Контейнер */
+
+.login-container {
+	width: 430px;
+	height: 700px;
+	padding: 40px 35px 35px 35px;
+	border-radius: 40px;
+	background-color: var(--color-tab);
+	box-shadow: 13px 13px 20px var(--color-light),
+				-13px -13px 20px var(--color-white);
+}
+
+
+/* Логотип и заголовок */
+
+.logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	margin: 0 auto;
+	box-shadow: 0px 0px 2px #5f5f5f,
+				0px 0px 0px 5px #ecf0f3,
+				8px 8px 15px #a7aaaf,
+				-8px -8px 15px var(--color-white);
+}
+.logo img {
+	width: 80px;
+	height: 80px;
+}
+
+.title {
+	text-align: center;
+	font-size: 28px;
+	padding-top: 24px;
+	letter-spacing: 0.5px;
+}
+
+.title span {
+	color: #68a2d7;
+	letter-spacing: 1px;
+}
+
+
+/* Выбор типа входа */
+
+.tab-list {
+    overflow: hidden;
+    background: var(--color-tab);
+	border-radius: 2rem;
+	margin-bottom: 10px;
+}
+
+.tab-list button {
+    background-color: inherit;
+    float: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 16px;
+    margin: auto auto;
+    width: 100%;
+}
+
+.tab-list button:hover {
+    color: var(--color-primary);
+    transition: 0.3s;
+}
+
+.tab-list button.active {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+    transition: 1s;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 1s;
+}
+
+
+/* Поля ввода - Основное */
+
+#teacher-login .login-button {
+	margin-top: 115px;
+}
+
+.teacher-list, .group-list, .student-list, .password-field, .login-button {
+	padding: 10px 5px 5px 5px;
+}
+
+.teacher-list select, .group-list select, .student-list select, .password-field input, .login-button input {
+	padding: 20px 10px 20px 5px;
+	text-align: center;
+	width: 100%;
+	border: none;
+	outline: none;
+	appearance: none;
+	font-size: 16px;
+	background: none;
+	color: #555;
+}
+
+.teacher-list select, .group-list select, .student-list select, .password-field input {
+	border-radius: 25px;
+	box-shadow: inset 8px 8px 8px #cbced1,
+				inset -8px -8px 8px var(--color-white);
+	margin-bottom: 10px;
+}
+
+.login-button {
+	margin-top: 30px;
+}
+
+.teacher-list select, .group-list select, .student-list select, .login-button input {
+	cursor: pointer;
+}
+
+.login-button input {
+	height: 60px;
+	border-radius: 30px;
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--color-white);
+	background-color: var(--color-logo);
+	box-shadow: 3px 3px 8px #b1b1b1,
+				-3px -3px 8px var(--color-white);
+	transition: 0.4s;
+}
+
+.login-button input:hover {
+	background-color: var(--color-primary);
+	transition: 0.4s;
+}
+
+
+/* Поля ввода - Список преподавателей */
+
+.teacher-select option {
+    font-weight: bold !important;
+      color: #fff !important;
+      background: #bc0000 !important;
+      text-transform: uppercase;
+}
