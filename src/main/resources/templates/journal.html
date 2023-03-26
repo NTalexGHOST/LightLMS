@@ -211,7 +211,7 @@
 									</thead>
 									<tbody>
 										<tr th:each="group : ${groups}">
-											<td class="copied" th:text="${group}"></td>
+											<td class="can-copied" th:text="${group}"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -228,10 +228,10 @@
 									</thead>
 									<tbody>
 										<tr th:each="user : ${users}">
-											<td class="copied" th:if="${user.getGroup() != null}" th:text="${user.getGroup().getName()}" ></td>
+											<td class="can-copied" th:if="${user.getGroup() != null}" th:text="${user.getGroup().getName()}" ></td>
 											<td th:unless="${user.getGroup() != null}" th:text="${user.getRole().getName()}"></td>
-											<td class="copied" th:text="${user.getFullName()}"></td>
-											<td class="copied" th:text="${user.getEmail()}"></td>
+											<td class="can-copied" th:text="${user.getFullName()}"></td>
+											<td class="can-copied" th:text="${user.getEmail()}"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -255,11 +255,11 @@
 		</div>
 		<!-- JQuery -->
 		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
-		<!-- JavaScripts -->
 		<!-- TippyJS для реализации всплывающих tooltip элементов -->
 		<script src="https://unpkg.com/@popperjs/core@2"></script>
 		<script src="https://unpkg.com/tippy.js@6"></script>
-		<!-- Скрипт для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
-		<script type="text/javascript" th:src="@{/scripts/journal.js}"></script>
+		<!-- Скрипты для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
+		<script type="text/javascript" th:src="@{/scripts/TabControl.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/TooltipOnCopy.js}"></script>
 	</body>
 </html>
