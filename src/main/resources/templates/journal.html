@@ -20,9 +20,6 @@
 						<img src="./images/logo.png">
 						<h2>Lightweight<span class="logo-color">LMS</span></h2>
 					</div>
-					<div class="close" id="close-button">
-						<i class="fa-solid fa-xmark"></i>
-					</div>
 				</div>
 				<!-- Боковое меню -->
 				<div class="sidebar">
@@ -62,8 +59,8 @@
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Журнал</h3>
 					</a>
-					<a href="/admin" class="active" sec:authorize="hasRole('Администратор')">
-						<i class="fa-solid fa-newspaper"></i>
+					<a href="/admin" sec:authorize="hasRole('Администратор')">
+						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
 					</a>
 				</div>
@@ -76,9 +73,6 @@
 					</div>
 					<div class="right">
 						<div class="top">
-							<button id="menu-button">
-								<i class="fa-solid fa-bars"></i>
-							</button>
 							<div class="profile">
 								<div class="info">
 									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
@@ -109,10 +103,16 @@
 						</div>
 						<!-- Вкладка успеваемости студентов -->
 						<div class="tab-content student-performance" style="display:block;" id="student-performance">
-							<h2>Выберите конкретную группу</h2>
-							<select>
-								<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
-							</select>
+							<h2>
+								Выберите нужную дисциплину
+								<select>
+									<option th:each="subject : ${subjects}" th:value="${subject}" th:text="${subject}"></option>
+								</select>
+								и конкретную группу
+								<select>
+									<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
+								</select>
+							</h2>
 							<table>
 								<thead>
 									<tr>
@@ -125,29 +125,29 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td class="copied">Иванов Иван Иванович</td>
-										<td class="copied">ivanovii@mail.ru</td>
+										<td class="copied left-text">Иванов Иван Иванович</td>
+										<td class="copied left-text">ivanovii@mail.ru</td>
 										<td><span class="success">2</span> сдано / <span class="success">2</span> проверено / 2 всего</td>
 										<td class="danger"><i class="fa-solid fa-xmark"></i> (2.0)</td>
 										<td class="success">3.9</td>
 									</tr>
 									<tr>
-										<td class="copied">Дмитриев Дмитрий Дмитриевич</td>
-										<td class="copied">dmitriev@mail.ru</td>
+										<td class="copied left-text">Дмитриев Дмитрий Дмитриевич</td>
+										<td class="copied left-text">dmitriev@mail.ru</td>
 										<td><span class="success">2</span> сдано / <span class="warning">1</span> проверено / 2 всего</td>
 										<td class="warning"><i class="fa-solid fa-check"></i> (3.3)</td>
 										<td class="success">4.6</td>
 									</tr>
 									<tr>
-										<td class="copied">Петров Петр Петрович</td>
-										<td class="copied">petrov@mail.ru</td>
+										<td class="copied left-text">Петров Петр Петрович</td>
+										<td class="copied left-text">petrov@mail.ru</td>
 										<td><span class="warning">1</span> сдано / <span class="danger">0</span> проверено / 2 всего</td>
 										<td class="success"><i class="fa-solid fa-check"></i> (5.0)</td>
 										<td class="warning">3.2</td>
 									</tr>
 									<tr>
-										<td class="copied">Андреев Андрей Андреевич</td>
-										<td class="copied">andreev@mail.ru</td>
+										<td class="copied left-text">Андреев Андрей Андреевич</td>
+										<td class="copied left-text">andreev@mail.ru</td>
 										<td><span class="danger">0</span> сдано / <span class="danger">0</span> проверено / 2 всего</td>
 										<td class="success"><i class="fa-solid fa-check"></i> (4.0)</td>
 										<td class="danger">2.1</td>
