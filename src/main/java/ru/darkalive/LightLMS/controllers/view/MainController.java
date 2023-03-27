@@ -64,5 +64,5 @@ public class MainController {
         return "journal";
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - View]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }
 }

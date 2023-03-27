@@ -15,7 +15,7 @@ public class BasicFileCreating {
 
     private void checkDirectories() {
 
-        List<String> directories = List.of("examples", "groups", "tasks", "test", "theory");
+        List<String> directories = List.of("groups", "subjects");
         directories.forEach(this::checkDirectory);
     }
 

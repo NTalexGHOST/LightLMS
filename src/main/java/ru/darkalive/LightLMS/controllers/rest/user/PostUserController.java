@@ -34,8 +34,8 @@ public class PostUserController {
         user.setRole(roleRepo.findFirstByName("Студент"));
 
         userRepo.save(user);
-        printMessage("Создан новый студент группы " + group + " - " + fullName);
+        printMessage("Отработал POST-запрос, создан новый студент группы " + group + " - " + fullName);
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - Users]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Users]\t" + message); }
 }

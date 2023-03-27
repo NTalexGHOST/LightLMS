@@ -14,10 +14,16 @@ public class GetGroupController {
     @Autowired
     private GroupRepository groupRepo;
 
-    @GetMapping(value = "/groups/get")
+    @GetMapping(value = "/groups")
     @ResponseBody
     public List<String> getGroups() {
+
+        printMessage("Отработал GET-запрос /groups");
+
         List<String> groups = groupRepo.getAll();
+
         return groups;
     }
+
+    private void printMessage(String message) { System.out.println("[LightLMS - Groups]\t" + message); }
 }

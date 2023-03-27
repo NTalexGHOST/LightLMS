@@ -11,7 +11,7 @@ public class InteractGroupController {
     @Autowired
     private GroupRepository groupRepo;
 
-    @PutMapping(value = "/groups/put")
+    @PutMapping(value = "/groups", params = { "oldName", "newName" })
     @ResponseBody
     public void editGroup(@RequestParam String oldName, @RequestParam String newName) {
 
@@ -20,18 +20,18 @@ public class InteractGroupController {
         group.setName(newName);
 
         groupRepo.save(group);
-        printMessage("Название группы " + oldName + " изменено на " + newName);
+        printMessage("Отработал PUT-запрос, название группы " + oldName + " изменено на " + newName);
     }
 
-    @DeleteMapping(value = "/groups/delete")
+    @DeleteMapping(value = "/groups", params = "name")
     @ResponseBody
     public void deleteGroup(@RequestParam String name) {
 
         Group group = groupRepo.getFirstByName(name);
 
         groupRepo.delete(group);
-        printMessage("Удалена группа - " + name);
+        printMessage("Отработал DELETE-запрос, удалена группа - " + name);
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - Groups]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Groups]\t" + message); }
 }

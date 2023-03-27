@@ -27,18 +27,18 @@ public class InteractUserController {
         user.setPassword(newPassword);
 
         userRepo.save(user);
-        printMessage("Изменен студент группы " + oldGroup + " - " + oldFullName);
+        printMessage("Отработал PUT-запрос, изменен студент группы " + oldGroup + " - " + oldFullName);
     }
 
-    @DeleteMapping(value = "/students")
+    @DeleteMapping(value = "/students", params = { "group", "fullName" })
     @ResponseBody
     public void deleteStudent(@RequestParam String group, @RequestParam String fullName) {
 
         User user = userRepo.findFirstByGroupAndFullName(groupRepo.getFirstByName(group), fullName);
 
         userRepo.delete(user);
-        printMessage("Удален студент группы " + group + " - " + fullName);
+        printMessage("Отработал DELETE-запрос, удален студент группы " + group + " - " + fullName);
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - Users]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Users]\t" + message); }
 }

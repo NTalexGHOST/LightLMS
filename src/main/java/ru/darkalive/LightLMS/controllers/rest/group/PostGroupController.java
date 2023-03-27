@@ -14,7 +14,7 @@ public class PostGroupController {
     @Autowired
     private GroupRepository groupRepo;
 
-    @PostMapping(value = "/groups/post")
+    @PostMapping(value = "/groups", params = "name")
     @ResponseBody
     public void addGroup(@RequestParam String name) {
 
@@ -23,8 +23,8 @@ public class PostGroupController {
         group.setName(name);
 
         groupRepo.save(group);
-        printMessage("Добавлена группа - " + name);
+        printMessage("Отработал POST-запрос, добавлена группа - " + name);
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - Groups]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Groups]\t" + message); }
 }

@@ -19,7 +19,7 @@ public class GetUserController {
     @ResponseBody
     public List<String> getStudentsByGroup() {
 
-        printMessage("Отработал /students");
+        printMessage("Отработал GET-запрос /students");
 
         List<String> students = userRepo.findUserFullNames();
 
@@ -30,12 +30,12 @@ public class GetUserController {
     @ResponseBody
     public List<String> getStudentsByGroup(@RequestParam String group) {
 
-        printMessage("Отработал /students?group=" + group);
+        printMessage("Отработал GET-запрос /students?group=" + group);
 
         List<String> students = userRepo.findStudentFullNamesByGroup(group);
 
         return students;
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - Users]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Users]\t" + message); }
 }
