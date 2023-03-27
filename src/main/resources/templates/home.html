@@ -3,15 +3,17 @@
 	<head>
 		<meta charset="utf-8">
 		<title>LightLMS - Главная</title>
+		<!-- Основные стили -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<!-- Иконки FontAwesome -->
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
 	</head>
 	<body>
 		<div class="main-container">
 			<aside>
+				<!-- Логотип -->
 				<div class="top">
-					<!-- Логотип -->
 					<div class="logo">
 						<img src="./images/logo.png">
 						<h2>Lightweight<span class="logo-color">LMS</span></h2>
@@ -58,12 +60,16 @@
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Журнал</h3>
 					</a>
+					<a href="/admin" class="active" sec:authorize="hasRole('Администратор')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Админ-панель</h3>
+					</a>
 				</div>
 			</aside>
 			<div class="content-container">
 				<div class="title-profile-container">
 					<!-- Заголовок страницы -->
-					<h1>Мультимедиа технологий</h1>
+					<h1>Список доступных дисциплин</h1>
 					<div class="right">
 						<div class="top">
 							<button id="menu-button">
@@ -88,29 +94,8 @@
 					</div>
 				</div>
 				<main>
-					<!-- Выбор нужной вкладки журнала -->
-					<div class="tab-list">
-						<button class="tab-links active" onclick="openTab(event, '1')">1</button>
-						<button class="tab-links" onclick="openTab(event, '2')">2</button>
-						<button class="tab-links" onclick="openTab(event, '3')">3</button>
-						<button class="tab-links" onclick="openTab(event, '4')">4</button>
-						<button class="tab-links" onclick="openTab(event, '5')" style="width: calc(99.1% - 100% * 4 / 5);">5</button>
-					</div>
-					<!-- Вкладка успеваемости студентов -->
-					<div class="tab-content" style="display:block;" id="1">
+					<div class="main-content">
 
-					</div>
-					<div class="tab-content" id="2">
-
-					</div>
-					<div class="tab-content" id="3">
-
-					</div>
-					<div class="tab-content" id="4">
-						
-					</div>
-					<div class="tab-content" id="5">
-						
 					</div>
 				</main>
 			</div>
