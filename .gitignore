@@ -11,5 +11,4 @@ HELP.md
 # LightLMS
 !groups/
 !subjects/
-*.mv.db
-*.trace.db
+*.db
