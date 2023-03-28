@@ -1,5 +1,5 @@
 
-/* Журнал - Группы и студенты */
+/* Фильтры дисциплин */
 
 .filter-container {
     padding: 0 0 1rem 0;
@@ -38,6 +38,9 @@
     transition: 300ms;
 }
 
+
+/* Отображение дисциплин - Контейнер */
+
 .subject-container {
 	display: grid;
 	column-gap: 4%;
@@ -45,8 +48,37 @@
 	grid-template-columns: 48% 48%;
 }
 
+
+/* Отображение дисциплин - Дисциплина */
+
 .subject-item {
     background: var(--color-white);
     border-radius: 2rem;
-    height: 250px;
+    height: 270px;
+    display: grid;
+    row-gap: 1rem;
+    grid-template-rows: auto auto;
+    padding: 1rem;
+}
+
+.subject-item h2 {
+    border-bottom: 1px solid var(--color-light);
+    padding-bottom: 5px;
+}
+
+.subject-item div {
+    display: grid;
+    column-gap: 2%;
+    grid-template-columns: 30% 68%;
+    align-items: center;
+    justify-items: center;
+}
+
+.subject-item img {
+    min-height: 150px;
+    max-height: 250px;
+}
+
+.subject-item p {
+    max-height: 165px;
 }

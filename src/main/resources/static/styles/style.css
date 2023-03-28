@@ -123,6 +123,10 @@ i {
 	width: 1.6rem;
 }
 
+select:focus {
+    outline: none !important;
+}
+
 .primary {
 	color: var(--color-primary) !important;
 }
