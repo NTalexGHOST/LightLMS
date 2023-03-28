@@ -254,7 +254,7 @@ aside .sidebar a:hover i {
 	width: 96%;
 	margin: 0 auto;
 	gap: 1.8rem;
-	grid-template-columns: auto 50%;
+	grid-template-columns: auto 45%;
 }
 
 .title, .title h1 {
@@ -337,6 +337,7 @@ aside .sidebar a:hover i {
     background: var(--color-tab);
     border-radius: 2rem 2rem 0 0;
     height: auto;
+    padding: 2rem;
 }
 
 .can-copied {

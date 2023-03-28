@@ -92,7 +92,7 @@
 					</div>
 				</div>
 				<main>
-					<div class="main-content">
+					<div class="main-content" style="padding: 0 !important;">
 						<!-- Выбор нужной вкладки журнала -->
 						<div class="tab-list">
 							<button class="tab-links active" onclick="openTab(event, 'student-performance', 'tab-content', 'tab-links')">Успеваемость</button>
@@ -103,6 +103,7 @@
 						</div>
 						<!-- Вкладка успеваемости студентов -->
 						<div class="tab-content student-performance" style="display:block;" id="student-performance">
+							<!-- Выбор дисциплины и группы -->
 							<h2>
 								Выберите нужную дисциплину
 								<select>
@@ -113,6 +114,7 @@
 									<option th:each="group : ${groups}" th:value="${group}" th:text="${group}"></option>
 								</select>
 							</h2>
+							<!-- Таблица успеваемости -->
 							<table>
 								<thead>
 									<tr>

@@ -64,5 +64,11 @@ public class MainController {
         return "journal";
     }
 
+    @GetMapping("/admin")
+    public String admin(Model model) throws Exception {
+
+        return "admin";
+    }
+
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }
 }

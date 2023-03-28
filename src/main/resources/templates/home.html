@@ -5,6 +5,8 @@
 		<title>LightLMS - Главная</title>
 		<!-- Основные стили -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<!-- Стили главной страницы -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/home.css}">
 		<!-- Иконки FontAwesome -->
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
@@ -17,9 +19,6 @@
 					<div class="logo">
 						<img src="./images/logo.png">
 						<h2>Lightweight<span class="logo-color">LMS</span></h2>
-					</div>
-					<div class="close" id="close-button">
-						<i class="fa-solid fa-xmark"></i>
 					</div>
 				</div>
 				<!-- Боковое меню -->
@@ -60,8 +59,8 @@
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Журнал</h3>
 					</a>
-					<a href="/admin" class="active" sec:authorize="hasRole('Администратор')">
-						<i class="fa-solid fa-newspaper"></i>
+					<a href="/admin" sec:authorize="hasRole('Администратор')">
+						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
 					</a>
 				</div>
@@ -69,22 +68,24 @@
 			<div class="content-container">
 				<div class="title-profile-container">
 					<!-- Заголовок страницы -->
-					<h1>Список доступных дисциплин</h1>
+					<div class="title">
+						<h1>Список доступных дисциплин</h1>
+					</div>
 					<div class="right">
 						<div class="top">
-							<button id="menu-button">
-								<i class="fa-solid fa-bars"></i>
-							</button>
 							<div class="profile">
+								<!-- ФИО и роль пользователя -->
 								<div class="info">
 									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
 									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
 								</div>
+								<!-- Фотография пользователя на основе роли -->
 								<div class="profile-photo">
 									<img th:if="${authorizedUser.getRole().getName() == 'Студент'}" src="./images/profile-user.png">
 									<img th:if="${authorizedUser.getRole().getName() == 'Преподаватель'}" src="./images/profile-teacher.png">
 									<img th:if="${authorizedUser.getRole().getName() == 'Администратор'}" src="./images/profile-admin.png">
 								</div>
+								<!-- Кнопка выхода из аккаунта -->
 								<form th:action="@{/logout}" class="profile-logout" method="post">
 									<i class="fa-solid fa-right-from-bracket"></i>
 									<input type="submit" value="Выйти из аккаунта"/>
@@ -95,7 +96,23 @@
 				</div>
 				<main>
 					<div class="main-content">
+						<!-- Фильтры для показа дисциплин -->
+						<div class="filter-container">
+							<button class="active" id="current-subjects">Текущие</button>
+							<button id="passed-subjects">Пройденные</button>
+						</div>
+						<!-- Вывод списка доступных дисциплин -->
+						<div class="subject-container">
+							<div class="subject-item">
+								
+							</div>
+							<div class="subject-item">
 
+							</div>
+							<div class="subject-item">
+
+							</div>
+						</div>
 					</div>
 				</main>
 			</div>
