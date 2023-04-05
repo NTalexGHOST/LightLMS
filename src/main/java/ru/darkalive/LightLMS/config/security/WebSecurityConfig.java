@@ -19,7 +19,7 @@ public class WebSecurityConfig {
                                 "/scripts/**", "/styles/**", "/images/**", "/icons/**", "/libs/**", "/favicon.ico"
                         ).permitAll()
                         .requestMatchers(
-                                "/", "/home/**", "/groups/**", "/subjects/**"
+                                "/", "/home/**", "/groups/**", "/subjects/**", "/example/**", "/chat-bot/**", "/chat-bot?**/"
                         ).authenticated()
                         .requestMatchers(
                                 "/journal/**", "/h2-console/**", "/students/**", "/students?**", "/groups/**", "/groups?**"

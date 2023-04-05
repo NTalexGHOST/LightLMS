@@ -8,7 +8,6 @@
 }
 
 .filter-container button {
-    height: 30px;
     border-radius: 1rem;
     background: var(--color-tab);
     padding: 7px 1rem;
@@ -53,12 +52,12 @@
 
 .subject-item {
     background: var(--color-white);
-    border-radius: 2rem;
-    height: 270px;
+    border-radius: 0.5rem;
     display: grid;
     row-gap: 1rem;
     grid-template-rows: auto auto;
     padding: 1rem;
+    border: 1px solid var(--color-light);
 }
 
 .subject-item h2 {
@@ -66,19 +65,40 @@
     padding-bottom: 5px;
 }
 
-.subject-item div {
-    display: grid;
-    column-gap: 2%;
-    grid-template-columns: 30% 68%;
-    align-items: center;
-    justify-items: center;
-}
-
 .subject-item img {
-    min-height: 150px;
-    max-height: 250px;
+    height: 170px;
+    width: 200px;
 }
 
 .subject-item p {
-    max-height: 165px;
+    margin: 0;
+}
+
+.subject-info {
+    display: inline-flex;
+    column-gap: 2%;
+    border-bottom: 1px solid var(--color-light);
+}
+
+.subject-learn {
+    display: inline-flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.subject-learn button {
+    border-radius: 1rem;
+    background: var(--color-tab);
+    padding: 10px 1rem;
+    margin-right: 1rem;
+    border: 1px solid var(--color-light);
+    cursor: pointer;
+    transition: 300ms;
+}
+
+.subject-learn button:hover {
+    color: var(--color-primary);
+    background-color: var(--color-light);
+    border: 1px solid var(--color-dark-variant);
+    transition: 300ms;
 }

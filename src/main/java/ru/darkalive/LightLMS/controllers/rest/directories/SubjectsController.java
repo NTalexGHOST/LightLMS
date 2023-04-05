@@ -1,4 +1,4 @@
-package ru.darkalive.LightLMS.controllers.rest.external;
+package ru.darkalive.LightLMS.controllers.rest.directories;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +11,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @RestController
-public class ImageController {
+public class SubjectsController {
 
     @GetMapping(value = "/subjects/{subject}/{file}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getLogo(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
         File logo = new File("./subjects/" + subject + "/" + file).getAbsoluteFile();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(Files.readAllBytes(logo.toPath()));
+    }
+
+    @GetMapping(value = "/subjects/{subject}/{file}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> getTheory(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
+        File logo = new File("./subjects/" + subject + "/" + file).getAbsoluteFile();
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(Files.readAllBytes(logo.toPath()));
     }
 }
