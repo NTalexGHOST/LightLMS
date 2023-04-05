@@ -79,9 +79,7 @@
 									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
 								</div>
 								<div class="profile-photo">
-									<img th:if="${authorizedUser.getRole().getName() == 'Студент'}" src="./images/profile-user.png">
-									<img th:if="${authorizedUser.getRole().getName() == 'Преподаватель'}" src="./images/profile-teacher.png">
-									<img th:if="${authorizedUser.getRole().getName() == 'Администратор'}" src="./images/profile-admin.png">
+									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
 								</div>
 								<form th:action="@{/logout}" class="profile-logout" method="post">
 									<i class="fa-solid fa-right-from-bracket"></i>
