@@ -8,20 +8,35 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 @RestController
 public class AIController {
 
-    OpenAiService service = new OpenAiService("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");
+    OpenAiService service = new OpenAiService(getOpenAiKey());
 
-    @GetMapping(value = "/api/chat-bot", params = "request")
+    private String getOpenAiKey() {
+
+        String key = "";
+        try {
+            Scanner scanner = new Scanner(Paths.get("./openai_key.txt"));
+            key = scanner.next();
+            scanner.close();
+        } catch (IOException exception) { printMessage("Не удалось прочитать файл с ключом OpenAI"); }
+
+        return key;
+    }
+
+    @GetMapping(value = "/api/openai/chat", params = "request")
     @ResponseBody
     public String getTextAnswerFromBot(@RequestParam String request) {
 
         List<ChatMessage> messagesList = new ArrayList();
-        ChatMessage message = new ChatMessage("system", request);
+        ChatMessage message = new ChatMessage("user", request);
         messagesList.add(message);
         ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
                 .model("gpt-3.5-turbo")
@@ -30,4 +45,6 @@ public class AIController {
 
         return service.createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent();
     }
+
+    private void printMessage(String message) { System.out.println("[LightLMS - OpenAI]\t" + message); }
 }

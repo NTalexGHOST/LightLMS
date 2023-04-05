@@ -12,6 +12,6 @@ public interface GroupRepository extends CrudRepository<Group, Integer> {
 
     public Group getFirstByName(String name);
 
-    @Query(value = "SELECT name FROM subject_group")
+    @Query(value = "SELECT name FROM student_group")
     public List<String> getAll();
 }

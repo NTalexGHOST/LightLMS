@@ -15,11 +15,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     UserRepository userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String fullName) throws UsernameNotFoundException {
-        User user = userRepo.findFirstByFullName(fullName);
-        if (user == null) throw new UsernameNotFoundException("Неизвестный пользователь - " + fullName);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepo.findFirstByUserName(userName);
+        if (user == null) throw new UsernameNotFoundException("Неизвестный пользователь - " + userName);
         UserDetails userDetails = org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
-                .username(user.getFullName())
+                .username(user.getUserName())
                 .password(user.getPassword())
                 .roles(user.getRole().getName())
                 .build();

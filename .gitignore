@@ -12,3 +12,5 @@ HELP.md
 !groups/
 !subjects/
 *.db
+openai_key.txt
+basic_accounts.txt

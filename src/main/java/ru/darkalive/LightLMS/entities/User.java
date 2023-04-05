@@ -2,18 +2,18 @@ package ru.darkalive.LightLMS.entities;
 
 import jakarta.persistence.*;
 
-@Entity(name="subject_user")
+@Entity(name="lms_user")
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    @Column(name="fullname")
-    private String fullName;
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    @Column(name = "username")
+    private String userName;
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
     @Column(name = "password")
     private String password;
@@ -25,16 +25,15 @@ public class User {
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
 
+    @Column(name = "fullname")
+    private String fullName;
+    public String getFullName() { return fullName; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+
     @Column(name="email")
     private String email;
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
-    public Group getGroup() { return group; }
-    public void setGroup(Group group) { this.group = group; }
 
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -42,9 +41,9 @@ public class User {
     public Role getRole() { return role; }
     public void setRole(Role role) { this.role = role; }
 
-    public User() { }
-    public User(Group group, String fullName, String password, String email, Role role) {
-        this.group = group; this.fullName = fullName; this.password = password;
-        this.email = email; this.role = role;
-    }
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
+    public Group getGroup() { return group; }
+    public void setGroup(Group group) { this.group = group; }
 }

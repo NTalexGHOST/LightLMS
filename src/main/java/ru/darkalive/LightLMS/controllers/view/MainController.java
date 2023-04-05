@@ -41,7 +41,7 @@ public class MainController {
 
         printMessage("Вызов /");
 
-        User authorizedUser = userRepo.findFirstByFullName(SecurityContextHolder.getContext().getAuthentication().getName());
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
         return "home";
@@ -58,7 +58,7 @@ public class MainController {
         List<User> users = userRepo.findAll();
         model.addAttribute("users", users);
 
-        User authorizedUser = userRepo.findFirstByFullName(SecurityContextHolder.getContext().getAuthentication().getName());
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
         return "journal";
@@ -73,7 +73,7 @@ public class MainController {
     @GetMapping("/example")
     public String example(Model model) throws Exception {
 
-        User authorizedUser = userRepo.findFirstByFullName(SecurityContextHolder.getContext().getAuthentication().getName());
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
         return "example";
@@ -82,7 +82,7 @@ public class MainController {
     @GetMapping("/subjects/Мультимедиа технологии/Искусственный интеллект/chat-bot")
     public String chatBot(Model model) throws Exception {
 
-        User authorizedUser = userRepo.findFirstByFullName(SecurityContextHolder.getContext().getAuthentication().getName());
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
         return "chat-bot";

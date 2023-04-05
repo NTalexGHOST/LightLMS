@@ -2,8 +2,8 @@ package ru.darkalive.LightLMS.entities;
 
 import jakarta.persistence.*;
 
-@Entity(name="student_group")
-public class Group {
+@Entity(name="lms_subject")
+public class Subject {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
@@ -15,14 +15,14 @@ public class Group {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    @Column(name="admission_year")
-    private int admissionYear;
-    public int getAdmissionYear() { return admissionYear; }
-    public void setAdmissionYear(int admissionYear) { this.admissionYear = admissionYear; }
-
     @ManyToOne
     @JoinColumn(name = "type_id")
     private EducationType educationType;
     public EducationType getEducationType() { return educationType; }
     public void setEducationType(EducationType educationType) { this.educationType = educationType; }
+
+    @Column(name="semester")
+    private int semester;
+    public int getSemester() { return semester; }
+    public void setSemester(int semester) { this.semester = semester; }
 }

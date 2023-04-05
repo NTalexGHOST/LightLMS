@@ -2,8 +2,8 @@ package ru.darkalive.LightLMS.entities;
 
 import jakarta.persistence.*;
 
-@Entity(name="user_role")
-public class Role {
+@Entity(name="group_type")
+public class EducationType {
     @Id
     private int id;
     public int getId() { return id; }
@@ -13,4 +13,9 @@ public class Role {
     private String name;
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+
+    @Column(name="years")
+    private int years;
+    public int getYears() { return years; }
+    public void setYears(int years) { this.years = years; }
 }

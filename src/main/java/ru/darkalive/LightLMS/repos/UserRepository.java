@@ -14,13 +14,13 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     public List<User> findAll();
     public List<User> findByGroup(Group group);
 
-    public User findFirstByFullName(String fullName);
+    public User findFirstByUserName(String userName);
     public User findFirstByGroupAndFullName(Group group, String fullName);
 
-    @Query(value="SELECT fullName FROM subject_user")
+    @Query(value="SELECT fullName FROM lms_user")
     public List<String> findUserFullNames();
-    @Query(value="SELECT fullName FROM subject_user WHERE role.name=?1")
+    @Query(value="SELECT fullName FROM lms_user WHERE role.name=?1")
     public List<String> findUserFullNamesByRoleName(String roleName);
-    @Query(value="SELECT fullName FROM subject_user WHERE role.name='Студент' AND group.name=?1")
+    @Query(value="SELECT fullName FROM lms_user WHERE role.name='Студент' AND group.name=?1")
     public List<String> findStudentFullNamesByGroup(String groupName);
 }

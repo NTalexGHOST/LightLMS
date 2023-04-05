@@ -57,6 +57,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Использование ChatGPT и DALL-E -->
+		<dependency>
+			<groupId>com.theokanning.openai-gpt3-java</groupId>
+			<artifactId>service</artifactId>
+			<version>0.11.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
