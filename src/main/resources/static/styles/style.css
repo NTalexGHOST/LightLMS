@@ -345,7 +345,7 @@ aside .sidebar a:hover i {
     padding: 2rem;
 }
 
-.can-copied {
+.can-copied, .copied {
 	cursor: pointer;
 }
 
