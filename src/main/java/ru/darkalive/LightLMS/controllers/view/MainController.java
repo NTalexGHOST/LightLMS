@@ -70,23 +70,5 @@ public class MainController {
         return "admin";
     }
 
-    @GetMapping("/example")
-    public String example(Model model) throws Exception {
-
-        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("authorizedUser", authorizedUser);
-
-        return "example";
-    }
-
-    @GetMapping("/subjects/Мультимедиа технологии/Искусственный интеллект/chat-bot")
-    public String chatBot(Model model) throws Exception {
-
-        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("authorizedUser", authorizedUser);
-
-        return "chat-bot";
-    }
-
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }
 }

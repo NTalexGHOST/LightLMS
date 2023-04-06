@@ -11,9 +11,7 @@ for (i = 0; i < elements.length; i++) {
             }, 1000);
         }
     });
-    elements[i].addEventListener('click', (e)=> { 
-        if(e.target.nodeName =="TD") { 
-            navigator.clipboard.writeText(e.target.innerText); 
-        }
+    elements[i].addEventListener('click', (e)=> {
+        navigator.clipboard.writeText(e.target.innerText);
     })
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @RestController
-public class SubjectsController {
+public class RestSubjectController {
 
     @GetMapping(value = "/subjects/{subject}/{file}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getLogo(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
