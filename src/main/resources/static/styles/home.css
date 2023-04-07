@@ -58,6 +58,7 @@
     grid-template-rows: auto auto;
     padding: 1rem;
     border: 1px solid var(--color-light);
+    height: 300px;
 }
 
 .subject-item h2 {
@@ -86,7 +87,13 @@
     align-items: center;
 }
 
-.subject-learn button {
+.subject-course {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subject-button {
     border-radius: 1rem;
     background: var(--color-tab);
     padding: 10px 1rem;
@@ -96,7 +103,7 @@
     transition: 300ms;
 }
 
-.subject-learn button:hover {
+.subject-button:hover {
     color: var(--color-primary);
     background-color: var(--color-light);
     border: 1px solid var(--color-dark-variant);

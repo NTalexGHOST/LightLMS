@@ -5,8 +5,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.darkalive.LightLMS.entities.LinkUserSubject;
 import ru.darkalive.LightLMS.entities.User;
 import ru.darkalive.LightLMS.repos.GroupRepository;
+import ru.darkalive.LightLMS.repos.LinkUserSubjectRepository;
 import ru.darkalive.LightLMS.repos.RoleRepository;
 import ru.darkalive.LightLMS.repos.UserRepository;
 
@@ -21,6 +23,8 @@ public class MainController {
     private UserRepository userRepo;
     @Autowired
     private RoleRepository roleRepo;
+    @Autowired
+    private LinkUserSubjectRepository linkUserSubjectRepo;
 
     @GetMapping("/login")
     public String login(Model model) throws Exception {
@@ -43,6 +47,9 @@ public class MainController {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
+
+        List<LinkUserSubject> subjects = linkUserSubjectRepo.findAllByUser(authorizedUser);
+        model.addAttribute("subjects", subjects);
 
         return "home";
     }

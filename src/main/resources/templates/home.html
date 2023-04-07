@@ -27,12 +27,12 @@
 						<i class="fa-solid fa-house"></i>
 						<h3>Дисциплины</h3>
 					</a>
-					<a href="/">
-						<i class="fa-solid fa-house"></i>
+					<a href="/" sec:authorize="hasRole('Студент')">
+						<i class="fa-solid fa-newspaper"></i>
 						<h3>Успеваемость</h3>
 					</a>
 					<a href="/">
-						<i class="fa-solid fa-house"></i>
+						<i class="fa-solid fa-comments"></i>
 						<h3>Чат</h3>
 					</a>
 					<a href="/journal" sec:authorize="hasRole('Преподаватель')">
@@ -81,23 +81,20 @@
 						</div>
 						<!-- Вывод списка доступных дисциплин -->
 						<div class="subject-container">
-							<div class="subject-item">
-								<h2>Мультимедиа технологии</h2>
+							<div class="subject-item" th:each="subject : ${subjects}">
+								<h2 th:text="${subject.getSubject().getName()}"></h2>
 								<div class="subject-info">
-									<img src="/subjects/Мультимедиа технологии/logo.jpg">
-									<p>
-										Основной целью изучения дисциплины является
-										формирование у студентов научных представлений о сущности и функциях современных
-										мультимедиа систем и технологий, их месте и роли в системе информационных систем и
-										технологий, овладение практическими навыками эффективного использования
-										мультимедиа технологий в условиях решения реальных практических задач.
-									</p>
+									<img th:src="@{'/subjects/' + ${subject.getSubject().getName()} + '/logo.jpg'}">
+									<p th:text="${subject.getSubject().getDescription()}"></p>
 								</div>
 								<div class="subject-learn">
-									<p>Бакалавриат</p>
-									<p>1 курс</p>
-									<p>Суханова Надежда Тимофеевна</p>
-									<button>Перейти к изучению</button>
+									<p th:text="${subject.getSubject().getEducationType().getName()} + ''"></p>
+									<div class="subject-course">
+										<p th:text="${subject.getSubject().getCourse()} + ' курс'"></p>
+										<p th:text="${subject.getSubject().getSemester()} + ' семестр'"></p>
+									</div>
+									<p th:text="${subject.getSubject().getTeacher().getFullName()}"></p>
+									<a th:href="@{'/subjects/' + ${subject.getSubject().getName()}}" class="subject-button">Перейти к изучению</a>
 								</div>
 							</div>
 						</div>
