@@ -58,7 +58,7 @@
     grid-template-rows: auto auto;
     padding: 1rem;
     border: 1px solid var(--color-light);
-    height: 300px;
+    min-height: 300px;
 }
 
 .subject-item h2 {
