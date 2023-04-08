@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @RestController
-public class RestSubjectController {
+public class MediaFileController {
 
     @GetMapping(value = "/subjects/{subject}/{file}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getLogo(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
@@ -20,8 +20,8 @@ public class RestSubjectController {
     }
 
     @GetMapping(value = "/subjects/{subject}/{file}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> getTheory(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
-        File logo = new File("./subjects/" + subject + "/" + file).getAbsoluteFile();
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(Files.readAllBytes(logo.toPath()));
+    public ResponseEntity<byte[]> getPdf(@PathVariable("subject") String subject, @PathVariable("file") String file) throws IOException {
+        File pdfFile = new File("./subjects/" + subject + "/" + file).getAbsoluteFile();
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(Files.readAllBytes(pdfFile.toPath()));
     }
 }
