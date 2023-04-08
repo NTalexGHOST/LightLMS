@@ -11,7 +11,7 @@ HELP.md
 # LightLMS
 !groups/
 !subjects/
-LightLMS_DB.mv.db
-LightLMS_DB.trace.db
 openai_key.txt
 basic_accounts.txt
+LightLMS.trace.db
+LightLMS.mv.db
