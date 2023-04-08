@@ -6,11 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.darkalive.LightLMS.entities.LinkUserSubject;
+import ru.darkalive.LightLMS.entities.Subject;
 import ru.darkalive.LightLMS.entities.User;
-import ru.darkalive.LightLMS.repos.GroupRepository;
-import ru.darkalive.LightLMS.repos.LinkUserSubjectRepository;
-import ru.darkalive.LightLMS.repos.RoleRepository;
-import ru.darkalive.LightLMS.repos.UserRepository;
+import ru.darkalive.LightLMS.repos.*;
 
 import java.util.List;
 
@@ -24,6 +22,8 @@ public class MainController {
     @Autowired
     private RoleRepository roleRepo;
     @Autowired
+    private SubjectRepository subjectRepo;
+    @Autowired
     private LinkUserSubjectRepository linkUserSubjectRepo;
 
     @GetMapping("/login")
@@ -31,11 +31,13 @@ public class MainController {
 
         printMessage("Вызов /login");
 
-        List<String> groups = groupRepo.getAll();
-        model.addAttribute("groups", groups);
+        return "login";
+    }
 
-        List<String> teachers = userRepo.findUserFullNamesByRoleName("Преподаватель");
-        model.addAttribute("teachers", teachers);
+    @GetMapping("/login")
+    public String loginError(Model model) throws Exception {
+
+        printMessage("Вызов /login");
 
         return "login";
     }
@@ -43,10 +45,9 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model) throws Exception {
 
-        printMessage("Вызов /");
-
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
+        printMessage("Вызов / - " + authorizedUser.getFullName());
 
         List<LinkUserSubject> subjects = linkUserSubjectRepo.findAllByUser(authorizedUser);
         model.addAttribute("subjects", subjects);
@@ -57,7 +58,12 @@ public class MainController {
     @GetMapping("/journal")
     public String journal(Model model) throws Exception {
 
-        printMessage("Вызов /journal");
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("authorizedUser", authorizedUser);
+        printMessage("Вызов /journal - " + authorizedUser.getFullName());
+
+        List<Subject> subjects = subjectRepo.findAllByTeacher(authorizedUser);
+        model.addAttribute("subjects", subjects);
 
         List<String> groups = groupRepo.getAll();
         model.addAttribute("groups", groups);
@@ -65,14 +71,15 @@ public class MainController {
         List<User> users = userRepo.findAll();
         model.addAttribute("users", users);
 
-        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("authorizedUser", authorizedUser);
-
         return "journal";
     }
 
     @GetMapping("/admin")
     public String admin(Model model) throws Exception {
+
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("authorizedUser", authorizedUser);
+        printMessage("Вызов /admin - " + authorizedUser.getFullName());
 
         return "admin";
     }

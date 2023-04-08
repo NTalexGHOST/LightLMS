@@ -25,6 +25,7 @@ public class ViewAIController {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
+        printMessage("Вызов страницы чат-бота - " + authorizedUser.getFullName());
 
         return "chat-bot";
     }
