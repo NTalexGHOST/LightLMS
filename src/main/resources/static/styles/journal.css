@@ -5,6 +5,8 @@
 	margin-bottom: 0.8rem;
 	display: inline-block;
 	color: var(--color-dark-variant);
+	display: flex;
+    align-items: center;
 }
 
 .student-performance select {
@@ -16,7 +18,6 @@
 	height: 2rem;
 	appearance: none;
 	background: var(--color-white);
-	border-radius: 1rem 1rem 0 0;
 }
 
 .student-performance a {

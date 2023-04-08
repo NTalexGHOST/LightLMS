@@ -25,35 +25,15 @@
 				<div class="sidebar">
 					<a href="/">
 						<i class="fa-solid fa-house"></i>
-						<h3>Главная</h3>
+						<h3>Дисциплины</h3>
 					</a>
-					<div class="sidebar-category">
-						<i class="fa-solid fa-bars"></i>
-						<h3>Теория</h3>
-					</div>
-					<a href="" class="sidebar-category-item">
-						<i class="fa-solid fa-book"></i>
-						<h3>Учебники</h3>
+					<a href="/" sec:authorize="hasRole('Студент')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Успеваемость</h3>
 					</a>
-					<a href="" class="sidebar-category-item">
-						<i class="fa-solid fa-file-powerpoint"></i>
-						<h3>Презентации</h3>
-					</a>
-					<a href="" class="sidebar-category-item">
-						<i class="fa-solid fa-film"></i>
-						<h3>Видеоматериалы</h3>
-					</a>
-					<a href="">
-						<i class="fa-solid fa-file"></i>
-						<h3>Примеры</h3>
-					</a>
-					<a href="">
-						<i class="fa-solid fa-clipboard"></i>
-						<h3>Задания</h3>
-					</a>
-					<a href="">
-						<i class="fa-solid fa-list-check"></i>
-						<h3>Тест</h3>
+					<a href="/chat">
+						<i class="fa-solid fa-comments"></i>
+						<h3>Чат</h3>
 					</a>
 					<a href="/journal" class="active" sec:authorize="hasRole('Преподаватель')">
 						<i class="fa-solid fa-newspaper"></i>
@@ -97,7 +77,7 @@
 							<button class="tab-links" onclick="openTab(event, 'groups-and-students', 'tab-content', 'tab-links')">Группы и студенты</button>
 							<button class="tab-links" onclick="openTab(event, 'theory-materials', 'tab-content', 'tab-links')">Теоретические материалы</button>
 							<button class="tab-links" onclick="openTab(event, 'tasks', 'tab-content', 'tab-links')">Задания</button>
-							<button class="tab-links" onclick="openTab(event, 'test', 'tab-content', 'tab-links')" style="width: calc(99.1% - 100% * 4 / 5);">Тест</button>
+							<button class="tab-links" onclick="openTab(event, 'test', 'tab-content', 'tab-links')">Тест</button>
 						</div>
 						<!-- Вкладка успеваемости студентов -->
 						<div class="tab-content student-performance" style="display:block;" id="student-performance">
@@ -105,9 +85,7 @@
 							<h2>
 								Выберите нужную дисциплину
 								<select>
-									<option>Мультимедиа технологии</option>
-									<option>Мультимедиа технологии</option>
-									<option>Мультимедиа технологии</option>
+									<option th:each="subject : ${subjects}" th:value="${subject.getName()}" th:text="${subject.getName()}"></option>
 								</select>
 								и конкретную группу
 								<select>
