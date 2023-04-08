@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.darkalive.LightLMS.entities.LinkUserSubject;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.darkalive.LightLMS.entities.Subject;
 import ru.darkalive.LightLMS.entities.User;
 import ru.darkalive.LightLMS.repos.*;
@@ -13,7 +12,7 @@ import ru.darkalive.LightLMS.repos.*;
 import java.util.List;
 
 @Controller
-public class MainController {
+public class ManagementController {
 
     @Autowired
     private GroupRepository groupRepo;
@@ -26,35 +25,33 @@ public class MainController {
     @Autowired
     private LinkUserSubjectRepository linkUserSubjectRepo;
 
-    @GetMapping("/login")
-    public String login(Model model) throws Exception {
-
-        printMessage("Вызов /login");
-
-        return "login";
-    }
-
-    @GetMapping("/login")
-    public String loginError(Model model) throws Exception {
-
-        printMessage("Вызов /login");
-
-        return "login";
-    }
-
-    @GetMapping("/")
-    public String main(Model model) throws Exception {
+    @GetMapping("/journal")
+    public String journal(Model model) throws Exception {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
-        printMessage("Вызов / - " + authorizedUser.getFullName());
+        printMessage("Вызов /journal - " + authorizedUser.getFullName());
 
-        List subjects;
-        if (authorizedUser.getRole().getName() == "Студент") subjects = linkUserSubjectRepo.findAllByUser(authorizedUser);
-        else subjects = subjectRepo.findAllByTeacher(authorizedUser);
+        List<Subject> subjects = subjectRepo.findAllByTeacher(authorizedUser);
         model.addAttribute("subjects", subjects);
 
-        return "home";
+        List<String> groups = groupRepo.getAll();
+        model.addAttribute("groups", groups);
+
+        List<User> users = userRepo.findAll();
+        model.addAttribute("users", users);
+
+        return "journal";
+    }
+
+    @GetMapping("/admin")
+    public String admin(Model model) throws Exception {
+
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("authorizedUser", authorizedUser);
+        printMessage("Вызов /admin - " + authorizedUser.getFullName());
+
+        return "admin";
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }
