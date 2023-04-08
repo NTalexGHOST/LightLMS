@@ -356,6 +356,7 @@ aside .sidebar a:hover i {
     overflow: hidden;
     border-bottom: 1px solid var(--color-light);
     border-radius: 1rem 1rem 0 0;
+    display: flex;
 }
 
 .tab-list button {
@@ -366,8 +367,7 @@ aside .sidebar a:hover i {
     padding: 14px 16px;
     transition: 0.2s;
     font-size: 16px;
-    margin: auto auto;
-    width: calc(100% / 5);
+    width: 100%;
 }
 
 .tab-list button:hover {
