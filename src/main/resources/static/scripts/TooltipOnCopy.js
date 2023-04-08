@@ -1,5 +1,5 @@
-function sendRequest() {
-    let elements = document.getElementsByClassName('can-copied');
+function addTooltipsToTableCells() {
+    var elements = document.getElementsByClassName('can-copied');
     for (i = 0; i < elements.length; i++) {
         tippy(elements[i], {
             content: 'Текст успешно сохранен в буфер обмена',
@@ -15,9 +15,7 @@ function sendRequest() {
         elements[i].addEventListener('click', (e)=> {
             navigator.clipboard.writeText(e.target.innerText);
         });
-        elements[i].classList.add("copied");
-        elements[i].classList.remove("can-copied");
     }
 }
 
-sendRequest();
+addTooltipsToTableCells();
