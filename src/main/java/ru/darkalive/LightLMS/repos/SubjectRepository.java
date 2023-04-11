@@ -11,4 +11,5 @@ import java.util.List;
 public interface SubjectRepository extends CrudRepository<Subject, Integer> {
 
     List<Subject> findAllByTeacher(User user);
+    Subject findFirstById(int id);
 }
