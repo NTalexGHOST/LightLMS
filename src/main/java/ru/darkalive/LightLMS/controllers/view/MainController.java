@@ -42,7 +42,7 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/")
+    @GetMapping({ "/", "/subjects" })
     public String main(Model model) throws Exception {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
