@@ -17,7 +17,7 @@
 				<!-- Логотип -->
 				<div class="top">
 					<div class="logo">
-						<img src="./images/logo.png">
+						<img th:src="@{/images/logo.png}">
 						<h2>Lightweight<span class="logo-color">LMS</span></h2>
 					</div>
 				</div>
@@ -94,7 +94,7 @@
 										<p th:text="${subject.getSubject().getSemester()} + ' семестр'"></p>
 									</div>
 									<p th:text="${subject.getSubject().getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getSubject().getName()}}" class="subject-button">Перейти к изучению</a>
+									<a th:href="@{'/subjects/' + ${subject.getSubject().getId()}}" class="subject-button">Перейти к изучению</a>
 								</div>
 							</div>
 						</div>
@@ -112,7 +112,7 @@
 										<p th:text="${subject.getSemester()} + ' семестр'"></p>
 									</div>
 									<p th:text="${subject.getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getName()}}" class="subject-button">Перейти к изучению</a>
+									<a th:href="@{'/subjects/' + ${subject.getId()}}" class="subject-button">Перейти к изучению</a>
 								</div>
 							</div>
 						</div>

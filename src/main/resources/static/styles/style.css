@@ -266,10 +266,6 @@ aside .sidebar a:hover i {
     margin: auto 0;
 }
 
-.right {
-	margin-top: 1.4rem;
-}
-
 .right .top {
 	display: flex;
 	justify-content: end;
@@ -284,6 +280,7 @@ aside .sidebar a:hover i {
 	gap: 1rem;
 	text-align: right;
 	margin: 0;
+	align-items: center;
 }
 
 .profile input {
@@ -334,7 +331,6 @@ aside .sidebar a:hover i {
 	margin: 0 auto;
 	grid-template-rows: 5rem auto;
 	margin-bottom: 2rem;
-	gap: 1rem;
 }
 
 .main-content {
@@ -342,7 +338,7 @@ aside .sidebar a:hover i {
     background: var(--color-tab);
     border-radius: 1rem 1rem 0 0;
     height: auto;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 .can-copied, .copied {
@@ -422,4 +418,96 @@ table tbody tr:last-child td {
 .main-content embed {
 	width: 100%;
 	height: 600px;
+}
+
+
+/* Навигация по дисциплинам */
+
+.path-container {
+	padding: 0 0 1rem 0;
+    margin: 0 0 1.5rem 0;
+    border-bottom: 1px solid var(--color-light);
+    display: inline-flex;
+    flex-wrap: wrap;
+    list-style: none;
+    background-color: transparent;
+    width: 100%;
+}
+
+.arrow:after {
+	content: '';
+	position: absolute;
+	left: 100%;
+	border: 1.85rem solid transparent;
+	border-left-width: 1rem;
+	border-left-color: var(--color-light);
+}
+
+.path-button {
+	position: relative;
+	float: left;
+    background: var(--color-light);
+    padding: 7px 1rem;
+    margin-right: 1rem;
+    cursor: pointer;
+    transition: 300ms;
+    height: calc(3.7rem - 14px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.path-button a {
+	transition: 300ms;
+	padding-left: 1rem;
+}
+
+.path-button:last-child:after {
+	content: none;
+}
+
+.path-button:last-child {
+	border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.path-button:after {
+	content: '';
+	position: absolute;
+	left: 100%;
+	border: 1.85rem solid transparent;
+	border-left-width: 1rem;
+	border-left-color: var(--color-light);
+}
+
+.path-button:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	border: 1.85rem solid transparent;
+	border-left-width: 1rem;
+	border-left-color: var(--color-tab);
+}
+
+.path-button:hover {
+    transition: 300ms;
+    margin-left: 1rem;
+    margin-right: 2rem;
+}
+
+.path-button:hover a {
+	transition: 300ms;
+	color: var(--color-primary);
+}
+
+.path-button.active {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+    border: 1px solid var(--color-dark-variant)
+}
+
+.path-button.active:hover {
+    color: var(--color-dark);
+    background: var(--color-tab);
+    border: 1px solid var(--color-light);
+    transition: 300ms;
 }
