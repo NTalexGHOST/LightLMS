@@ -34,10 +34,11 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login-error")
     public String loginError(Model model) throws Exception {
 
-        printMessage("Вызов /login");
+        printMessage("Вызов /login с ошибкой авторизации");
+        model.addAttribute("error", true);
 
         return "login";
     }
