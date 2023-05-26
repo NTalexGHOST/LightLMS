@@ -19,14 +19,14 @@ public class WebSecurityConfig {
                                 "/scripts/**", "/styles/**", "/images/**", "/icons/**", "/libs/**", "/favicon.ico"
                         ).permitAll()
                         .requestMatchers(
-                                "/", "/home/**", "/groups/**", "/subjects/**", "/example/**", "/api/openai/**"
+                                "/", "/home/**", "/subjects/**", "/api/openai/**", "/openai/**", "/logo/**"
                         ).authenticated()
                         .requestMatchers(
-                                "/journal/**", "/h2-console/**", "/students/**", "/students?**", "/groups/**", "/groups?**"
+                                "/journal/**", "/api/**"
                         ).hasRole("Преподаватель")
                         .anyRequest().hasRole("Администратор")
                 )
-                .formLogin((form) -> form.loginPage("/login").defaultSuccessUrl("/").permitAll())
+                .formLogin((form) -> form.loginPage("/login").defaultSuccessUrl("/").failureUrl("/login/error").permitAll())
                 .logout((logout) -> logout.permitAll());
         http.csrf().disable();
         http.headers().frameOptions().disable();

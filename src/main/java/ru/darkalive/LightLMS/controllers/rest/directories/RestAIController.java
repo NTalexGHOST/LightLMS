@@ -55,7 +55,7 @@ public class RestAIController {
     @ResponseBody
     public String getTextAnswerFromBot(@RequestParam String request) {
 
-        List<ChatMessage> messagesList = new ArrayList();
+        List<ChatMessage> messagesList = new ArrayList<>();
         ChatMessage message = new ChatMessage("user", request);
         messagesList.add(message);
         ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
@@ -63,9 +63,7 @@ public class RestAIController {
                 .messages(messagesList)
                 .build();
 
-        String response = service.createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent();
-
-        return response;
+        return service.createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent();
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - OpenAI]\t" + message); }

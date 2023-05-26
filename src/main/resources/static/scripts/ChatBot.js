@@ -1,20 +1,19 @@
 function addTooltipToLastMessage() {
     var lastMessage = document.querySelector('#chat-history').lastChild;
-        tippy(lastMessage, {
-            content: 'Текст успешно сохранен в буфер обмена',
-            trigger: 'click',
-            duration: 500,
-            animation: 'fade',
-            onShow(instance) {
-                setTimeout(() => {
-                    instance.hide();
-                }, 1000);
-            }
-        });
-        lastMessage.addEventListener('click', (e)=> {
-            navigator.clipboard.writeText(e.target.innerText);
-        });
-    }
+    tippy(lastMessage, {
+        content: 'Текст успешно сохранен в буфер обмена',
+        trigger: 'click',
+        duration: 500,
+        animation: 'fade',
+        onShow(instance) {
+            setTimeout(() => {
+                instance.hide();
+            }, 1000);
+        }
+    });
+    lastMessage.addEventListener('click', (e)=> {
+        navigator.clipboard.writeText(e.target.innerText);
+    });
 }
 
 document.querySelector("#input-message").addEventListener("keyup", event => {

@@ -1,0 +1,164 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8">
+		<title th:text="'LightLMS - ' + ${subject.getName()}"></title>
+		<!-- Основные стили -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<!-- Стили страницы конкретной дисциплины -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/subject.css}">
+		<!-- Иконки FontAwesome -->
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/brands.css}">
+		<!-- JQuery UI -->
+		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- JQuery UI -->
+		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
+		<!-- Скрипты для страниц дисциплин -->
+		<script type="text/javascript" th:src="@{/scripts/Subjects.js}"></script>
+	</head>
+	<body>
+		<div class="main-container">
+			<aside>
+				<!-- Логотип -->
+				<div class="top">
+					<div class="logo">
+						<img th:src="@{/images/logo.png}">
+						<h2>Lightweight<span class="logo-color">LMS</span></h2>
+					</div>
+				</div>
+				<!-- Боковое меню -->
+				<div class="sidebar">
+					<a href="/" class="active arrow">
+						<i class="fa-solid fa-house"></i>
+						<h3>Дисциплины</h3>
+					</a>
+					<a href="/performance" sec:authorize="hasRole('Студент')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Успеваемость</h3>
+					</a>
+					<a href="/chat">
+						<i class="fa-solid fa-comments"></i>
+						<h3>Чат</h3>
+					</a>
+					<hr>
+					<div id="themes-container">
+						<a th:each="theme : ${themes}" th:href="'#theme' + ${theme.getId()}">
+							<i class="fa-solid fa-book-open"></i>
+							<h3 th:text="${theme.getName()}"></h3>
+						</a>
+					</div>
+					<a th:href="'/subjects/' + ${subject.getId()} + '/editor'" sec:authorize="hasRole('Преподаватель')">
+						<i class="fa-solid fa-pen-to-square"></i>
+						<h3>Редактор</h3>
+					</a>
+					<a href="/admin" sec:authorize="hasRole('Администратор')">
+						<i class="fa-solid fa-toolbox"></i>
+						<h3>Админ-панель</h3>
+					</a>
+				</div>
+			</aside>
+			<div class="content-container">
+				<div class="title-profile-container">
+					<!-- Заголовок страницы -->
+					<div class="title">
+						<h1 th:text="@{${subject.getName()}}"></h1>
+					</div>
+					<div class="right">
+						<div class="top">
+							<div class="profile">
+								<!-- ФИО и роль пользователя -->
+								<div class="info">
+									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
+									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
+								</div>
+								<!-- Фотография пользователя на основе роли -->
+								<div class="profile-photo">
+									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
+								</div>
+								<!-- Кнопка выхода из аккаунта -->
+								<form th:action="@{/logout}" class="profile-logout" method="post">
+									<i class="fa-solid fa-right-from-bracket"></i>
+									<input type="submit" value="Выйти из аккаунта"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<main>
+					<div class="main-content">
+						<div class="subject-path">
+							<!-- Фильтры для показа дисциплин -->
+							<ol class="path-container">
+								<li class="path-button">
+									<a th:href="@{'/subjects/' + ${subject.getId()}}" th:text="@{${subject.getName()}}"></a>
+								</li>
+							</ol>
+						</div>
+						<div th:each="theme : ${themes}" class="subject-chapter" th:id="'theme' + ${theme.getId()}">
+							<div class="chapter-title">
+								<h2 th:text="${theme.getName()}"></h2>
+							</div>
+							<div class="chapter-content">
+								<div th:if="${not theme.getManualResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Методические указания</h3>
+									</div>
+									<div th:each="manual : ${theme.getManualResources()}" class="resource-item">
+										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+											<i class="fa-solid fa-file-word"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+											<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+										</div>
+										<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+											<i class="fa-solid fa-download"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+											<div class="file-extension">
+												<i class="fa-solid fa-file"></i>
+												<h5 th:text="${manual.getFileExtension()}"></h5>
+											</div>
+										</a>
+									</div>
+								</div>
+								<div th:if="${not theme.getExternalResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Сторонние ресурсы</h3>
+									</div>
+									<div th:each="external : ${theme.getExternalResources()}" class="resource-item">
+										<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+											<i class="fa-brands fa-youtube"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+											<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+										</div>
+										<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+											<i class="fa-solid fa-arrow-up-right-from-square"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</a>
+									</div>
+								</div>
+								<div th:if="${not theme.getTasks().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Практические работы</h3>
+									</div>	
+									<div th:if="${not theme.getTasks().isEmpty()}" th:each="task : ${theme.getTasks()}" class="resource-item">
+										<a th:href="@{'/subjects/' + ${subject.getId()} + '/' + ${theme.getId()} + '/' + ${task.getId()}}">
+											<i class="fa-solid fa-file-export"></i>
+											<h4 th:text="${task.getDisplayName()}"></h4>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		</div>
+	</body>
+</html>

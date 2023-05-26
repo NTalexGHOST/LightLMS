@@ -9,7 +9,7 @@ HELP.md
 *.ipr
 
 # LightLMS
-!groups/
+!users/
 !subjects/
 openai_key.txt
 basic_accounts.txt

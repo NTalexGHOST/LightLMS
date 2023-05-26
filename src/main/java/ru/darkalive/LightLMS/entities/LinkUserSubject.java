@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity(name="link_user_subject")
 public class LinkUserSubject {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

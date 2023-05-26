@@ -23,17 +23,30 @@
 				</div>
 				<!-- Боковое меню -->
 				<div class="sidebar">
-					<a href="/">
+					<a href="/" class="active arrow">
 						<i class="fa-solid fa-house"></i>
 						<h3>Дисциплины</h3>
 					</a>
-					<a href="/">
-						<i class="fa-solid fa-house"></i>
+					<a href="/performance" sec:authorize="hasRole('Студент')">
+						<i class="fa-solid fa-newspaper"></i>
 						<h3>Успеваемость</h3>
 					</a>
-					<a href="/">
-						<i class="fa-solid fa-house"></i>
+					<a href="/chat">
+						<i class="fa-solid fa-comments"></i>
 						<h3>Чат</h3>
+					</a>
+					<hr>
+					<a href="#theme1">
+						<i class="fa-solid fa-book-open"></i>
+						<h3>Пример темы 1</h3>
+					</a>
+					<a href="#theme2">
+						<i class="fa-solid fa-book-open"></i>
+						<h3>Пример темы 2</h3>
+					</a>
+					<a href="#exam">
+						<i class="fa-solid fa-graduation-cap"></i>
+						<h3>Экзамен / Зачет</h3>
 					</a>
 					<a href="/journal" sec:authorize="hasRole('Преподаватель')">
 						<i class="fa-solid fa-newspaper"></i>
@@ -74,6 +87,19 @@
 				</div>
 				<main>
 					<div class="main-content">
+						<div class="subject-path">
+							<ol class="path-container">
+								<li class="path-button">
+									<a th:href="@{/subjects/1}">Мультимедиа Технологии</a>
+								</li>
+								<li class="path-button">
+									<a th:href="@{/subjects/1#theme1}">Применение нейронных сетей в сфере мультимедиа</a>
+								</li>
+								<li class="path-button">
+									<a th:href="@{/openai/chat-bot}">Чат-бот с использованием нейронной сети ChatGPT</a>
+								</li>
+							</ol>
+						</div>
 						<div class="chat-bot">
 							<div class="chat-history" id="chat-history">
 

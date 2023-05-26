@@ -15,7 +15,7 @@ public class BasicFileCreating {
 
     private void checkDirectories() {
 
-        List<String> directories = List.of("groups", "subjects");
+        List<String> directories = List.of("users", "subjects");
         directories.forEach(this::checkDirectory);
     }
 
@@ -31,5 +31,5 @@ public class BasicFileCreating {
         }
     }
 
-    private void printMessage(String message) { System.out.println("[MultimediaAI - BasicDirs]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - BasicDirs]\t" + message); }
 }

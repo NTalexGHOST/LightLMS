@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="utf-8">
-		<title>LightLMS - Главная</title>
+		<title>LightLMS - Дисциплины</title>
 		<!-- Основные стили -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
 		<!-- Стили главной страницы -->
@@ -74,7 +74,15 @@
 				</div>
 				<main>
 					<div class="main-content">
-						<!-- Фильтры для показа дисциплин -->
+						<!-- Скрипт изменения кнопок-фильтров -->
+						<script type="text/javascript">
+							function activeButton(evt) {
+							    var currentButton = document.getElementById(evt.currentTarget.id);
+							    if (currentButton.classList.contains("active")) currentButton.classList.remove("active");
+							    else evt.currentTarget.className += "active";
+							}
+						</script>
+						<!-- Кнопки-фильтры для показа дисциплин -->
 						<div class="filter-container">
 							<button class="active" id="current-subjects" onclick="activeButton(event)">Текущие</button>
 							<button id="passed-subjects" onclick="activeButton(event)">Пройденные</button>
@@ -84,7 +92,7 @@
 							<div class="subject-item" th:each="subject : ${subjects}">
 								<h2 th:text="${subject.getSubject().getName()}"></h2>
 								<div class="subject-info">
-									<img th:src="@{'/subjects/' + ${subject.getSubject().getName()} + '/logo.jpg'}">
+									<img th:src="@{'/logo/' + ${subject.getSubject().getId()} + '/logo.jpg'}">
 									<p th:text="${subject.getSubject().getDescription()}"></p>
 								</div>
 								<div class="subject-learn">
@@ -102,7 +110,7 @@
 							<div class="subject-item" th:each="subject : ${subjects}">
 								<h2 th:text="${subject.getName()}"></h2>
 								<div class="subject-info">
-									<img th:src="@{'/subjects/' + ${subject.getName()} + '/logo.jpg'}">
+									<img th:src="@{'/logo/' + ${subject.getId()} + '/logo.jpg'}">
 									<p th:text="${subject.getDescription()}"></p>
 								</div>
 								<div class="subject-learn">
@@ -120,7 +128,5 @@
 				</main>
 			</div>
 		</div>
-		<!-- Скрипт для переключения фильтров -->
-		<script type="text/javascript" th:src="@{/scripts/SubjectFilter.js}"></script>
 	</body>
 </html>

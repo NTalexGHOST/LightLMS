@@ -10,6 +10,14 @@
 		<!-- Иконки FontAwesome -->
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- TippyJS для реализации всплывающих tooltip элементов -->
+		<script src="https://unpkg.com/@popperjs/core@2"></script>
+		<script src="https://unpkg.com/tippy.js@6"></script>
+		<!-- Скрипты для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
+		<script type="text/javascript" th:src="@{/scripts/TabControl.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/TooltipOnCopy.js}"></script>
 	</head>
 	<body>
 		<div class="main-container">
@@ -17,7 +25,7 @@
 				<!-- Логотип -->
 				<div class="top">
 					<div class="logo">
-						<img src="./images/logo.png">
+						<img src="/images/logo.png">
 						<h2>Lightweight<span class="logo-color">LMS</span></h2>
 					</div>
 				</div>
@@ -75,9 +83,9 @@
 						<div class="tab-list">
 							<button class="tab-links active" onclick="openTab(event, 'student-performance', 'tab-content', 'tab-links')">Успеваемость</button>
 							<button class="tab-links" onclick="openTab(event, 'groups-and-students', 'tab-content', 'tab-links')">Группы и студенты</button>
-							<button class="tab-links" onclick="openTab(event, 'theory-materials', 'tab-content', 'tab-links')">Теоретические материалы</button>
-							<button class="tab-links" onclick="openTab(event, 'tasks', 'tab-content', 'tab-links')">Задания</button>
-							<button class="tab-links" onclick="openTab(event, 'test', 'tab-content', 'tab-links')">Тест</button>
+							<button class="tab-links" onclick="openTab(event, 'theory-materials', 'tab-content', 'tab-links')">Управление дисциплиной</button>
+							<button class="tab-links" onclick="openTab(event, 'tasks', 'tab-content', 'tab-links')">Проверка заданий</button>
+							<button class="tab-links" onclick="openTab(event, 'test', 'tab-content', 'tab-links')">Экзамен / зачет</button>
 						</div>
 						<!-- Вкладка успеваемости студентов -->
 						<div class="tab-content student-performance" style="display:block;" id="student-performance">
@@ -100,7 +108,7 @@
 										<th>Почта</th>
 										<th>Выполнено заданий</th>
 										<th>Тестирование</th>
-										<th>Итоговый балл</th>
+										<th>Итоговая оценка</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -245,13 +253,5 @@
 				</main>
 			</div>
 		</div>
-		<!-- JQuery -->
-		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
-		<!-- TippyJS для реализации всплывающих tooltip элементов -->
-		<script src="https://unpkg.com/@popperjs/core@2"></script>
-		<script src="https://unpkg.com/tippy.js@6"></script>
-		<!-- Скрипты для переключения между вкладками, копирование текста в ячейках таблицы и показывание подсказок об успешном копировании -->
-		<script type="text/javascript" th:src="@{/scripts/TabControl.js}"></script>
-		<script type="text/javascript" th:src="@{/scripts/TooltipOnCopy.js}"></script>
 	</body>
 </html>

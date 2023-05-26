@@ -1,0 +1,204 @@
+
+#themes-container {
+	max-width: 14rem;
+	transition: 500ms;
+}
+
+#themes-container.fixed {
+	position: fixed;
+	top: 1rem;
+	transition: 500ms;
+}
+
+.subject-chapter {
+	background: var(--color-white);
+    text-align: center;
+    transition: all 300ms ease;
+    border: 1px solid var(--color-light);
+    overflow:hidden;
+    margin-bottom: 1rem;
+}
+
+.subject-chapter:first-of-type {
+	border-top: 1px solid var(--color-light);
+	border-radius: 1rem 1rem 0 0;
+}
+
+.subject-chapter:last-child {
+	border-radius: 0 0 1rem 1rem;
+	margin-bottom: 0;
+}
+
+.chapter-title, .chapter-title-editor {
+	background: var(--color-background);
+	padding: 0.5rem;
+	text-align: center;
+	border-bottom: 1px solid var(--color-light);
+	display: grid;
+}
+
+.chapter-title h2 {
+	font-size: 1.7rem;
+}
+
+.chapter-title-editor {
+	align-items: center;
+	grid-template-columns: auto 6.4rem;
+}
+
+.chapter-title-editor input {
+	font-size: 1.7rem;
+	font-weight: bold;
+	text-align: center;
+	outline: none;
+}
+
+.chapter-title-editor > .resource-interactions {
+	margin-right: 0.5rem;
+	justify-content: flex-end;
+}
+
+.chapter-content h4 {
+	font-size: 1.2rem;
+	font-weight: normal;
+	margin: 0;
+}
+
+.resource-interactions button, .subject-path button, .resource-type-title button, .resource-item button {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.resource-item > a, .resource-item > button, .chapter-title-editor > button {
+	display: flex;
+	align-items: center;
+	margin-left: 1.25rem;
+	gap: 1rem;
+	transition: 300ms;
+	width: fit-content;
+	padding: 0.5rem 0;
+}
+
+.resource-item > a:hover, .resource-item > button:hover, .resource-type-title > button:hover, .subject-path > button:hover,
+.resource-interactions > button:hover {
+	color: var(--color-primary) !important;
+	transition: 300ms;
+}
+
+.resource-type-title > button:hover, .subject-path > button:hover {
+	background-color: var(--color-light);
+}
+
+.resource-item > a:hover, .resource-item > button:hover {
+	margin-left: 2.5rem;
+}
+
+.editor-animation > a:hover, .editor-animation > button:hover {
+	margin-left: 1.25rem !important;
+	cursor: default !important;
+}
+
+.resource-item, .resource-type-title, .subject-path {
+	display: flex;
+    justify-content: space-between;
+}
+
+.resource-item, .subject-path {
+	align-items: center;
+}
+
+.resource-interactions {
+	display: flex;
+    margin-right: 1rem;
+}
+
+.resource-interactions i, .resource-item i {
+	font-size: 1.7rem;
+	width: 1.7rem;
+}
+
+.file-extension {
+	display: flex;
+    align-items: center;
+}
+
+.file-extension h5 {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: normal;
+	color: var(--color-dark-variant);
+}
+
+.file-extension i {
+	font-size: 1.25rem;
+	color: var(--color-dark-variant);
+}
+
+.resource-type {
+	border-bottom: 1px solid var(--color-light);
+}
+
+.resource-type:last-child {
+	border-bottom: none;
+}
+
+.resource-type-title h3, .resource-type-title > button, .subject-path > button {
+	font-size: 1.45rem;
+	margin: 0;
+	margin-bottom: 0.4rem;
+	padding: 0.5rem 2rem;
+	border-bottom: 1px solid var(--color-light);
+	background: var(--color-tab);
+	transition: 300ms;
+}
+
+.resource-type-title h3 {
+	width: 20rem;
+	border-right: 1px solid var(--color-light);
+	border-radius: 0 0 1rem 0;
+}
+
+.resource-type-title > button {
+	width: fit-content;
+	border-left: 1px solid var(--color-light);
+	border-radius: 0 0 0 1rem;
+}
+
+.subject-path > button {
+	border: 1px solid var(--color-light);
+	border-radius: 0.5rem 0 0 0.5rem;
+	height: calc(3.7rem - 2px);
+	line-height: 3.7rem;
+	padding: 0 2rem;
+}
+
+.popup-dialog p {
+	font-size: 1.1rem;
+	margin: 0.4rem 0;
+	color: var(--color-dark);
+}
+
+.popup-dialog .info {
+	font-size: 1rem;
+	color: var(--color-info-dark) !important;
+}
+
+.popup-dialog .dialog-item {
+	margin-bottom: 1rem;
+}
+
+.popup-dialog select {
+	padding: 0.3rem 0 0.3rem 1rem;
+	width: 15rem;
+}
+
+.popup-dialog input {
+	padding: 0.3rem 1rem;
+	width: calc(100% - 2rem);
+	outline: none;
+}
+
+.popup-dialog input[type="file"] {
+	padding-left: 0; 
+}

@@ -6,23 +6,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import ru.darkalive.LightLMS.entities.Subject;
+import ru.darkalive.LightLMS.entities.Task;
+import ru.darkalive.LightLMS.entities.Theme;
 import ru.darkalive.LightLMS.entities.User;
 import ru.darkalive.LightLMS.repos.*;
+
+import java.util.List;
 
 @Controller
 public class ViewSubjectController {
 
     @Autowired
-    private GroupRepository groupRepo;
-    @Autowired
     private UserRepository userRepo;
-    @Autowired
-    private RoleRepository roleRepo;
     @Autowired
     private SubjectRepository subjectRepo;
     @Autowired
-    private LinkUserSubjectRepository linkUserSubjectRepo;
+    private ThemeRepository themeRepo;
+    @Autowired
+    private TaskRepository taskRepo;
 
 
     @GetMapping("/subjects/{subjectId}")
@@ -34,16 +37,29 @@ public class ViewSubjectController {
         Subject subject = subjectRepo.findFirstById(subjectId);
         model.addAttribute("subject", subject);
 
+        List<Theme> themes = themeRepo.findAllBySubjectOrderByPosition(subject);
+        model.addAttribute("themes", themes);
+
+        printMessage("Вызов страницы /subjects/" + subjectId + "\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
+
         return "subject";
     }
 
-    @GetMapping("/example")
-    public String example(Model model) throws Exception {
+    @GetMapping("/subjects/{subjectId}/practice/{taskId}")
+    public String task(Model model, @PathVariable("subjectId") int subjectId, @PathVariable("taskId") int taskId) throws Exception {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
-        return "example";
+        Subject subject = subjectRepo.findFirstById(subjectId);
+        model.addAttribute("subject", subject);
+
+        Task task = taskRepo.findFirstById(taskId);
+        model.addAttribute("task", task);
+
+        printMessage("Вызов страницы /subjects/" + subjectId + "/" + taskId + "\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
+
+        return "subject";
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }

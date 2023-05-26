@@ -1,0 +1,253 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8">
+		<title th:text="'LightLMS - ' + ${subject.getName()} + ' [Редактор]'"></title>
+		<!-- Основные стили -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<!-- Стили страницы конкретной дисциплины -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/subject.css}">
+		<!-- Иконки FontAwesome -->
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/brands.css}">
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- JQuery UI -->
+		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
+		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
+		<!-- Скрипты для страниц дисциплин -->
+		<script type="text/javascript" th:src="@{/scripts/Subjects.js}"></script>
+	</head>
+	<body>
+		<div class="main-container">
+			<aside>
+				<!-- Логотип -->
+				<div class="top">
+					<div class="logo">
+						<img th:src="@{/images/logo.png}">
+						<h2>Lightweight<span class="logo-color">LMS</span></h2>
+					</div>
+				</div>
+				<!-- Боковое меню -->
+				<div class="sidebar">
+					<a href="/" class="active arrow">
+						<i class="fa-solid fa-house"></i>
+						<h3>Дисциплины</h3>
+					</a>
+					<a href="/performance" sec:authorize="hasRole('Студент')">
+						<i class="fa-solid fa-newspaper"></i>
+						<h3>Успеваемость</h3>
+					</a>
+					<a href="/chat">
+						<i class="fa-solid fa-comments"></i>
+						<h3>Чат</h3>
+					</a>
+					<hr>
+					<div id="themes-container">
+						<a th:each="theme : ${themes}" th:href="'#theme' + ${theme.getId()}">
+							<i class="fa-solid fa-book-open"></i>
+							<h3 th:text="${theme.getName()}"></h3>
+						</a>
+					</div>
+					<a th:href="'/subjects/' + ${subject.getId()}" sec:authorize="hasRole('Преподаватель')">
+						<i class="fa-solid fa-circle-left"></i>
+						<h3>Вернуться назад</h3>
+					</a>
+					<a href="/admin" sec:authorize="hasRole('Администратор')">
+						<i class="fa-solid fa-toolbox"></i>
+						<h3>Админ-панель</h3>
+					</a>
+				</div>
+			</aside>
+			<div class="content-container">
+				<div class="title-profile-container">
+					<!-- Заголовок страницы -->
+					<div class="title">
+						<h1 th:text="${subject.getName()} + ' [Редактор]'"></h1>
+					</div>
+					<div class="right">
+						<div class="top">
+							<div class="profile">
+								<!-- ФИО и роль пользователя -->
+								<div class="info">
+									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
+									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
+								</div>
+								<!-- Фотография пользователя на основе роли -->
+								<div class="profile-photo">
+									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
+								</div>
+								<!-- Кнопка выхода из аккаунта -->
+								<form th:action="@{/logout}" class="profile-logout" method="post">
+									<i class="fa-solid fa-right-from-bracket"></i>
+									<input type="submit" value="Выйти из аккаунта"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<main>
+					<div id="main-content" class="main-content">
+						<div class="subject-path">
+							<!-- Фильтры для показа дисциплин -->
+							<ol class="path-container">
+								<li class="path-button">
+									<a th:href="@{'/subjects/' + ${subject.getId()}}" th:text="@{${subject.getName()}}"></a>
+								</li>
+							</ol>
+							<button th:onclick="'openThemeCreateDialog(' + ${subject.getId()} + ')'" type="button">Добавить тему</button>
+							<div id="theme-create-dialog" class="popup-dialog">
+								<div class="dialog-item">
+									<p>Отображаемое название</p>
+									<input id="theme-create-name" type="text">
+								</div>
+							</div>
+						</div>
+						<div th:each="theme : ${themes}" th:id="'theme' + ${theme.getId()}" class="subject-chapter">
+							<div class="chapter-title-editor">
+								<input th:value="${theme.getName()}" th:id="'themeInput' + ${theme.getId()}" type="text">
+								<div class="resource-interactions">
+									<button th:onclick="'updateTheme(' + ${theme.getId()} + ')'" type="button">
+										<i class="fa-solid fa-floppy-disk"></i>
+									</button>
+									<button th:onclick="'deleteElement(' + ${theme.getId()} + ', \'theme\')'" type="button">
+										<i class="fa-solid fa-trash"></i>
+									</button>
+								</div>
+							</div>
+							<div class="chapter-content">
+								<div th:id="'manuals' + ${theme.getId()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Методические указания</h3>
+										<button th:onclick="'openManualCreateDialog(' + ${theme.getId()} + ')'" type="button">Добавить файл</button>
+										<div th:id="'manual-create-dialog-' + ${theme.getId()}" class="popup-dialog">
+											<div class="dialog-item">
+												<p>Отображаемое название</p>
+												<input th:id="'manual-create-name-' + ${theme.getId()}" type="text">
+											</div>
+											<div class="dialog-item">
+												<p>Выберите необходимый файл</p>
+												<input th:id="'manual-create-file-' + ${theme.getId()}" type="file">
+												<p class="info">Word-файлы будут отображаться в интерактивном виде во всплывающем окне.</p>
+												<p class="info">Все остальные типы файлов будут доступны исключительно для скачивания.</p>
+											</div>
+										</div>
+									</div>
+									<div th:each="manual : ${theme.getManualResources()}" class="resource-item editor-animation" th:id="'manual' + ${manual.getId()}">
+										<button th:if="${manual.isDoc()}" type="button">
+											<i class="fa-solid fa-file-word"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+										</button>
+										<button th:if="${manual.isOther()}" type="button">
+											<i class="fa-solid fa-download"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+											<div class="file-extension">
+												<i class="fa-solid fa-file"></i>
+												<h5 th:text="${manual.getFileExtension()}"></h5>
+											</div>
+										</button>
+										<div class="resource-interactions">
+											<button type="button">
+												<i class="fa-solid fa-pen"></i>
+											</button>
+											<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
+												<i class="fa-solid fa-trash"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div th:id="'externals' + ${theme.getId()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Сторонние ресурсы</h3>
+										<button th:onclick="'openExternalCreateDialog(' + ${theme.getId()} + ')'" type="button">Добавить ссылку</button>
+										<div th:id="'external-create-dialog-' + ${theme.getId()}" class="popup-dialog">
+											<div class="dialog-item">
+												<p>Отображаемое название</p>
+												<input th:id="'external-create-name-' + ${theme.getId()}" type="text">
+											</div>
+											<div class="dialog-item">
+												<p>Тип стороннего ресурса</p>
+												<select th:id="'external-create-type-' + ${theme.getId()}">
+													<option value="3">Обычная ссылка</option>
+													<option value="4">YouTube видео</option>
+												</select>
+												<p class="info">Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.</p>
+												<p class="info">YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.</p>
+											</div>
+											<div class="dialog-item">
+												<p>Ссылка на сторонний ресурс</p>
+												<input th:id="'external-create-url-' + ${theme.getId()}" type="text">
+												<p class="info">В случае обычной ссылки нужно указать полный URL-адрес.</p>
+												<p class="info">В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/</p>
+											</div>
+										</div>
+									</div>
+									<div th:each="external : ${theme.getExternalResources()}" class="resource-item editor-animation" th:id="'external' + ${external.getId()}">
+										<button th:if="${external.isYoutube()}" type="button">
+											<i class="fa-brands fa-youtube"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</button>
+										<button th:if="${external.isLink()}" type="button">
+											<i class="fa-solid fa-arrow-up-right-from-square"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</button>
+										<div class="resource-interactions">
+											<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
+												<i class="fa-solid fa-pen"></i>
+												<div th:id="'external-update-dialog-' + ${external.getId()}" class="popup-dialog">
+													<div class="dialog-item">
+														<p>Отображаемое название</p>
+														<input th:id="'external-update-name-' + ${external.getId()}" th:value="${external.getDisplayName()}" type="text">
+													</div>
+													<div class="dialog-item">
+														<p>Тип стороннего ресурса</p>
+														<select th:id="'external-update-type-' + ${external.getId()}">
+															<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
+															<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
+														</select>
+														<p class="info">Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.</p>
+														<p class="info">YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.</p>
+													</div>
+													<div class="dialog-item">
+														<p>Ссылка на сторонний ресурс</p>
+														<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
+														<p class="info">В случае обычной ссылки нужно указать полный URL-адрес.</p>
+														<p class="info">В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/</p>
+													</div>
+												</div>
+											</button>
+											<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
+												<i class="fa-solid fa-trash"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+								<div class="resource-type">
+									<div class="resource-type-title">
+										<h3>Практические работы</h3>
+										<button type="button">Добавить работу</button>
+									</div>
+									<div th:if="${not theme.getTasks().isEmpty()}" th:each="task : ${theme.getTasks()}" class="resource-item editor-animation" th:id="'task' + ${task.getId()}">
+										<button type="button">
+											<i class="fa-solid fa-file-export"></i>
+											<h4 th:text="${task.getDisplayName()}"></h4>
+										</button>
+										<div class="resource-interactions">
+											<button type="button">
+												<i class="fa-solid fa-pen"></i>
+											</button>
+											<button th:onclick="'deleteElement(' + ${task.getId()} + ', \'task\')'" type="button">
+												<i class="fa-solid fa-trash"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		</div>
+	</body>
+</html>

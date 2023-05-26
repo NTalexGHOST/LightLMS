@@ -55,7 +55,7 @@
 
 .subject-item {
     background: var(--color-white);
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     display: grid;
     row-gap: 1rem;
     grid-template-rows: auto auto;
