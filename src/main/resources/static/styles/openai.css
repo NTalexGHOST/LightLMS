@@ -1,5 +1,5 @@
 
-.chat-history, .chat-bot input {
+.chat-history, .img-display, .chat-bot input, .img-bot input {
 	font-size: 14px;
 	background: var(--color-white);
 	transition: 0.4s;
@@ -7,12 +7,23 @@
 	border: 1px solid var(--color-light);
 }
 
-.chat-history {
+.chat-history, .img-display {
     display: flex;
     flex-direction: column;
     overflow-y:scroll;
-    height: 600px;
+    min-height: 600px;
     border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.img-display {
+    overflow: hidden;
+    align-items: center;
+}
+
+.img-display img {
+    width: 600px;
+    height: 600px;
+    padding: 1rem 0;
 }
 
 .message {
@@ -46,7 +57,7 @@
     flex-direction: row-reverse;
 }
 
-.chat-bot input {
+.chat-bot input, .img-bot input {
     height: 30px;
     margin-top: 1rem;
     border-radius: 0.5rem;

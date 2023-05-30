@@ -2,18 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="utf-8">
-		<title>LightLMS - Чат-бот</title>
+		<title>LightLMS - Генерация изображений</title>
 		<!-- Основные стили -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
-		<!-- Стили для чат-бот страницы -->
+		<!-- Стили для страницы генерации изображений -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/openai.css}">
 		<!-- Иконки FontAwesome -->
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
 		<!-- JQuery -->
 		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
-		<!-- Скрипт общения с ботом -->
-		<script type="text/javascript" th:src="@{/scripts/OpenAI.js}"></script>
 		<!-- TippyJS для реализации всплывающих tooltip элементов -->
 		<script src="https://unpkg.com/@popperjs/core@2"></script>
 		<script src="https://unpkg.com/tippy.js@6"></script>
@@ -52,7 +50,7 @@
 				<div class="title-profile-container">
 					<!-- Заголовок страницы -->
 					<div class="title">
-						<h1>Чат-бот</h1>
+						<h1>Генерация изображений</h1>
 					</div>
 					<div class="right">
 						<div class="top">
@@ -86,15 +84,35 @@
 									<a th:href="@{/subjects/1#theme1}">Применение нейронных сетей в сфере мультимедиа</a>
 								</li>
 								<li class="path-button">
-									<a th:href="@{/openai/chat-bot}">Чат-бот с использованием нейронной сети ChatGPT</a>
+									<a th:href="@{/openai/img-bot}">Генерация изображений средствами DALL-E</a>
 								</li>
 							</ol>
 						</div>
-						<div class="chat-bot">
-							<div class="chat-history" id="chat-history">
-
+						<div class="img-bot">
+							<div class="img-display">
+								<img id="generated-img" src="" alt="Введите запрос для изображения...">
 							</div>
-							<input type="text" id="input-chat-message" placeholder="Введите запрос для изображения..." />
+							<input type="text" id="input-img-message" placeholder="Введите запрос для изображения..." />
+							<script type="text/javascript">
+								document.querySelector("#input-img-message").addEventListener("keyup", event => {
+								    if(event.key !== "Enter") return;
+								    var request = $("#input-img-message").val();
+								    $('#input-img-message').val("");
+								    $("info-img").innerText = "";
+								    $.ajax({
+								        type: "GET",
+								        url: "/api/openai/img?request=" + request,
+								        success: function(data) {
+								            $("#generated-img").attr("src", data);
+								        },
+								        error: function() {
+								        	$("#generated-img").attr("src", "");
+								            $("#generated-img").attr("alt", "К сожалению, время ожидания было превышено, попробуйте еще раз");
+								        },
+								        timeout: 60000
+								    });
+								});
+							</script>
 						</div>
 					</div>
 				</main>

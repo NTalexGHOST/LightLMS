@@ -16,11 +16,11 @@ function addTooltipToLastMessage() {
     });
 }
 
-document.querySelector("#input-message").addEventListener("keyup", event => {
+document.querySelector("#input-chat-message").addEventListener("keyup", event => {
     if(event.key !== "Enter") return;
-    var request = $("#input-message").val();
+    var request = $("#input-chat-message").val();
     var chatHistory = document.querySelector('#chat-history');
-    $('#input-message').val("");
+    $('#input-chat-message').val("");
     $("#chat-history").append("<div class='message right'><img src='/images/Студент.png'><p class='can-copied'>" + request + "</p></div>");
     chatHistory.lastChild.scrollIntoView();
     addTooltipToLastMessage();
