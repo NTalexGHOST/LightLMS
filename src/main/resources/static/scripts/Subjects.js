@@ -122,12 +122,18 @@ function openManualCreateDialog(themeId) {
 }
 //	Функция создания методического указания
 function createManual(themeId) {
-	var displayName = $("#manual-create-name-" + themeId).val();
-	var url = $("#manual-create-url-" + themeId).val();
+	var data = new FormData();
+	data.append("themeId", themeId);
+	data.append("displayName", $("#manual-create-name-" + themeId).val());
+	data.append("file", document.getElementById("manual-create-file-" + themeId).files[0]);
 	$.ajax({
 	    type: "POST",
-	    url: "/api/manual?displayName=" + displayName + "&url=" + url + "&typeId=" + type + "&themeId=" + themeId,
-	    success: function(data) {
+	    url: "/api/manual",
+	    data: data,
+	    enctype: 'multipart/form-data',
+	    contentType: false,
+  		processData: false,
+	    success: function(response) {
 	        location.reload();
 	    },
 	    error: function() {

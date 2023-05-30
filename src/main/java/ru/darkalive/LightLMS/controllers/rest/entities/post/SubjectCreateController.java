@@ -1,11 +1,24 @@
 package ru.darkalive.LightLMS.controllers.rest.entities.post;
 
+import com.google.common.collect.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import ru.darkalive.LightLMS.entities.*;
 import ru.darkalive.LightLMS.repos.*;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class SubjectCreateController {
@@ -51,13 +64,39 @@ public class SubjectCreateController {
         printMessage("Отработал POST-запрос, создана тема - " + theme.getName());
     }
 
-    @PostMapping(value = "/api/manual", params = { "themeId", "displayName", "file" })
+    @PostMapping(value = "/api/manual")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void createManualFile(@RequestParam int themeId, @RequestParam String displayName, @RequestParam MultipartFile file) {
+    public @ResponseBody void createManualFile(@RequestParam String displayName, @RequestParam int themeId, @RequestParam MultipartFile file) {
 
         ManualResource manual = new ManualResource();
 
-        
+        Theme theme = themeRepo.findFirstById(themeId);
+        int subjectId = theme.getSubject().getId();
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        List<String> docExtensions = Arrays.asList("pdf", "docx", "doc");
+        String fileExtension = Streams.findLast(Arrays.stream(fileName.split("\\."))).get();
+
+        Path path;
+        if (docExtensions.contains(fileExtension)) {
+            path = Paths.get("./subjects/" + subjectId + "/docs/" + fileName);
+            manual.setType(resourceTypeRepo.findFirstById(1));
+        }
+        else {
+            path = Paths.get("./subjects/" + subjectId + "/other/" + fileName);
+            manual.setType(resourceTypeRepo.findFirstById(2));
+        }
+
+        try {
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (ResponseStatusException | IOException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        manual.setDisplayName(displayName);
+        manual.setFileName(fileName);
+        manual.setPosition(manualResourceRepo.lastPositionByTheme(themeId));
+        manual.setTheme(theme);
 
         manualResourceRepo.save(manual);
 
