@@ -66,7 +66,7 @@ public class SubjectCreateController {
 
     @PostMapping(value = "/api/manual")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void createManualFile(@RequestParam String displayName, @RequestParam int themeId, @RequestParam MultipartFile file) {
+    public @ResponseBody void createManual(@RequestParam String displayName, @RequestParam int themeId, @RequestParam MultipartFile file) {
 
         ManualResource manual = new ManualResource();
 

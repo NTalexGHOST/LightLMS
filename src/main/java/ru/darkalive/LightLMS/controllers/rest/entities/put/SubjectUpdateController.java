@@ -49,6 +49,19 @@ public class SubjectUpdateController {
         printMessage("Отработал PUT-запрос, обновлена тема - " + theme.getName());
     }
 
+    @PutMapping(value = "/api/theme/position")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void updateThemePosition(@RequestParam int[] positions) {
+
+        for (int i = 0; i < positions.length; i++) {
+            Theme theme = themeRepo.findFirstById(positions[i]);
+            theme.setPosition(i + 1);
+            themeRepo.save(theme);
+        }
+
+        printMessage("Отработал PUT-запрос, обновлены позиции тем");
+    }
+
     @PutMapping(value = "/api/manual", params = "id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateManualFile(@PathVariable int id) {
@@ -62,6 +75,19 @@ public class SubjectUpdateController {
         printMessage("Отработал PUT-запрос, обновлен Word-файл - " + manual.getDisplayName());
     }
 
+    @PutMapping(value = "/api/manual/position")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void updateManualPosition(@RequestParam int[] positions) {
+
+        for (int i = 0; i < positions.length; i++) {
+            ManualResource manualResource = manualResourceRepo.findFirstById(positions[i]);
+            manualResource.setPosition(i + 1);
+            manualResourceRepo.save(manualResource);
+        }
+
+        printMessage("Отработал PUT-запрос, обновлены позиции методических указаний");
+    }
+
     @PutMapping(value = "/api/external", params = { "id", "displayName", "url", "typeId" })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateExternal(@RequestParam int id, @RequestParam String displayName, @RequestParam String url, @RequestParam int typeId) {
@@ -73,6 +99,19 @@ public class SubjectUpdateController {
         externalResourceRepo.save(external);
 
         printMessage("Отработал PUT-запрос, обновлена сторонняя ссылка - " + external.getDisplayName());
+    }
+
+    @PutMapping(value = "/api/external/position")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void updateExternalPosition(@RequestParam int[] positions) {
+
+        for (int i = 0; i < positions.length; i++) {
+            ExternalResource externalResource = externalResourceRepo.findFirstById(positions[i]);
+            externalResource.setPosition(i + 1);
+            externalResourceRepo.save(externalResource);
+        }
+
+        printMessage("Отработал PUT-запрос, обновлены позиции сторонних ссылок");
     }
 
     @PutMapping(value = "/api/task", params = "id")

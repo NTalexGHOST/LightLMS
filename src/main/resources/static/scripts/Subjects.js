@@ -271,3 +271,58 @@ jQuery(function($) {
 		}
 	});
 });
+
+
+//	Функция реализации перетаскивания элементов
+$(document).ready(function() {
+	$(".resource-items").sortable({
+		items: ".resource-item",
+		handle: ".movable-item",
+		cursor: "move",
+		axis: "y",
+		stop: function(event, ui) {
+			var items = ui.item.parent().children();
+			var elementType = ui.item.attr("id").split('-')[0];
+			var positions = [];
+			for (item of items) {
+				positions.push(parseInt(item.id.split('-')[1]));
+			}
+			var data = new FormData();
+			data.append("positions", positions);
+			$.ajax({
+			    type: "PUT",
+			    url: "/api/" + elementType + "/position",
+			    data: data,
+			    enctype: 'multipart/form-data',
+			    contentType: false,
+		  		processData: false,
+			    timeout: 10000
+			});
+		}
+	});
+	$(".subject-chapters").sortable({
+		items: ".subject-chapter",
+		handle: ".movable-chapter",
+		cursor: "move",
+		axis: "y",
+		tolerance: "pointer",
+		stop: function(event, ui) {
+			var items = ui.item.parent().children();
+			var positions = [];
+			for (item of items) {
+				positions.push(parseInt(item.id.split('-')[1]));
+			}
+			var data = new FormData();
+			data.append("positions", positions);
+			$.ajax({
+			    type: "PUT",
+			    url: "/api/theme/position",
+			    data: data,
+			    enctype: 'multipart/form-data',
+			    contentType: false,
+		  		processData: false,
+			    timeout: 10000
+			});
+		}
+	});
+});
