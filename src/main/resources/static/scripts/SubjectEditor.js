@@ -66,21 +66,24 @@ function openManualCreateDialog(themeId) {
 		buttons: [{
 			text: "Создать",
 			click: function() {
-				var data = new FormData();
-				data.append("themeId", themeId);
-				data.append("displayName", $("#manual-create-name-" + themeId).val());
-				data.append("file", document.getElementById("manual-create-file-" + themeId).files[0]);
-				$.ajax({
-				    type: "POST",
-				    url: "/api/manual",
-				    data: data,
-				    enctype: 'multipart/form-data',
-				    contentType: false,
-			  		processData: false,
-				    success: function(response) { location.reload(); },
-				    error: function() { alert("Произошла ошибка при создании"); },
-				    timeout: 10000
-				});
+				if ($('#manual-create-file-' + themeId).val()) {
+					var data = new FormData();
+					var file = document.getElementById("manual-create-file-" + themeId).files[0];
+					data.append("themeId", themeId);
+					data.append("displayName", $("#manual-create-name-" + themeId).val());
+					data.append("file", file);
+					$.ajax({
+					    type: "POST",
+					    url: "/api/manual",
+					    data: data,
+					    enctype: 'multipart/form-data',
+					    contentType: false,
+				  		processData: false,
+					    success: function(response) { location.reload(); },
+					    error: function() { alert("Произошла ошибка при создании"); },
+					    timeout: 10000
+					});
+				} else { alert("Вы не выбрали файл"); }
 			}
 		}]
 	});
@@ -98,16 +101,34 @@ function openManualUpdateDialog(id) {
 		buttons: [{
 			text: "Изменить",
 			click: function() {
-				var displayName = $("#manual-update-name-" + id).val();
-				var url = $("#manual-update-url-" + id).val();
-				var type = $("#manual-update-type-" + id).val();
-				$.ajax({
-				    type: "PUT",
-				    url: "/api/manual?id=" + id + "&displayName=" + displayName + "&url=" + url + "&typeId=" + type,
-				    success: function(data) { location.reload(); },
-				    error: function() { alert("Произошла ошибка при изменении"); },
-				    timeout: 10000
-				});
+				
+				if ($('#manual-update-file-' + id).val()) { 
+					var data = new FormData();
+					var file = document.getElementById("manual-update-file-" + id).files[0];
+					data.append("id", id);
+					data.append("displayName", $("#manual-update-name-" + id).val());
+					data.append("file", file);
+					$.ajax({
+						type: "PUT",
+						url: "/api/manual/" + id,
+						data: data,
+						enctype: 'multipart/form-data',
+						contentType: false,
+					  	processData: false,
+						success: function(response) { location.reload(); },
+						error: function() { alert("Произошла ошибка при изменении"); },
+						timeout: 10000
+					});
+				} else {
+					var displayName = $("#manual-update-name-" + id).val();
+					$.ajax({
+					    type: "PUT",
+					    url: "/api/manual?id=" + id + "&displayName=" + displayName,
+					    success: function(data) { },
+					    error: function() { alert("Произошла ошибка при изменении"); },
+					    timeout: 10000
+					});
+				}
 			}
 		}]
 	});

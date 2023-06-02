@@ -165,8 +165,27 @@
 													</button>
 												</div>
 												<div class="resource-interactions">
-													<button type="button">
+													<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
+														<div th:id="'manual-update-dialog-' + ${manual.getId()}" class="popup-dialog">
+															<div class="dialog-item">
+																<p>Отображаемое название</p>
+																<input th:value="${manual.getDisplayName()}" th:id="'manual-update-name-' + ${manual.getId()}" type="text">
+															</div>
+															<div class="dialog-item">
+																<p>Выберите необходимый файл</p>
+																<p class="info">
+																	Если файл не нуждается в изменении, оставьте поле пустым.
+																</p>
+																<input th:id="'manual-update-file-' + ${manual.getId()}" type="file">
+																<p class="info">
+																	Файлы разделяются системой на 2 группы: Word-подобные(.doc, .docx, .pdf) и все остальные. Первые будут открываться прямо на сайте во всплывающем окне, когда как другие будут доступны исключительно для скачивания.
+																</p>
+																<p class="info">
+																	Хранение файлов реализовано в двух репозиториях, соответствующие конкретной группе файлов, в каждой дисциплине отдельно. Таким образом, при закачке нового файла с таким же названием как у уже существующего, произойдет замена.
+																</p>
+															</div>
+														</div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
 														<i class="fa-solid fa-trash"></i>

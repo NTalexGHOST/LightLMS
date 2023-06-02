@@ -64,7 +64,7 @@
 }
 
 .chapter-description {
-	padding: 0 1.25rem;
+	padding: 0 1.25rem 0.25rem 1.25rem;
 }
 
 .resource-interactions button, .subject-path button, .resource-type-title button, .resource-info button, .resource-item button {
