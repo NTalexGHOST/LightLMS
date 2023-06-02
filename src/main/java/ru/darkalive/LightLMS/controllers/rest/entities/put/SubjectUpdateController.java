@@ -62,6 +62,17 @@ public class SubjectUpdateController {
         printMessage("Отработал PUT-запрос, обновлены позиции тем");
     }
 
+    @PutMapping(value = "/api/theme/{themeId}/description")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void updateThemeDescription(@PathVariable int themeId, @RequestParam String description) {
+
+        Theme theme = themeRepo.findFirstById(themeId);
+        theme.setDescription(description);
+        themeRepo.save(theme);
+
+        printMessage("Отработал PUT-запрос, обновлено описание темы - " + themeId);
+    }
+
     @PutMapping(value = "/api/manual", params = "id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateManualFile(@PathVariable int id) {

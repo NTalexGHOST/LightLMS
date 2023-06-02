@@ -26,5 +26,16 @@ public class ViewAIController {
         return "chat-bot";
     }
 
+    @GetMapping("/openai/img-bot")
+    public String imgBot(Model model) throws Exception {
+
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("authorizedUser", authorizedUser);
+
+        printMessage("Вызов страницы бота генерации изображений - " + authorizedUser.getFullName());
+
+        return "img-bot";
+    }
+
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }
 }

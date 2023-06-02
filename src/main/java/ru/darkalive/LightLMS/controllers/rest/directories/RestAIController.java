@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.OpenAiApi;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.image.Image;
 import com.theokanning.openai.service.OpenAiService;
 import okhttp3.OkHttpClient;
 import org.aspectj.apache.bcel.classfile.Module;
@@ -64,6 +66,19 @@ public class RestAIController {
                 .build();
 
         return service.createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent();
+    }
+
+    @GetMapping(value = "/api/openai/img", params = "request")
+    @ResponseBody
+    public String getImageUrlFromBot(@RequestParam String request) {
+
+        CreateImageRequest imageRequest = CreateImageRequest.builder()
+                .prompt(request)
+                .n(1)
+                .size("1024x1024")
+                .build();
+
+        return service.createImage(imageRequest).getData().get(0).getUrl();
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - OpenAI]\t" + message); }

@@ -11,7 +11,10 @@ import ru.darkalive.LightLMS.entities.Theme;
 import ru.darkalive.LightLMS.entities.User;
 import ru.darkalive.LightLMS.repos.*;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 @Controller
 public class ManagementController {
@@ -35,9 +38,23 @@ public class ManagementController {
         List<Theme> themes = themeRepo.findAllBySubjectOrderByPosition(subject);
         model.addAttribute("themes", themes);
 
+        model.addAttribute("tinymceKey", getTinymceKey());
+
         printMessage("Вызов страницы /subjects/" + subjectId + "/editor\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
 
         return "subject-editor";
+    }
+
+    private String getTinymceKey() {
+
+        String key = "";
+        try {
+            Scanner scanner = new Scanner(Paths.get("./tinymce_key.txt"));
+            key = scanner.next();
+            scanner.close();
+        } catch (IOException exception) { printMessage("Не удалось прочитать файл с ключом TinyMCE"); }
+
+        return key;
     }
 
     @GetMapping("/journal")

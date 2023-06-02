@@ -17,7 +17,9 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
 		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
 		<!-- Скрипты для страниц дисциплин -->
-		<script type="text/javascript" th:src="@{/scripts/Subjects.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/SubjectEditor.js}"></script>
+		<!-- Текстовый редактор -->
+		<script th:src="'https://cdn.tiny.cloud/1/' + ${tinymceKey} + '/tinymce/6/tinymce.min.js'" referrerpolicy="origin"></script>
 	</head>
 	<body>
 		<div class="main-container">
@@ -38,10 +40,6 @@
 					<a href="/performance" sec:authorize="hasRole('Студент')">
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Успеваемость</h3>
-					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
 					</a>
 					<hr>
 					<div id="themes-container">
@@ -121,6 +119,11 @@
 									</div>
 								</div>
 								<div class="chapter-content">
+									<div class="resource-type">
+										<textarea th:id="'description-' + ${theme.getId()}" th:text="${theme.getDescription()}">
+											
+										</textarea>
+									</div>
 									<div th:id="'manuals-' + ${theme.getId()}" class="resource-type">
 										<div class="resource-type-title">
 											<h3>Методические указания</h3>
@@ -187,14 +190,22 @@
 														<option value="3">Обычная ссылка</option>
 														<option value="4">YouTube видео</option>
 													</select>
-													<p class="info">Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.</p>
-													<p class="info">YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.</p>
+													<p class="info">
+														Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+													</p>
+													<p class="info">
+														YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+													</p>
 												</div>
 												<div class="dialog-item">
 													<p>Ссылка на сторонний ресурс</p>
 													<input th:id="'external-create-url-' + ${theme.getId()}" type="text">
-													<p class="info">В случае обычной ссылки нужно указать полный URL-адрес.</p>
-													<p class="info">В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/</p>
+													<p class="info">
+														В случае обычной ссылки нужно указать полный URL-адрес.
+													</p>
+													<p class="info">
+														В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+													</p>
 												</div>
 											</div>
 										</div>
@@ -227,14 +238,22 @@
 																	<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
 																	<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
 																</select>
-																<p class="info">Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.</p>
-																<p class="info">YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.</p>
+																<p class="info">
+																	Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+																</p>
+																<p class="info">
+																	YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+																</p>
 															</div>
 															<div class="dialog-item">
 																<p>Ссылка на сторонний ресурс</p>
 																<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
-																<p class="info">В случае обычной ссылки нужно указать полный URL-адрес.</p>
-																<p class="info">В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/</p>
+																<p class="info">
+																	В случае обычной ссылки нужно указать полный URL-адрес.
+																</p>
+																<p class="info">
+																	В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+																</p>
 															</div>
 														</div>
 													</button>

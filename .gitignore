@@ -12,6 +12,7 @@ HELP.md
 !users/
 !subjects/
 openai_key.txt
+tinymce_key.txt
 basic_accounts.txt
 LightLMS.trace.db
 LightLMS.mv.db

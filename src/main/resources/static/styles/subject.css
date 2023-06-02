@@ -63,6 +63,10 @@
 	margin: 0;
 }
 
+.chapter-description {
+	padding: 0 1.25rem;
+}
+
 .resource-interactions button, .subject-path button, .resource-type-title button, .resource-info button, .resource-item button {
 	background: none;
 	border: none;
@@ -148,6 +152,11 @@
 
 .resource-type:last-child {
 	border-bottom: none;
+}
+
+.resource-type .tox-tinymce {
+	border: none;
+	border-radius: 0;
 }
 
 .resource-type-title h3, .resource-type-title > button, .subject-path > button {

@@ -48,5 +48,13 @@ public class Theme {
     public List<Task> getTasks() { return tasks; }
     public void setTasks(List<Task> tasks) { this.tasks = tasks; }
 
+    @Column(name = "description")
+    private String description;
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public boolean isDescriptionExist() {
+        return ((description != null) && (!description.equals("")));
+    }
+
     public Theme() { }
 }

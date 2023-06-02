@@ -11,14 +11,14 @@
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/brands.css}">
-		<!-- JQuery UI -->
-		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
 		<!-- JQuery -->
 		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
 		<!-- JQuery UI -->
+		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
+		<!-- JQuery UI -->
 		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
 		<!-- Скрипты для страниц дисциплин -->
-		<script type="text/javascript" th:src="@{/scripts/Subjects.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/Subject.js}"></script>
 	</head>
 	<body>
 		<div class="main-container">
@@ -103,6 +103,11 @@
 								<h2 th:text="${theme.getName()}"></h2>
 							</div>
 							<div class="chapter-content">
+								<div th:if="${theme.isDescriptionExist()}" class="resource-type">
+									<div th:utext="${theme.getDescription()}" class="chapter-description">
+										
+									</div>
+								</div>
 								<div th:if="${not theme.getManualResources().isEmpty()}" class="resource-type">
 									<div class="resource-type-title">
 										<h3>Методические указания</h3>
