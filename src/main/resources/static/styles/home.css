@@ -18,6 +18,7 @@
     border: 1px solid var(--color-light);
     cursor: pointer;
     transition: 300ms;
+    outline: none;
 }
 
 .filter-container button:hover {
@@ -31,13 +32,6 @@
     background-color: var(--color-light);
     color: var(--color-primary);
     border: 1px solid var(--color-dark-variant)
-}
-
-.filter-container button.active:hover {
-    color: var(--color-dark);
-    background: var(--color-tab);
-    border: 1px solid var(--color-light);
-    transition: 300ms;
 }
 
 
@@ -90,7 +84,7 @@
     align-items: center;
 }
 
-.subject-course {
+.subject-course, .subject-teacher {
     display: flex;
     flex-direction: column;
     align-items: center;

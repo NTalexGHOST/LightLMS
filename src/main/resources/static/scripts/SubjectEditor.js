@@ -5,7 +5,7 @@ function deleteElement(id, elementType) {
 	    $.ajax({
 	        type: "DELETE",
 	        url: "/api/" + elementType + "?id=" + id,
-	        success: function(data) { $("#" + elementType + id).remove(); },
+	        success: function(data) { location.reload(); },
 	        error: function() { alert("Произошла ошибка при удалении"); },
 	        timeout: 10000
 	    });
@@ -52,9 +52,23 @@ function updateTheme(id) {
 }
 
 
+//	Экзамен
+//	Функция изменения экзамена по его id
+function updateExam(id) {
+	var newName = $("#examInput").val();
+	$.ajax({
+	    type: "PUT",
+	    url: "/api/exam?id=" + id + "&name=" + newName,
+	    success: function(data) { },
+	    error: function() { alert("Произошла ошибка при изменении"); },
+	    timeout: 10000
+	});
+}
+
+
 //	Методические указания
-//	Функция создания методического указания
-function openManualCreateDialog(themeId) {
+//	Функция создания методического указания для темы
+function openManualCreateDialog(subjectId, themeId) {
 	$('#manual-create-dialog-' + themeId).dialog({
 		draggable: false,
 		resizable: false,
@@ -69,8 +83,45 @@ function openManualCreateDialog(themeId) {
 				if ($('#manual-create-file-' + themeId).val()) {
 					var data = new FormData();
 					var file = document.getElementById("manual-create-file-" + themeId).files[0];
-					data.append("themeId", themeId);
+					data.append("subjectId", subjectId);
 					data.append("displayName", $("#manual-create-name-" + themeId).val());
+					data.append("themeId", themeId);
+					data.append("file", file);
+					$.ajax({
+					    type: "POST",
+					    url: "/api/manual",
+					    data: data,
+					    enctype: 'multipart/form-data',
+					    contentType: false,
+				  		processData: false,
+					    success: function(response) { location.reload(); },
+					    error: function() { alert("Произошла ошибка при создании"); },
+					    timeout: 10000
+					});
+				} else { alert("Вы не выбрали файл"); }
+			}
+		}]
+	});
+}
+//	Функция создания методического указания для экзамена
+function openExamManualCreateDialog(subjectId, examId) {
+	$('#exam-manual-create-dialog').dialog({
+		draggable: false,
+		resizable: false,
+		modal: true,
+		width: "auto",
+		show: { effect: "fade", duration: 600 },
+		hide: { effect: "fade", duration: 500 },
+		position: { my: "center", at: "center", of: window },
+		buttons: [{
+			text: "Создать",
+			click: function() {
+				if ($('#exam-manual-create-file').val()) {
+					var data = new FormData();
+					var file = document.getElementById("exam-manual-create-file").files[0];
+					data.append("subjectId", subjectId);
+					data.append("displayName", $("#exam-manual-create-name").val());
+					data.append("examId", examId);
 					data.append("file", file);
 					$.ajax({
 					    type: "POST",
@@ -89,7 +140,7 @@ function openManualCreateDialog(themeId) {
 	});
 }
 //	Функция изменения методического указания
-function openManualUpdateDialog(id) {
+function openManualUpdateDialog(id, subjectId) {
 	$('#manual-update-dialog-' + id).dialog({
 		draggable: false,
 		resizable: false,
@@ -101,11 +152,11 @@ function openManualUpdateDialog(id) {
 		buttons: [{
 			text: "Изменить",
 			click: function() {
-				
 				if ($('#manual-update-file-' + id).val()) { 
 					var data = new FormData();
 					var file = document.getElementById("manual-update-file-" + id).files[0];
 					data.append("id", id);
+					data.append("subjectId", subjectId)
 					data.append("displayName", $("#manual-update-name-" + id).val());
 					data.append("file", file);
 					$.ajax({
@@ -136,7 +187,7 @@ function openManualUpdateDialog(id) {
 
 
 //	Сторонние ресурсы
-//	Функция создания стороннего ресурса
+//	Функция создания стороннего ресурса для темы
 function openExternalCreateDialog(themeId) {
 	$('#external-create-dialog-' + themeId).dialog({
 		draggable: false,
@@ -149,12 +200,51 @@ function openExternalCreateDialog(themeId) {
 		buttons: [{
 			text: "Создать",
 			click: function() {
-				var displayName = $("#external-create-name-" + themeId).val();
-				var url = $("#external-create-url-" + themeId).val();
-				var type = $("#external-create-type-" + themeId).val();
+				var data = new FormData();
+				data.append("displayName", $("#external-create-name-" + themeId).val());
+				data.append("url", $("#external-create-url-" + themeId).val());
+				data.append("typeId", $("#external-create-type-" + themeId).val());
+				data.append("themeId", themeId);
 				$.ajax({
 				    type: "POST",
-				    url: "/api/external?displayName=" + displayName + "&url=" + url + "&typeId=" + type + "&themeId=" + themeId,
+				    url: "/api/external",
+				    data: data,
+					enctype: 'multipart/form-data',
+					contentType: false,
+					processData: false,
+				    success: function(data) { location.reload(); },
+				    error: function() { alert("Произошла ошибка при создании"); },
+				    timeout: 10000
+				});
+			}
+		}]
+	});
+}
+//	Функция создания стороннего ресурса для экзамена
+function openExamExternalCreateDialog(examId) {
+	$('#exam-external-create-dialog').dialog({
+		draggable: false,
+		resizable: false,
+		modal: true,
+		width: "auto",
+		show: { effect: "fade", duration: 600 },
+		hide: { effect: "fade", duration: 500 },
+		position: { my: "center", at: "center", of: window },
+		buttons: [{
+			text: "Создать",
+			click: function() {
+				var data = new FormData();
+				data.append("displayName", $("#exam-external-create-name").val());
+				data.append("url", $("#exam-external-create-url-").val());
+				data.append("typeId", $("#exam-external-create-type-").val());
+				data.append("examId", examId);
+				$.ajax({
+				    type: "POST",
+				    url: "/api/external",
+				    data: data,
+					enctype: 'multipart/form-data',
+					contentType: false,
+					processData: false,
 				    success: function(data) { location.reload(); },
 				    error: function() { alert("Произошла ошибка при создании"); },
 				    timeout: 10000
@@ -186,6 +276,85 @@ function openExternalUpdateDialog(id) {
 					error: function() { alert("Произошла ошибка при изменении данных"); },
 					timeout: 10000
 				});
+			}
+		}]
+	});
+}
+
+
+//	Практические работы
+//	Функция создания практической работы для темы
+function openPracticeCreateDialog(themeId) {
+	$('#practice-create-dialog-' + themeId).dialog({
+		draggable: false,
+		resizable: false,
+		modal: true,
+		width: "auto",
+		show: { effect: "fade", duration: 600 },
+		hide: { effect: "fade", duration: 500 },
+		position: { my: "center", at: "center", of: window },
+		buttons: [{
+			text: "Создать",
+			click: function() {
+				if ($('#practice-create-opening-' + themeId).val() && $('#practice-create-closing-' + themeId).val()) {
+					var data = new FormData();
+					data.append("displayName", $("#practice-create-name-" + themeId).val());
+					data.append("openingDate", $("#practice-create-opening-" + themeId).val());
+					data.append("closingDate", $("#practice-create-closing-" + themeId).val());
+					var typeId = $("#practice-create-type-" + themeId).val();
+					if (typeId == 5 || (typeId == 6 && $("#practice-create-duration-" + themeId).val())) {
+						data.append("duration", $("#practice-create-duration-" + themeId).val());
+						data.append("typeId", typeId);
+						data.append("themeId", themeId);
+						$.ajax({
+						    type: "POST",
+						    url: "/api/manual",
+						    data: data,
+						    enctype: 'multipart/form-data',
+						    contentType: false,
+					  		processData: false,
+						    success: function(response) { location.reload(); },
+						    error: function() { alert("Произошла ошибка при создании"); },
+						    timeout: 10000
+						});
+					} else { alert("Вы выбрали тест, но не указали его продолжительность"); }
+				} else { alert("Вы не выбрали время открытия или закрытия доступа к практической работе"); }
+			}
+		}]
+	});
+}
+//	Функция создания практической работы для экзамена
+function openExamPracticeCreateDialog(examId) {
+	$('#exam-practice-create-dialog').dialog({
+		draggable: false,
+		resizable: false,
+		modal: true,
+		width: "auto",
+		show: { effect: "fade", duration: 600 },
+		hide: { effect: "fade", duration: 500 },
+		position: { my: "center", at: "center", of: window },
+		buttons: [{
+			text: "Создать",
+			click: function() {
+				if ($('#exam-practice-create-opening').val() && $('#exam-practice-create-closing').val()) {
+					var data = new FormData();
+					var file = document.getElementById("manual-create-file-" + themeId).files[0];
+					data.append("subjectId", subjectId);
+					data.append("displayName", $("#manual-create-name-" + themeId).val());
+					data.append("themeId", themeId);
+					data.append("file", file);
+					$.ajax({
+					    type: "POST",
+					    url: "/api/manual",
+					    data: data,
+					    enctype: 'multipart/form-data',
+					    contentType: false,
+				  		processData: false,
+					    success: function(response) { location.reload(); },
+					    error: function() { alert("Произошла ошибка при создании"); },
+					    timeout: 10000
+					});
+				} else { alert("Вы не выбрали время открытия или закрытия доступа к практической работе"); }
 			}
 		}]
 	});
@@ -231,6 +400,7 @@ $(document).ready(function() {
 	$(".subject-chapters").sortable({
 		items: ".subject-chapter",
 		handle: ".movable-chapter",
+		cancel: ".disabled",
 		cursor: "move",
 		axis: "y",
 		tolerance: "pointer",
@@ -256,8 +426,7 @@ $(document).ready(function() {
 	    min_height: 500, 
 	    plugins: 'link lists media image emoticons table',
 	    toolbar1: 'customSaveButton',
-	    toolbar2: 'undo redo | outdent indent | styles fontsize | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor emoticons | link image media',
-	    toolbar3: 'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+	    toolbar2: 'undo redo | outdent indent | styles fontsize | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist table | forecolor backcolor emoticons | link image media',
 	    toolbar_mode: 'wrap',
 	    menubar: false,
 	    language_url: '/libs/tinymce/langs/ru.js',
@@ -268,12 +437,14 @@ $(document).ready(function() {
 		      	icon: 'save',
 		      	onAction: function() { 
 		    		var description = editor.getContent();
-		    		var themeId = editor.id.split('-')[1];
+		    		var elementId = editor.id.split('-');
+		    		var elementType = elementId[1];
+		    		var id = elementId[2];
 		    		var data = new FormData();
 					data.append("description", description);
 					$.ajax({
 					    type: "PUT",
-					    url: "/api/theme/" + themeId + "/description",
+					    url: "/api/" + elementType + "/" + id + "/description",
 					    data: data,
 					    enctype: 'multipart/form-data',
 					    contentType: false,
@@ -283,5 +454,11 @@ $(document).ready(function() {
 		    	}
 		    });
 		}    
+	});
+	$(".datetimepicker").datetimepicker({
+
+	});
+	$(".timepicker").timepicker({
+
 	});
 });

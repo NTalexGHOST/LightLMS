@@ -21,7 +21,7 @@ public class ViewAIController {
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
-        printMessage("Вызов страницы чат-бота - " + authorizedUser.getFullName());
+        printMessage("Вызов страницы чат-бота | " + authorizedUser.getFullName());
 
         return "chat-bot";
     }
@@ -32,7 +32,7 @@ public class ViewAIController {
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
-        printMessage("Вызов страницы бота генерации изображений - " + authorizedUser.getFullName());
+        printMessage("Вызов страницы бота генерации изображений | " + authorizedUser.getFullName());
 
         return "img-bot";
     }

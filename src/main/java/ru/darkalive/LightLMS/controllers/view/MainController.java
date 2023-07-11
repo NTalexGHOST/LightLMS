@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.darkalive.LightLMS.entities.LinkUserSubject;
 import ru.darkalive.LightLMS.entities.User;
 import ru.darkalive.LightLMS.repos.*;
 
@@ -44,10 +45,8 @@ public class MainController {
         model.addAttribute("authorizedUser", authorizedUser);
         printMessage("Вызов / - " + authorizedUser.getFullName());
 
-        List subjects;
-        if (authorizedUser.getRole().getName() == "Студент") subjects = linkUserSubjectRepo.findAllByUser(authorizedUser);
-        else subjects = subjectRepo.findAllByTeacher(authorizedUser);
-        model.addAttribute("subjects", subjects);
+        List<LinkUserSubject> subjectLinks = linkUserSubjectRepo.findAllByUser(authorizedUser);
+        model.addAttribute("links", subjectLinks);
 
         return "home";
     }

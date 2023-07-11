@@ -16,7 +16,7 @@ function addTooltipToLastMessage() {
     });
 }
 
-document.querySelector("#input-chat-message").addEventListener("keyup", event => {
+function sendRequestToChatBot() {
     if(event.key !== "Enter") return;
     var request = $("#input-chat-message").val();
     var chatHistory = document.querySelector('#chat-history');
@@ -41,4 +41,4 @@ document.querySelector("#input-chat-message").addEventListener("keyup", event =>
         },
         timeout: 60000
     });
-});
+}

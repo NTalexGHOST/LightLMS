@@ -29,17 +29,13 @@
 					</a>
 					<a href="/performance" sec:authorize="hasRole('Студент')">
 						<i class="fa-solid fa-newspaper"></i>
-						<h3>Успеваемость</h3>
+						<h3>Общая успеваемость</h3>
 					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
+					<a href="/subjects/editor" sec:authorize="hasRole('Преподаватель')" class="down">
+						<i class="fa-solid fa-pen-to-square"></i>
+						<h3>Редактор</h3>
 					</a>
-					<a href="/journal" sec:authorize="hasRole('Преподаватель')">
-						<i class="fa-solid fa-newspaper"></i>
-						<h3>Журнал</h3>
-					</a>
-					<a href="/admin" sec:authorize="hasRole('Администратор')">
+					<a href="/admin" sec:authorize="hasRole('Администратор')" class="down">
 						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
 					</a>
@@ -88,39 +84,22 @@
 							<button id="passed-subjects" onclick="activeButton(event)">Пройденные</button>
 						</div>
 						<!-- Вывод списка доступных дисциплин -->
-						<div class="subject-container" sec:authorize="hasRole('Студент')">
-							<div class="subject-item" th:each="subject : ${subjects}">
-								<h2 th:text="${subject.getSubject().getName()}"></h2>
+						<div class="subject-container">
+							<div class="subject-item" th:each="link : ${links}">
+								<h2 th:text="${link.getSubject().getName()}"></h2>
 								<div class="subject-info">
-									<img th:src="@{'/logo/' + ${subject.getSubject().getId()} + '/logo.jpg'}">
-									<p th:text="${subject.getSubject().getDescription()}"></p>
+									<img th:src="@{'/logo/' + ${link.getSubject().getId()} + '/' + ${link.getSubject().getLogoFileName()}}">
+									<p th:text="${link.getSubject().getDescription()}"></p>
 								</div>
 								<div class="subject-learn">
-									<p th:text="${subject.getSubject().getEducationType().getName()} + ''"></p>
 									<div class="subject-course">
-										<p th:text="${subject.getSubject().getCourse()} + ' курс'"></p>
-										<p th:text="${subject.getSubject().getSemester()} + ' семестр'"></p>
+										<p th:text="${link.getSubject().getCourse()} + ' курс'"></p>
+										<p th:text="${link.getSubject().getSemester()} + ' семестр'"></p>
 									</div>
-									<p th:text="${subject.getSubject().getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getSubject().getId()}}" class="subject-button">Перейти к изучению</a>
-								</div>
-							</div>
-						</div>
-						<div class="subject-container" sec:authorize="hasRole('Преподаватель')">
-							<div class="subject-item" th:each="subject : ${subjects}">
-								<h2 th:text="${subject.getName()}"></h2>
-								<div class="subject-info">
-									<img th:src="@{'/logo/' + ${subject.getId()} + '/logo.jpg'}">
-									<p th:text="${subject.getDescription()}"></p>
-								</div>
-								<div class="subject-learn">
-									<p th:text="${subject.getEducationType().getName()} + ''"></p>
-									<div class="subject-course">
-										<p th:text="${subject.getCourse()} + ' курс'"></p>
-										<p th:text="${subject.getSemester()} + ' семестр'"></p>
+									<div class="subject-teacher">
+										<p th:each="teacherLink : ${link.getSubject().getTeacherLinks()}" th:text="${teacherLink.getUser().getFullName()}"></p>
 									</div>
-									<p th:text="${subject.getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getId()}}" class="subject-button">Перейти к изучению</a>
+									<a th:href="@{'/subjects/' + ${link.getSubject().getId()}}" class="subject-button">Перейти к изучению</a>
 								</div>
 							</div>
 						</div>

@@ -19,10 +19,10 @@ public class WebSecurityConfig {
                                 "/scripts/**", "/styles/**", "/images/**", "/icons/**", "/libs/**", "/favicon.ico"
                         ).permitAll()
                         .requestMatchers(
-                                "/", "/home/**", "/subjects/**", "/api/openai/**", "/openai/**", "/logo/**"
+                                "/", "/home/**", "/subjects/**", "/api/openai/**", "/openai/**", "/logo/**", "/performance/**"
                         ).authenticated()
                         .requestMatchers(
-                                "/journal/**", "/api/**"
+                                "/api/**"
                         ).hasRole("Преподаватель")
                         .anyRequest().hasRole("Администратор")
                 )

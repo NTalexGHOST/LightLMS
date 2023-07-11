@@ -1,14 +1,15 @@
 package ru.darkalive.LightLMS.controllers.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.darkalive.LightLMS.entities.Subject;
-import ru.darkalive.LightLMS.entities.Theme;
-import ru.darkalive.LightLMS.entities.User;
+import org.springframework.web.server.ResponseStatusException;
+import ru.darkalive.LightLMS.entities.*;
 import ru.darkalive.LightLMS.repos.*;
 
 import java.io.IOException;
@@ -25,6 +26,16 @@ public class ManagementController {
     private SubjectRepository subjectRepo;
     @Autowired
     private ThemeRepository themeRepo;
+    @Autowired
+    private RoleRepository roleRepo;
+    @Autowired
+    private EducationTypeRepository educationTypeRepo;
+    @Autowired
+    private GroupRepository groupRepo;
+    @Autowired
+    private LinkUserSubjectRepository linkUserSubjectRepo;
+    @Autowired
+    private ExamRepository examRepo;
 
     @GetMapping("/subjects/{subjectId}/editor")
     public String subjectEditor(Model model, @PathVariable("subjectId") int subjectId) throws Exception {
@@ -35,13 +46,17 @@ public class ManagementController {
         Subject subject = subjectRepo.findFirstById(subjectId);
         model.addAttribute("subject", subject);
 
+        if (linkUserSubjectRepo.countByUserAndSubjectAndRole(authorizedUser, subject, roleRepo.findFirstById(2)) < 1) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         List<Theme> themes = themeRepo.findAllBySubjectOrderByPosition(subject);
         model.addAttribute("themes", themes);
 
+        Exam exam = examRepo.findFirstBySubject(subject);
+        model.addAttribute("exam", exam);
+
         model.addAttribute("tinymceKey", getTinymceKey());
 
-        printMessage("Вызов страницы /subjects/" + subjectId + "/editor\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
-
+        printMessage("Вызов страницы /subjects/" + subjectId + "/editor | " + subject.getName() + " | " + authorizedUser.getFullName());
         return "subject-editor";
     }
 
@@ -65,8 +80,7 @@ public class ManagementController {
 
 
 
-        printMessage("Вызов /journal - " + authorizedUser.getFullName());
-
+        printMessage("Вызов страницы /journal | " + authorizedUser.getFullName());
         return "journal";
     }
 
@@ -76,10 +90,25 @@ public class ManagementController {
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
 
+        List<Subject> subjects = subjectRepo.findAll();
+        model.addAttribute("subjects", subjects);
 
+        List<User> teachers = userRepo.findAllByRole(roleRepo.findFirstById(2));
+        model.addAttribute("teachers", teachers);
 
-        printMessage("Вызов /admin - " + authorizedUser.getFullName());
+        List<EducationType> educationTypes = educationTypeRepo.findAll();
+        model.addAttribute("educationTypes", educationTypes);
 
+        List<Role> roles = roleRepo.findAll();
+        model.addAttribute("roles", roles);
+
+        List<Group> groups = groupRepo.findAll(Sort.by("AdmissionYear").descending());
+        model.addAttribute("groups", groups);
+
+        List<User> users = userRepo.findAll();
+        model.addAttribute("users", users);
+
+        printMessage("Вызов страницы /admin | " + authorizedUser.getFullName());
         return "admin";
     }
 

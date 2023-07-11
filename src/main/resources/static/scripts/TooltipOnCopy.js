@@ -1,4 +1,4 @@
-function addTooltipsToTableCells() {
+$(document).ready(function() {
     var elements = document.getElementsByClassName('can-copied');
     for (i = 0; i < elements.length; i++) {
         tippy(elements[i], {
@@ -16,6 +16,4 @@ function addTooltipsToTableCells() {
             navigator.clipboard.writeText(e.target.innerText);
         });
     }
-}
-
-addTooltipsToTableCells();
+});

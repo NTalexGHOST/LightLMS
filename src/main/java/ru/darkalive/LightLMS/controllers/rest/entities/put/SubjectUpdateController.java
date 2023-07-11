@@ -31,9 +31,11 @@ public class SubjectUpdateController {
     @Autowired
     private ExternalResourceRepository externalResourceRepo;
     @Autowired
-    private TaskRepository taskRepo;
+    private PracticeRepository practiceRepo;
     @Autowired
     private ResourceTypeRepository resourceTypeRepo;
+    @Autowired
+    private ExamRepository examRepo;
 
     @PutMapping(value = "/api/subject", params = "id")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -59,33 +61,9 @@ public class SubjectUpdateController {
         printMessage("Отработал PUT-запрос, обновлена тема - " + theme.getName());
     }
 
-    @PutMapping(value = "/api/theme/position")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateThemePosition(@RequestParam int[] positions) {
-
-        for (int i = 0; i < positions.length; i++) {
-            Theme theme = themeRepo.findFirstById(positions[i]);
-            theme.setPosition(i + 1);
-            themeRepo.save(theme);
-        }
-
-        printMessage("Отработал PUT-запрос, обновлены позиции тем");
-    }
-
-    @PutMapping(value = "/api/theme/{themeId}/description")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateThemeDescription(@PathVariable int themeId, @RequestParam String description) {
-
-        Theme theme = themeRepo.findFirstById(themeId);
-        theme.setDescription(description);
-        themeRepo.save(theme);
-
-        printMessage("Отработал PUT-запрос, обновлено описание темы - " + themeId);
-    }
-
     @PutMapping(value = "/api/manual", params = { "id", "displayName" })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateManual(@PathVariable int id, @RequestParam String displayName) {
+    public void updateManualWithoutFile(@PathVariable int id, @RequestParam String displayName) {
 
         ManualResource manual = manualResourceRepo.findFirstById(id);
         manual.setDisplayName(displayName);
@@ -96,22 +74,21 @@ public class SubjectUpdateController {
 
     @PutMapping(value = "/api/manual/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateManualFile(@PathVariable int id, @RequestParam String displayName, @RequestParam MultipartFile file) {
+    public @ResponseBody void updateManualWithFile(@PathVariable int id, @RequestParam int subjectId,
+                                               @RequestParam String displayName, @RequestParam MultipartFile file) {
 
         ManualResource manual = manualResourceRepo.findFirstById(id);
-        int subjectId = manual.getTheme().getSubject().getId();
 
         File deleteFile;
         if (manual.isDoc()) deleteFile = new File("./subjects/" + subjectId + "/docs/" + manual.getFileName());
         else deleteFile = new File("./subjects/" + subjectId + "/other/" + manual.getFileName());
         deleteFile.delete();
 
-        List<String> docExtensions = Arrays.asList("pdf", "docx", "doc");
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String fileExtension = Streams.findLast(Arrays.stream(fileName.split("\\."))).get();
 
         Path path;
-        if (docExtensions.contains(fileExtension)) {
+        if (fileExtension.equals("pdf")) {
             path = Paths.get("./subjects/" + subjectId + "/docs/" + fileName);
             manual.setType(resourceTypeRepo.findFirstById(1));
         }
@@ -130,21 +107,7 @@ public class SubjectUpdateController {
         manual.setFileName(fileName);
 
         manualResourceRepo.save(manual);
-
         printMessage("Отработал PUT-запрос, обновлено методическое указание - " + manual.getDisplayName());
-    }
-
-    @PutMapping(value = "/api/manual/position")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateManualPosition(@RequestParam int[] positions) {
-
-        for (int i = 0; i < positions.length; i++) {
-            ManualResource manualResource = manualResourceRepo.findFirstById(positions[i]);
-            manualResource.setPosition(i + 1);
-            manualResourceRepo.save(manualResource);
-        }
-
-        printMessage("Отработал PUT-запрос, обновлены позиции методических указаний");
     }
 
     @PutMapping(value = "/api/external", params = { "id", "displayName", "url", "typeId" })
@@ -152,38 +115,24 @@ public class SubjectUpdateController {
     public void updateExternal(@RequestParam int id, @RequestParam String displayName, @RequestParam String url, @RequestParam int typeId) {
 
         ExternalResource external = externalResourceRepo.findFirstById(id);
+
         external.setDisplayName(displayName);
         external.setUrl(url);
         external.setType(resourceTypeRepo.findFirstById(typeId));
-        externalResourceRepo.save(external);
 
+        externalResourceRepo.save(external);
         printMessage("Отработал PUT-запрос, обновлена сторонняя ссылка - " + external.getDisplayName());
     }
 
-    @PutMapping(value = "/api/external/position")
+    @PutMapping(value = "/api/exam", params = { "id", "name" })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateExternalPosition(@RequestParam int[] positions) {
+    public void updateExam(@RequestParam int id, @RequestParam String name) {
 
-        for (int i = 0; i < positions.length; i++) {
-            ExternalResource externalResource = externalResourceRepo.findFirstById(positions[i]);
-            externalResource.setPosition(i + 1);
-            externalResourceRepo.save(externalResource);
-        }
+        Exam exam = examRepo.findFirstById(id);
+        exam.setName(name);
 
-        printMessage("Отработал PUT-запрос, обновлены позиции сторонних ссылок");
-    }
-
-    @PutMapping(value = "/api/task", params = "id")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTask(@PathVariable int id) {
-
-        Task task = taskRepo.findFirstById(id);
-
-
-
-        taskRepo.save(task);
-
-        printMessage("Отработал PUT-запрос, обновлена практическая работа - " + task.getDisplayName());
+        examRepo.save(exam);
+        printMessage("Отработал PUT-запрос, обновлен экзамен - " + exam.getName());
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - SubjectEditor]\t" + message); }

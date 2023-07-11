@@ -36,10 +36,6 @@
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Успеваемость</h3>
 					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
-					</a>
 					<a href="/admin" sec:authorize="hasRole('Администратор')">
 						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
@@ -91,6 +87,9 @@
 						<div class="img-bot">
 							<div class="img-display">
 								<img id="generated-img" src="" alt="Введите запрос для изображения...">
+								<div class="img-info">
+									
+								</div>
 							</div>
 							<input type="text" id="input-img-message" placeholder="Введите запрос для изображения..." />
 							<script type="text/javascript">

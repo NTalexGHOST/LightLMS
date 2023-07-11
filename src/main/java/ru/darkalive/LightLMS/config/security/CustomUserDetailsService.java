@@ -18,11 +18,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user = userRepo.findFirstByUserName(userName);
         if (user == null) throw new UsernameNotFoundException("Неизвестный пользователь - " + userName);
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
+        return org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
                 .username(user.getUserName())
                 .password(user.getPassword())
                 .roles(user.getRole().getName())
                 .build();
-        return userDetails;
     }
 }

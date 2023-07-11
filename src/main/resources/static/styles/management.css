@@ -1,0 +1,97 @@
+
+/* Управление вкладками */
+
+.tab-list {
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-light);
+    border-radius: 1rem 1rem 0 0;
+    display: flex;
+}
+
+.tab-list button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.2s;
+    font-size: 16px;
+    width: 100%;
+}
+
+.tab-list button:hover {
+    color: var(--color-primary);
+}
+
+.tab-list button.active {
+    background-color: var(--color-light);
+    color: var(--color-primary);
+}
+
+.tab-content {
+    padding: 1rem;
+    display: none;
+    border-top: none;
+}
+
+.search-field input {
+    font-size: 14px;
+    background: var(--color-white);
+    transition: 0.4s;
+    width: calc(100% - 2rem);
+    border: 1px solid var(--color-light);
+    height: 30px;
+    border-radius: 0.5rem;
+    outline: none;
+    padding: 0.1rem 1rem;
+    margin-right: 2rem;
+}
+
+.admin-table {
+    margin-top: 0.75rem;
+}
+
+.teacher-list {
+
+}
+
+.teacher-list p {
+    margin: 0;
+}
+
+.teacher-item {
+    display: flex;
+    justify-content: center;
+}
+
+.resource-interactions {
+    justify-content: center;
+    margin: 0;
+}
+
+.resource-interactions button {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.resource-interactions button span {
+    font-size: 18px;
+}
+
+.teacher-search-field {
+    margin-top: 1rem;
+}
+
+.teacher-table {
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+table tbody tr:last-child td {
+    border: none;
+}
+
+td i, td span {
+    color: var(--color-dark-variant);
+}

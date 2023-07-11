@@ -13,7 +13,7 @@
 		<!-- JQuery -->
 		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
 		<!-- Скрипт общения с ботом -->
-		<script type="text/javascript" th:src="@{/scripts/OpenAI.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/ChatBot.js}"></script>
 		<!-- TippyJS для реализации всплывающих tooltip элементов -->
 		<script src="https://unpkg.com/@popperjs/core@2"></script>
 		<script src="https://unpkg.com/tippy.js@6"></script>
@@ -37,10 +37,6 @@
 					<a href="/performance" sec:authorize="hasRole('Студент')">
 						<i class="fa-solid fa-newspaper"></i>
 						<h3>Успеваемость</h3>
-					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
 					</a>
 					<a href="/admin" sec:authorize="hasRole('Администратор')">
 						<i class="fa-solid fa-toolbox"></i>
@@ -94,7 +90,7 @@
 							<div class="chat-history" id="chat-history">
 
 							</div>
-							<input type="text" id="input-chat-message" placeholder="Введите запрос для изображения..." />
+							<input onkeyup="sendRequestToChatBot()" type="text" id="input-chat-message" placeholder="Введите запрос для изображения..." />
 						</div>
 					</div>
 				</main>

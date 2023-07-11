@@ -1,16 +1,15 @@
 package ru.darkalive.LightLMS.controllers.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import ru.darkalive.LightLMS.entities.Subject;
-import ru.darkalive.LightLMS.entities.Task;
-import ru.darkalive.LightLMS.entities.Theme;
-import ru.darkalive.LightLMS.entities.User;
+import org.springframework.web.server.ResponseStatusException;
+import ru.darkalive.LightLMS.entities.*;
 import ru.darkalive.LightLMS.repos.*;
 
 import java.util.List;
@@ -25,7 +24,15 @@ public class ViewSubjectController {
     @Autowired
     private ThemeRepository themeRepo;
     @Autowired
-    private TaskRepository taskRepo;
+    private PracticeRepository practiceRepo;
+    @Autowired
+    private LinkUserSubjectRepository linkUserSubjectRepo;
+    @Autowired
+    private LinkUserPracticeRepository linkUserPracticeRepo;
+    @Autowired
+    private ExamRepository examRepo;
+    @Autowired
+    private RoleRepository roleRepo;
 
 
     @GetMapping("/subjects/{subjectId}")
@@ -37,16 +44,20 @@ public class ViewSubjectController {
         Subject subject = subjectRepo.findFirstById(subjectId);
         model.addAttribute("subject", subject);
 
+        if (linkUserSubjectRepo.countByUserAndSubject(authorizedUser, subject) < 1) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
         List<Theme> themes = themeRepo.findAllBySubjectOrderByPosition(subject);
         model.addAttribute("themes", themes);
 
-        printMessage("Вызов страницы /subjects/" + subjectId + "\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
+        Exam exam = examRepo.findFirstBySubject(subject);
+        model.addAttribute("exam", exam);
 
+        printMessage("Вызов страницы /subjects/" + subjectId + " | " + subject.getName() + " | " + authorizedUser.getFullName());
         return "subject";
     }
 
-    @GetMapping("/subjects/{subjectId}/practice/{taskId}")
-    public String task(Model model, @PathVariable("subjectId") int subjectId, @PathVariable("taskId") int taskId) throws Exception {
+    @GetMapping("/subjects/{subjectId}/practice/{practiceId}")
+    public String practice(Model model, @PathVariable("subjectId") int subjectId, @PathVariable("practiceId") int practiceId) throws Exception {
 
         User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("authorizedUser", authorizedUser);
@@ -54,12 +65,42 @@ public class ViewSubjectController {
         Subject subject = subjectRepo.findFirstById(subjectId);
         model.addAttribute("subject", subject);
 
-        Task task = taskRepo.findFirstById(taskId);
-        model.addAttribute("task", task);
+        if (linkUserSubjectRepo.countByUserAndSubject(authorizedUser, subject) < 1) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
 
-        printMessage("Вызов страницы /subjects/" + subjectId + "/" + taskId + "\n\t" + subject.getName() + "\n\t" + authorizedUser.getFullName());
+        Practice practice = practiceRepo.findFirstById(practiceId);
+        model.addAttribute("practice", practice);
 
-        return "subject";
+        if (practice.isTask()) {
+            if (linkUserSubjectRepo.countByUserAndSubjectAndRole(authorizedUser, subject, roleRepo.findFirstById(2)) < 1) {
+                LinkUserPractice linkUserPractice = linkUserPracticeRepo.findFirstByUserAndPractice(authorizedUser, practice);
+                if (linkUserPractice == null) {
+                    linkUserPractice = new LinkUserPractice();
+                    linkUserPractice.setUser(authorizedUser);
+                    linkUserPractice.setPractice(practice);
+                    linkUserPracticeRepo.save(linkUserPractice);
+                }
+                model.addAttribute("linkUserPractice", linkUserPractice);
+                model.addAttribute("isTeacher", false);
+            } else { model.addAttribute("isTeacher", true); }
+            return "task";
+        } else {
+
+            return "test";
+        }
+    }
+
+    @GetMapping("subjects/{subjectId}/performance")
+    public String performance(Model model, @PathVariable("subjectId") int subjectId) {
+
+        User authorizedUser = userRepo.findFirstByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("authorizedUser", authorizedUser);
+
+        Subject subject = subjectRepo.findFirstById(subjectId);
+        model.addAttribute("subject", subject);
+
+        if (linkUserSubjectRepo.countByUserAndSubject(authorizedUser, subject) < 1) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+
+        return "performance";
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - View]\t" + message); }

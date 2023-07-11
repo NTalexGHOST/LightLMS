@@ -2,10 +2,12 @@ package ru.darkalive.LightLMS.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 
-@Entity(name = "subject_theme")
-public class Theme {
+@Entity(name = "subject_exam")
+public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,11 +19,6 @@ public class Theme {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    @Column(name = "position")
-    private int position;
-    public int getPosition() { return position; }
-    public void setPosition(int position) { this.position = position; }
-
     @ManyToOne
     @JoinColumn(name = "subject_id")
     private Subject subject;
@@ -29,24 +26,39 @@ public class Theme {
     public void setSubject(Subject subject) { this.subject = subject; }
 
     @OneToMany
-    @JoinColumn(name = "theme_id")
+    @JoinColumn(name = "exam_id")
     @OrderBy("position")
     private List<ManualResource> manualResources;
     public List<ManualResource> getManualResources() { return manualResources; }
     public void setManualResources(List<ManualResource> manualResources) { this.manualResources = manualResources; }
 
     @OneToMany
-    @JoinColumn(name = "theme_id")
+    @JoinColumn(name = "exam_id")
     @OrderBy("position")
     private List<ExternalResource> externalResources;
     public List<ExternalResource> getExternalResources() { return externalResources; }
     public void setExternalResources(List<ExternalResource> externalResources) { this.externalResources = externalResources; }
 
     @OneToMany
-    @JoinColumn(name = "theme_id")
+    @JoinColumn(name = "exam_id")
     private List<Practice> practices;
     public List<Practice> getPractices() { return practices; }
     public void setPractices(List<Practice> practices) { this.practices = practices; }
+
+    @Column(name = "opening_date")
+    private Timestamp openingDate;
+    public Timestamp getOpeningDate() { return openingDate; }
+    public void setOpeningDate(Timestamp openingDate) { this.openingDate = openingDate; }
+
+    @Column(name = "closing_date")
+    private Timestamp closingDate;
+    public Timestamp getClosingDate() { return closingDate; }
+    public void setClosingDate(Timestamp closingDate) { this.closingDate = closingDate; }
+
+    @Column(name = "duration")
+    private Time duration;
+    public Time getDuration() { return duration; }
+    public void setDuration(Time duration) { this.duration = duration; }
 
     @Column(name = "description")
     private String description;
@@ -54,5 +66,5 @@ public class Theme {
     public void setDescription(String description) { this.description = description; }
     public boolean isDescriptionExist() { return ((description != null) && (!description.equals(""))); }
 
-    public Theme() { }
+    public Exam() { }
 }

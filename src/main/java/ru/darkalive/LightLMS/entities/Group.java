@@ -2,6 +2,8 @@ package ru.darkalive.LightLMS.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity(name="student_group")
 public class Group {
     @Id
@@ -25,4 +27,11 @@ public class Group {
     private EducationType educationType;
     public EducationType getEducationType() { return educationType; }
     public void setEducationType(EducationType educationType) { this.educationType = educationType; }
+
+    @OneToMany
+    @JoinColumn(name = "group_id")
+    @OrderBy("fullname")
+    private List<User> students;
+    public List<User> getStudents() { return students; }
+    public void setStudents(List<User> students) { this.students = students; }
 }

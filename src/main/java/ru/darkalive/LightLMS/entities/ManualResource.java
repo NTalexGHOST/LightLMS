@@ -45,9 +45,15 @@ public class ManualResource {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
-    private Task task;
-    public Task getTask() { return task; }
-    public void setTask(Task task) { this.task = task; }
+    private Practice task;
+    public Practice getTask() { return task; }
+    public void setTask(Practice task) { this.task = task; }
+
+    @ManyToOne
+    @JoinColumn(name = "exam_id")
+    private Exam exam;
+    public Exam getExam() { return exam; }
+    public void setExam(Exam exam) { this.exam = exam; }
 
     public ManualResource() { }
 }

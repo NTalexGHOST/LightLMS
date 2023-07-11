@@ -1,0 +1,325 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8">
+		<title>LightLMS - Админ-панель</title>
+		<!-- Основные стили -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+		<!-- Стили страницы -->
+		<link rel="stylesheet" type="text/css" th:href="@{/styles/management.css}">
+		<!-- Иконки FontAwesome -->
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- JQuery UI -->
+		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
+		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
+		<!-- TippyJS для реализации всплывающих tooltip элементов -->
+		<script src="https://unpkg.com/@popperjs/core@2"></script>
+		<script src="https://unpkg.com/tippy.js@6"></script>
+		<!-- Скрипты для страницы -->
+		<script type="text/javascript" th:src="@{/scripts/Management.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/TooltipOnCopy.js}"></script>
+	</head>
+	<body>
+		<div class="main-container">
+			<aside>
+				<!-- Логотип -->
+				<div class="top">
+					<div class="logo">
+						<img src="/images/logo.png">
+						<h2>Lightweight<span class="logo-color">LMS</span></h2>
+					</div>
+				</div>
+				<!-- Боковое меню -->
+				<div class="sidebar">
+					<a href="/">
+						<i class="fa-solid fa-house"></i>
+						<h3>Дисциплины</h3>
+					</a>
+					<a href="/admin" sec:authorize="hasRole('Администратор')" class="down active">
+						<i class="fa-solid fa-toolbox"></i>
+						<h3>Админ-панель</h3>
+					</a>
+				</div>
+			</aside>
+			<div class="content-container">
+				<div class="title-profile-container">
+					<!-- Заголовок страницы -->
+					<div class="title">
+						<h1>Админ-панель</h1>
+					</div>
+					<div class="right">
+						<div class="top">
+							<div class="profile">
+								<div class="info">
+									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
+									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
+								</div>
+								<div class="profile-photo">
+									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
+								</div>
+								<form th:action="@{/logout}" class="profile-logout" method="post">
+									<i class="fa-solid fa-right-from-bracket"></i>
+									<input type="submit" value="Выйти из аккаунта"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<main>
+					<div class="main-content" style="padding: 0 !important;">
+						<div class="tab-list">
+							<button class="tab-links active" onclick="openTab(event, 'groups-tab', 'tab-content', 'tab-links')">Группы</button>
+							<button class="tab-links" onclick="openTab(event, 'users-tab', 'tab-content', 'tab-links')">Пользователи</button>
+							<button class="tab-links" onclick="openTab(event, 'subjects-tab', 'tab-content', 'tab-links')">Дисциплины</button>
+						</div>
+						<div style="display:block;" class="tab-content groups-tab" id="groups-tab">
+							<div class="search-field">
+								<input id="group-search-input" onkeyup="groupSearch()" type="text" placeholder="Поиск по названию группы...">
+							</div>
+							<div class="admin-table">
+								<table>
+									<thead>
+										<tr>
+											<th>Название</th>
+											<th>Год поступления</th>
+											<th>Уровень образования</th>
+											<th>
+												<div class="resource-interactions">
+													<button onclick="openGroupCreateDialog()" type="button">
+														<span>Добавить группу</span>
+														<i class="fa-solid fa-plus"></i>
+													</button>
+													<div id="group-create-dialog" class="popup-dialog">
+														<div class="dialog-item">
+															<p>Название</p>
+															<input id="group-create-name" type="text">
+														</div>
+														<div class="dialog-item">
+															<p>Год поступления</p>
+															<input value="2023" id="group-create-year" min="2023" max="2100" step="1" type="number"/>
+														</div>
+														<div class="dialog-item">
+															<p>Уровень образования</p>
+															<select id="group-create-type">
+																<option th:each="educationType : ${educationTypes}" th:value="${educationType.getId()}" th:text="${educationType.getName()} + ' ' + ${educationType.getYears()}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="groups-tbody">
+										<tr th:each="group : ${groups}" th:id="'group-' + ${group.getId()}">
+											<td th:text="${group.getName()}" th:id="'group-name-' + ${group.getId()}" class="group-name"></td>
+											<td th:text="${group.getAdmissionYear()}" th:id="'group-year-' + ${group.getId()}"></td>
+											<td th:text="${group.getEducationType().getName()} + ' ' + ${group.getEducationType().getYears()}" th:id="'group-type-' + ${group.getId()}"></td>
+											<td>
+												<div class="resource-interactions">
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-pen"></i>
+													</button>
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-content users-tab" id="users-tab">
+							<div class="search-field">
+								<input id="user-search-input" onkeyup="userSearch()" type="text" placeholder="Поиск по ФИО пользователя...">
+							</div>
+							<div class="admin-table">
+								<table>
+									<thead>
+										<tr>
+											<th>Логин</th>
+											<th>ФИО</th>
+											<th>Почта</th>
+											<th>Роль</th>
+											<th>Группа</th> 	
+											<th>
+												<div class="resource-interactions">
+													<button onclick="openUserCreateDialog()" type="button">
+														<span>Добавить пользователя</span>
+														<i class="fa-solid fa-plus"></i>
+													</button>
+													<div id="user-create-dialog" class="popup-dialog">
+														<div class="dialog-item">
+															<p>Логин</p>
+															<input id="user-create-username" type="text">
+														</div>
+														<div class="dialog-item">
+															<p>Пароль</p>
+															<input id="user-create-password" type="text">
+														</div>
+														<div class="dialog-item">
+															<p>ФИО</p>
+															<input id="user-create-fullname" type="text">
+														</div>
+														<div class="dialog-item">
+															<p>Почта</p>
+															<input id="user-create-email" type="email">
+														</div>
+														<div class="dialog-item">
+															<p>Роль</p>
+															<select id="user-create-role">
+																<option th:each="role : ${roles}" th:value="${role.getId()}" th:text="${role.getName()}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="users-tbody">
+										<tr th:each="user : ${users}">
+											<td th:text="${user.getUserName()}" class="can-copied"></td>
+											<td th:text="${user.getFullName()}" class="can-copied"></td>
+											<td th:text="${user.getEmail()}" class="can-copied"></td>
+											<td th:text="${user.getRole().getName()}"></td>
+											<td th:if="${user.getGroup() != null}" th:text="${user.getGroup().getName()}" class="can-copied"></td>
+											<td th:unless="${user.getGroup() != null}">-</td>
+											<td>
+												<div class="resource-interactions">
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-pen"></i>
+													</button>
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-content subjects-tab" id="subjects-tab">
+							<div class="search-field">
+								<input id="subject-search-input" onkeyup="subjectSearch()" type="text" placeholder="Поиск по названию дисциплины...">
+							</div>
+							<div class="admin-table">
+								<table>
+									<thead>
+										<tr>
+											<th>Название</th>
+											<th>Курс</th>
+											<th>Семестр</th>
+											<th>Преподаватель</th>
+											<th>
+												<div class="resource-interactions">
+													<button onclick="openSubjectCreateDialog()" type="button">
+														<span>Добавить дисциплину</span>
+														<i class="fa-solid fa-plus"></i>
+													</button>
+													<div id="subject-create-dialog" class="popup-dialog">
+														<div class="dialog-item">
+															<p>Отображаемое название</p>
+															<input id="subject-create-name" type="text">
+														</div>
+														<div class="dialog-item">
+															<p>Курс</p>
+															<select id="subject-create-course">
+																<option value="1">Первый</option>
+																<option value="2">Второй</option>
+																<option value="3">Третий</option>
+																<option value="4">Четвертый</option>
+																<option value="5">Пятый</option>
+																<option value="6">Шестой</option>
+															</select>
+														</div>
+														<div class="dialog-item">
+															<p>Семестр</p>
+															<select id="subject-create-semester">
+																<option value="1">Первый</option>
+																<option value="2">Второй</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="subjects-tbody">
+										<tr th:each="subject : ${subjects}">
+											<td th:text="${subject.getName()}" class="subject-name can-copied"></td>
+											<td th:text="${subject.getCourse()}"></td>
+											<td th:text="${subject.getSemester()}"></td>
+											<td>
+												<div class="teacher-list">
+													<div class="resource-interactions">
+														<button th:onclick="'openSubjectTeacherDialog(' + ${subject.getId()} + ')'" type="button">
+															<span>Назначить преподавателя</span>
+															<i class="fa-solid fa-user-plus"></i>
+														</button>
+														<div th:id="'subject-teacher-dialog-' + ${subject.getId()}" class="popup-dialog">
+															<div class="teacher-search-field">
+																<input id="teacher-search-input" oninput="teacherSearch()" type="text" placeholder="Поиск по ФИО преподавателя...">
+															</div>
+															<div class="teacher-table">
+																<table>
+																	<thead>
+																		<tr>
+																			<th>Логин</th>
+																			<th>ФИО</th>
+																			<th>Почта</th>
+																			<th></th>
+																		</tr>
+																	</thead>
+																	<tbody>
+																		<tr th:each="teacher : ${teachers}">
+																			<td th:text="${teacher.getUserName()}"></td>
+																			<td th:text="${teacher.getFullName()}"></td>
+																			<td th:text="${teacher.getEmail()}"></td>
+																			<td>
+																				<div class="resource-interactions">
+																					<button th:onclick="" type="button">
+																						<i class="fa-solid fa-user-plus"></i>
+																					</button>
+																				</div>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</div>
+														</div>
+													</div>
+													<div th:each="teacher : ${subject.getTeacherLinks()}" class="teacher-item">
+														<p th:text="${teacher.getUser().getFullName()}" class="can-copied"></p>
+														<div class="resource-interactions">
+															<button th:onclick="" type="button">
+																<i class="fa-solid fa-user-minus"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="resource-interactions">
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-pen"></i>
+													</button>
+													<button th:onclick="" type="button">
+														<i class="fa-solid fa-trash"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</main>
+			</div>
+		</div>
+	</body>
+</html>

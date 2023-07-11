@@ -39,7 +39,7 @@
 * {
 	margin: 0;
 	padding: 0;
-	outline: 0;
+	outline: none;
 	appearance: none;
 	border: 0;
 	text-decoration: none;
@@ -148,6 +148,12 @@ select:focus {
 	color: var(--color-warning) !important;
 }
 
+blockquote {
+	border-left: 2px solid #ccc;
+    margin-left: 1.5rem;
+    padding-left: 1rem;
+}
+
 
 /* Боковое меню - Основное */
 
@@ -221,7 +227,7 @@ aside .sidebar a i, .sidebar-category i {
 	transition: all 300ms ease;
 }
 
-aside .sidebar > a:last-child {
+aside .sidebar > .down {
 	position: fixed;
 	bottom: 2rem;
 	width: 14.2rem;
@@ -346,44 +352,13 @@ aside .sidebar a:hover i {
     padding: 1rem;
 }
 
+.main-content embed {
+	width: 100%;
+	height: 600px;
+}
+
 .can-copied, .copied {
 	cursor: pointer;
-}
-
-
-/* Управление вкладками */
-
-.tab-list {
-    overflow: hidden;
-    border-bottom: 1px solid var(--color-light);
-    border-radius: 1rem 1rem 0 0;
-    display: flex;
-}
-
-.tab-list button {
-    background-color: inherit;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.2s;
-    font-size: 16px;
-    width: 100%;
-}
-
-.tab-list button:hover {
-    color: var(--color-primary);
-}
-
-.tab-list button.active {
-    background-color: var(--color-light);
-    color: var(--color-primary);
-}
-
-.tab-content {
-    padding: 1rem;
-    display: none;
-    border-top: none;
 }
 
 
@@ -392,7 +367,7 @@ aside .sidebar a:hover i {
 table {
 	background: var(--color-white);
 	width: 100%;
-	border-radius: var(--card-border-radius);
+	border-radius: 0.5rem;
 	padding: 1rem 1.8rem;
 	text-align: center;
 	transition: all 300ms ease;
@@ -408,16 +383,16 @@ table th {
 	font-size: 18px;
 }
 
+table th span {
+	font-weight: bold;
+}
+
 table tbody td {
 	height: 2.8rem;
 	border-bottom: 1px solid var(--color-light);
 	color: var(--color-dark-variant);
 	font-size: 16px;
-}
-
-.main-content embed {
-	width: 100%;
-	height: 600px;
+	padding: 0 0.5rem;
 }
 
 
@@ -523,10 +498,11 @@ table tbody td {
 }
 
 
-/* Всплывающий показ документов */
+/* Всплывающие окна */
 
 .popup-dialog {
 	display: none;
+	max-height: 96vh;
 }
 
 .document-viewer .popup-dialog {
@@ -537,4 +513,70 @@ table tbody td {
 	width: 95vw;
 	height: 90vh;
 	border: none;
+}
+
+.popup-dialog p {
+	font-size: 1.1rem;
+	margin: 0.4rem 0;
+	color: var(--color-dark);
+}
+
+.popup-dialog .info {
+	font-size: 1rem;
+	color: var(--color-info-dark) !important;
+	max-width: 700px;
+}
+
+.popup-dialog .dialog-item, .popup-dialog .dialog-grid {
+	margin-bottom: 1rem;
+}
+
+.dialog-grid {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	grid-column-gap: 0.5rem;
+}
+
+.popup-dialog select {
+	padding: 0.3rem 0 0.3rem 1rem;
+	width: 15rem;
+}
+
+.popup-dialog input {
+	padding: 0.3rem 1rem;
+	width: calc(100% - 2rem);
+	outline: none;
+}
+
+.popup-dialog input[type="file"] {
+	padding-left: 0; 
+}
+
+
+/* Взаимодействие с ресурсами (изменение и удаление) */
+.resource-interactions button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	display: flex;
+    align-items: center;
+}
+
+.resource-interactions > button, .resource-interactions > button > i, .resource-interactions > button > span {
+	transition: 1s;
+}
+
+.resource-interactions > button:hover > i, .resource-interactions > button:hover > span {
+	color: var(--color-primary);
+	transition: 300ms;
+}
+
+.resource-interactions {
+	display: flex;
+    margin-right: 1rem;
+}
+
+.resource-interactions i {
+	font-size: 1.7rem;
+	width: 1.7rem;
 }

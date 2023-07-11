@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="utf-8">
-		<title>LightLMS - Главная</title>
+		<title th:text="'LightLMS - ' + ${subject.getName()}"></title>
 		<!-- Основные стили -->
 		<link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
 		<!-- Стили страницы конкретной дисциплины -->
@@ -10,6 +10,16 @@
 		<!-- Иконки FontAwesome -->
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/fontawesome.css}">
 		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/solid.css}">
+		<link rel="stylesheet" type="text/css" th:href="@{/icons/css/brands.css}">
+		<!-- JQuery -->
+		<script type="text/javascript" th:src="@{/libs/jquery-3.6.4.min.js}"></script>
+		<!-- JQuery UI -->
+		<link rel="stylesheet" type="text/css" th:href="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.css}">
+		<!-- JQuery UI -->
+		<script type="text/javascript" th:src="@{/libs/jquery-ui-1.13.2.custom/jquery-ui.js}"></script>
+		<!-- Скрипты для страниц дисциплин -->
+		<script type="text/javascript" th:src="@{/scripts/Subject.js}"></script>
+		<script type="text/javascript" th:src="@{/scripts/Task.js}"></script>
 	</head>
 	<body>
 		<div class="main-container">
@@ -27,19 +37,30 @@
 						<i class="fa-solid fa-house"></i>
 						<h3>Дисциплины</h3>
 					</a>
-					<a href="/performance" sec:authorize="hasRole('Студент')">
+					<a href="/performance">
 						<i class="fa-solid fa-newspaper"></i>
-						<h3>Успеваемость</h3>
+						<h3>Успеваемость по предмету</h3>
 					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
+					<hr>
+					<div id="themes-container">
+						<a href="#task">
+							<i class="fa-solid fa-clipboard-question"></i>
+							<h3>Задание</h3>
+						</a>
+						<a th:unless="${isTeacher}" href="#answer">
+							<i class="fa-solid fa-clipboard-list"></i>
+							<h3>Ответ</h3>
+						</a>
+						<a th:unless="${isTeacher}" href="#feedback">
+							<i class="fa-solid fa-clipboard-check"></i>
+							<h3>Отзыв</h3>
+						</a>
+					</div>
+					<a class="down" th:href="'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()} + '/editor'" sec:authorize="hasRole('Преподаватель')">
+						<i class="fa-solid fa-pen-to-square"></i>
+						<h3>Редактор</h3>
 					</a>
-					<a href="/journal" sec:authorize="hasRole('Преподаватель')">
-						<i class="fa-solid fa-newspaper"></i>
-						<h3>Журнал</h3>
-					</a>
-					<a href="/admin" sec:authorize="hasRole('Администратор')">
+					<a class="down" href="/admin" sec:authorize="hasRole('Администратор')">
 						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
 					</a>
@@ -49,7 +70,7 @@
 				<div class="title-profile-container">
 					<!-- Заголовок страницы -->
 					<div class="title">
-						<h1>Список доступных дисциплин</h1>
+						<h1 th:text="@{${subject.getName()}}"></h1>
 					</div>
 					<div class="right">
 						<div class="top">
@@ -74,52 +95,109 @@
 				</div>
 				<main>
 					<div class="main-content">
-						<!-- Фильтры для показа дисциплин -->
-						<ol class="path-container">
-							<li class="path-button">
-								<a href="">Название дисциплины</a>
-							</li>
-							<li class="path-button">
-								<a href="">Название раздела</a>
-							</li>
-							<li class="path-button">
-								<a href="">Название задания</a>
-							</li>
-						</ol>
-						<!-- Вывод списка доступных дисциплин -->
-						<div class="subject-container" sec:authorize="hasRole('Студент')">
-							<div class="subject-item" th:each="subject : ${subjects}">
-								<h2 th:text="${subject.getSubject().getName()}"></h2>
-								<div class="subject-info">
-									<img th:src="@{'/subjects/' + ${subject.getSubject().getName()} + '/logo.jpg'}">
-									<p th:text="${subject.getSubject().getDescription()}"></p>
+						<div class="subject-path">
+							<ol class="path-container">
+								<li class="path-button">
+									<a th:href="@{'/subjects/' + ${subject.getId()}}" th:text="@{${subject.getName()}}"></a>
+								</li>
+								<li class="path-button">
+									<a th:if="${practice.isInTheme()}" th:href="@{'/subjects/' + ${subject.getId()} + '#theme-' + ${practice.getTheme().getId()}}" th:text="@{${practice.getTheme().getName()}}"></a>
+									<a th:unless="${practice.isInTheme()}" th:href="@{'/subjects/' + ${subject.getId()} + '#exam'}" th:text="@{${practice.getExam().getName()}}"></a>
+								</li>
+								<li class="path-button">
+									<a th:href="@{'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()}}" th:text="@{${practice.getDisplayName()}}"></a>
+								</li>
+							</ol>
+						</div>
+						<div class="subject-chapter" id="practice">
+							<div class="chapter-title">
+								<h2 th:text="${practice.getDisplayName()}"></h2>
+							</div>
+							<div class="chapter-content">
+								<div th:if="${practice.isDescriptionExist()}" class="resource-type">
+									<div th:utext="${practice.getDescription()}" class="chapter-description"></div>
 								</div>
-								<div class="subject-learn">
-									<p th:text="${subject.getSubject().getEducationType().getName()} + ''"></p>
-									<div class="subject-course">
-										<p th:text="${subject.getSubject().getCourse()} + ' курс'"></p>
-										<p th:text="${subject.getSubject().getSemester()} + ' семестр'"></p>
+								<div th:if="${not practice.getManualResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Методические указания</h3>
 									</div>
-									<p th:text="${subject.getSubject().getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getSubject().getName()}}" class="subject-button">Перейти к изучению</a>
+									<div th:each="manual : ${practice.getManualResources()}" class="resource-item">
+										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+											<i class="fa-solid fa-file-pdf"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+											<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+										</div>
+										<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+											<i class="fa-solid fa-download"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+											<div class="file-extension">
+												<i class="fa-solid fa-file"></i>
+												<h5 th:text="${manual.getFileExtension()}"></h5>
+											</div>
+										</a>
+									</div>
+								</div>
+								<div th:if="${not practice.getExternalResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Сторонние ресурсы</h3>
+									</div>
+									<div th:each="external : ${practice.getExternalResources()}" class="resource-item">
+										<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+											<i class="fa-brands fa-youtube"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+											<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+										</div>
+										<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+											<i class="fa-solid fa-arrow-up-right-from-square"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="subject-container" sec:authorize="hasRole('Преподаватель')">
-							<div class="subject-item" th:each="subject : ${subjects}">
-								<h2 th:text="${subject.getName()}"></h2>
-								<div class="subject-info">
-									<img th:src="@{'/subjects/' + ${subject.getName()} + '/logo.jpg'}">
-									<p th:text="${subject.getDescription()}"></p>
+						<div th:unless="${isTeacher}" class="subject-chapter" id="answer">
+							<div class="chapter-title">
+								<h2>Состояние ответа</h2>
+							</div>
+							<div class="chapter-content">
+								<div th:if="${linkUserPractice.isAnswerExist()}" class="resource-type">
+									<div th:utext="${linkUserPractice.getAnswer()}" class="chapter-description"></div>
 								</div>
-								<div class="subject-learn">
-									<p th:text="${subject.getEducationType().getName()} + ''"></p>
-									<div class="subject-course">
-										<p th:text="${subject.getCourse()} + ' курс'"></p>
-										<p th:text="${subject.getSemester()} + ' семестр'"></p>
+								<div class="resource-type grid-answer">
+									<h3>Дата открытия</h3>
+									<p th:text="${practice.getOpeningDate()}"></p>
+									<h3>Срок сдачи</h3>
+									<p th:text="${practice.getClosingDate()}"></p>
+									<h3>Последнее изменение</h3>
+									<p th:text="${linkUserPractice.getChangeDate()}"></p>
+									<h3>Ответ в виде файла</h3>
+									<div class="answer-files">
+										<div class="resource-interactions">
+											<button type="button">
+												<span>Добавить файл</span>
+												<i class="fa-solid fa-plus"></i>
+											</button>
+										</div>
 									</div>
-									<p th:text="${subject.getTeacher().getFullName()}"></p>
-									<a th:href="@{'/subjects/' + ${subject.getName()}}" class="subject-button">Перейти к изучению</a>
+								</div>
+							</div>
+						</div>
+						<div th:unless="${isTeacher}" class="subject-chapter" id="feedback">
+							<div class="chapter-title">
+								<h2>Отзыв</h2>
+							</div>
+							<div class="chapter-content">
+								<div th:if="${linkUserPractice.isFeedbackExist()}" class="resource-type">
+									<div th:utext="${linkUserPractice.getFeedback()}" class="chapter-description"></div>
+								</div>
+								<div class="resource-type grid-answer">
+									<h3>Оценка</h3>
+									<p th:if="${linkUserPractice.isRated()}" th:text="${linkUserPractice.getMark()}"></p>
+									<p th:unless="${linkUserPractice.isRated()}">Не оценено</p>
 								</div>
 							</div>
 						</div>

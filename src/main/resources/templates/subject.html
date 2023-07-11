@@ -36,26 +36,26 @@
 						<i class="fa-solid fa-house"></i>
 						<h3>Дисциплины</h3>
 					</a>
-					<a href="/performance" sec:authorize="hasRole('Студент')">
+					<a href="/performance">
 						<i class="fa-solid fa-newspaper"></i>
-						<h3>Успеваемость</h3>
-					</a>
-					<a href="/chat">
-						<i class="fa-solid fa-comments"></i>
-						<h3>Чат</h3>
+						<h3>Успеваемость по предмету</h3>
 					</a>
 					<hr>
 					<div id="themes-container">
-						<a th:each="theme : ${themes}" th:href="'#theme' + ${theme.getId()}">
+						<a th:each="theme : ${themes}" th:href="'#theme-' + ${theme.getId()}">
 							<i class="fa-solid fa-book-open"></i>
 							<h3 th:text="${theme.getName()}"></h3>
 						</a>
+						<a href="#exam">
+							<i class="fa-solid fa-graduation-cap"></i>
+							<h3>Экзамен</h3>
+						</a>
 					</div>
-					<a th:href="'/subjects/' + ${subject.getId()} + '/editor'" sec:authorize="hasRole('Преподаватель')">
+					<a class="down" th:href="'/subjects/' + ${subject.getId()} + '/editor'" sec:authorize="hasRole('Преподаватель')">
 						<i class="fa-solid fa-pen-to-square"></i>
 						<h3>Редактор</h3>
 					</a>
-					<a href="/admin" sec:authorize="hasRole('Администратор')">
+					<a class="down" href="/admin" sec:authorize="hasRole('Администратор')">
 						<i class="fa-solid fa-toolbox"></i>
 						<h3>Админ-панель</h3>
 					</a>
@@ -91,7 +91,6 @@
 				<main>
 					<div class="main-content">
 						<div class="subject-path">
-							<!-- Фильтры для показа дисциплин -->
 							<ol class="path-container">
 								<li class="path-button">
 									<a th:href="@{'/subjects/' + ${subject.getId()}}" th:text="@{${subject.getName()}}"></a>
@@ -104,9 +103,7 @@
 							</div>
 							<div class="chapter-content">
 								<div th:if="${theme.isDescriptionExist()}" class="resource-type">
-									<div th:utext="${theme.getDescription()}" class="chapter-description">
-										
-									</div>
+									<div th:utext="${theme.getDescription()}" class="chapter-description"></div>
 								</div>
 								<div th:if="${not theme.getManualResources().isEmpty()}" class="resource-type">
 									<div class="resource-type-title">
@@ -114,7 +111,7 @@
 									</div>
 									<div th:each="manual : ${theme.getManualResources()}" class="resource-item">
 										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
-											<i class="fa-solid fa-file-word"></i>
+											<i class="fa-solid fa-file-pdf"></i>
 											<h4 th:text="${manual.getDisplayName()}"></h4>
 										</button>
 										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
@@ -148,14 +145,75 @@
 										</a>
 									</div>
 								</div>
-								<div th:if="${not theme.getTasks().isEmpty()}" class="resource-type">
+								<div th:if="${not theme.getPractices().isEmpty()}" class="resource-type">
 									<div class="resource-type-title">
 										<h3>Практические работы</h3>
 									</div>	
-									<div th:if="${not theme.getTasks().isEmpty()}" th:each="task : ${theme.getTasks()}" class="resource-item">
-										<a th:href="@{'/subjects/' + ${subject.getId()} + '/' + ${theme.getId()} + '/' + ${task.getId()}}">
+									<div th:if="${not theme.getPractices().isEmpty()}" th:each="practice : ${theme.getPractices()}" class="resource-item">
+										<a th:href="@{'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()}}">
 											<i class="fa-solid fa-file-export"></i>
-											<h4 th:text="${task.getDisplayName()}"></h4>
+											<h4 th:text="${practice.getDisplayName()}"></h4>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="subject-chapter" id="exam">
+							<div class="chapter-title">
+								<h2 th:text="${exam.getName()}"></h2>
+							</div>
+							<div class="chapter-content">
+								<div th:if="${exam.isDescriptionExist()}" class="resource-type">
+									<div th:utext="${exam.getDescription()}" class="chapter-description"></div>
+								</div>
+								<div th:if="${not exam.getManualResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Методические указания</h3>
+									</div>
+									<div th:each="manual : ${exam.getManualResources()}" class="resource-item">
+										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+											<i class="fa-solid fa-file-pdf"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+											<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+										</div>
+										<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+											<i class="fa-solid fa-download"></i>
+											<h4 th:text="${manual.getDisplayName()}"></h4>
+											<div class="file-extension">
+												<i class="fa-solid fa-file"></i>
+												<h5 th:text="${manual.getFileExtension()}"></h5>
+											</div>
+										</a>
+									</div>
+								</div>
+								<div th:if="${not exam.getExternalResources().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Сторонние ресурсы</h3>
+									</div>
+									<div th:each="external : ${exam.getExternalResources()}" class="resource-item">
+										<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+											<i class="fa-brands fa-youtube"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</button>
+										<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+											<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+										</div>
+										<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+											<i class="fa-solid fa-arrow-up-right-from-square"></i>
+											<h4 th:text="${external.getDisplayName()}"></h4>
+										</a>
+									</div>
+								</div>
+								<div th:if="${not exam.getPractices().isEmpty()}" class="resource-type">
+									<div class="resource-type-title">
+										<h3>Практические работы</h3>
+									</div>	
+									<div th:if="${not exam.getPractices().isEmpty()}" th:each="practice : ${exam.getPractices()}" class="resource-item">
+										<a th:href="@{'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()}}">
+											<i class="fa-solid fa-file-export"></i>
+											<h4 th:text="${practice.getDisplayName()}"></h4>
 										</a>
 									</div>
 								</div>
