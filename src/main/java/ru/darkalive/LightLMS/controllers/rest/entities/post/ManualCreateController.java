@@ -63,45 +63,39 @@ public class ManualCreateController {
         manual.setDisplayName(displayName);
         manual.setFileName(fileName);
 
-        if (themeId != 0) manual = createManualForTheme(manual, themeId);
-        else if (taskId != 0) manual = createManualForTask(manual, taskId);
-        else manual = createManualForExam(manual, examId);
+        if (themeId != 0) createManualForTheme(manual, themeId);
+        else if (taskId != 0) createManualForTask(manual, taskId);
+        else createManualForExam(manual, examId);
 
         manualResourceRepo.save(manual);
         printMessage("Отработал POST-запрос, создан Word-файл - " + manual.getDisplayName());
     }
 
-    private ManualResource createManualForTheme(ManualResource manual, int themeId) {
+    private void createManualForTheme(ManualResource manual, int themeId) {
 
         Theme theme = themeRepo.findFirstById(themeId);
         Optional<Integer> position = manualResourceRepo.lastPositionByTheme(themeId);
         if (position.isEmpty()) manual.setPosition(1);
         else manual.setPosition(position.get() + 1);
         manual.setTheme(theme);
-
-        return manual;
     }
 
-    private ManualResource createManualForTask(ManualResource manual, int taskId) {
+    private void createManualForTask(ManualResource manual, int taskId) {
 
         Practice practice = practiceRepo.findFirstById(taskId);
         Optional<Integer> position = manualResourceRepo.lastPositionByTask(taskId);
         if (position.isEmpty()) manual.setPosition(1);
         else manual.setPosition(position.get() + 1);
         manual.setTask(practice);
-
-        return manual;
     }
 
-    private ManualResource createManualForExam(ManualResource manual, int examId) {
+    private void createManualForExam(ManualResource manual, int examId) {
 
         Exam exam = examRepo.findFirstById(examId);
         Optional<Integer> position = manualResourceRepo.lastPositionByExam(examId);
         if (position.isEmpty()) manual.setPosition(1);
         else manual.setPosition(position.get() + 1);
         manual.setExam(exam);
-
-        return manual;
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - Manual]\t" + message); }

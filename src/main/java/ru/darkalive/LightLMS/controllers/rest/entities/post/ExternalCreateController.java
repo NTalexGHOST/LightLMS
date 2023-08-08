@@ -44,42 +44,36 @@ public class ExternalCreateController {
         external.setUrl(url);
         external.setType(resourceTypeRepo.findFirstById(typeId));
 
-        if (themeId != 0) external = createExternalForTheme(external, themeId);
-        else if (taskId != 0) external = createExternalForTask(external, taskId);
-        else external = createExternalForExam(external, examId);
+        if (themeId != 0) createExternalForTheme(external, themeId);
+        else if (taskId != 0) createExternalForTask(external, taskId);
+        else createExternalForExam(external, examId);
 
         externalResourceRepo.save(external);
         printMessage("Отработал POST-запрос, создана сторонняя ссылка - " + external.getDisplayName());
     }
 
-    private ExternalResource createExternalForTheme(ExternalResource external, int themeId) {
+    private void createExternalForTheme(ExternalResource external, int themeId) {
 
         Optional<Integer> position = externalResourceRepo.lastPositionByTheme(themeId);
         if (position.isEmpty()) external.setPosition(1);
         else external.setPosition(position.get() + 1);
         external.setTheme(themeRepo.findFirstById(themeId));
-
-        return external;
     }
 
-    private ExternalResource createExternalForTask(ExternalResource external, int taskId) {
+    private void createExternalForTask(ExternalResource external, int taskId) {
 
         Optional<Integer> position = externalResourceRepo.lastPositionByTask(taskId);
         if (position.isEmpty()) external.setPosition(1);
         else external.setPosition(position.get() + 1);
         external.setTask(practiceRepo.findFirstById(taskId));
-
-        return external;
     }
 
-    private ExternalResource createExternalForExam(ExternalResource external, int examId) {
+    private void createExternalForExam(ExternalResource external, int examId) {
 
         Optional<Integer> position = externalResourceRepo.lastPositionByExam(examId);
         if (position.isEmpty()) external.setPosition(1);
         else external.setPosition(position.get() + 1);
         external.setExam(examRepo.findFirstById(examId));
-
-        return external;
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - External]\t" + message); }

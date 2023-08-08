@@ -456,7 +456,7 @@ $(document).ready(function() {
 		}    
 	});
 	$(".datetimepicker").datetimepicker({
-
+		dateFormat: "dd.mm.yy"
 	});
 	$(".timepicker").timepicker({
 
