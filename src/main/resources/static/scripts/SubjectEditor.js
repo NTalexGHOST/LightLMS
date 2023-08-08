@@ -235,8 +235,8 @@ function openExamExternalCreateDialog(examId) {
 			click: function() {
 				var data = new FormData();
 				data.append("displayName", $("#exam-external-create-name").val());
-				data.append("url", $("#exam-external-create-url-").val());
-				data.append("typeId", $("#exam-external-create-type-").val());
+				data.append("url", $("#exam-external-create-url").val());
+				data.append("typeId", $("#exam-external-create-type").val());
 				data.append("examId", examId);
 				$.ajax({
 				    type: "POST",
