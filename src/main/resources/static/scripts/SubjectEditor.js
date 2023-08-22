@@ -329,7 +329,7 @@ function openPracticeCreateDialog(themeId) {
 						data.append("themeId", themeId);
 						$.ajax({
 						    type: "POST",
-						    url: "/api/manual",
+						    url: "/api/practice",
 						    data: data,
 						    enctype: 'multipart/form-data',
 						    contentType: false,
@@ -361,22 +361,26 @@ function openExamPracticeCreateDialog(examId) {
 			click: function() {
 				if ($('#exam-practice-create-opening').val() && $('#exam-practice-create-closing').val()) {
 					var data = new FormData();
-					var file = document.getElementById("manual-create-file-" + themeId).files[0];
-					data.append("subjectId", subjectId);
-					data.append("displayName", $("#manual-create-name-" + themeId).val());
-					data.append("themeId", themeId);
-					data.append("file", file);
-					$.ajax({
-					    type: "POST",
-					    url: "/api/manual",
-					    data: data,
-					    enctype: 'multipart/form-data',
-					    contentType: false,
-				  		processData: false,
-					    success: function(response) { location.reload(); },
-					    error: function() { alert("Произошла ошибка при создании"); },
-					    timeout: 10000
-					});
+					data.append("displayName", $("#exam-practice-create-name").val());
+					data.append("openingDate", $("#exam-practice-create-opening").val());
+					data.append("closingDate", $("#exam-practice-create-closing").val());
+					var typeId = $("#exam-practice-create-type").val();
+					if (typeId == 5 || (typeId == 6 && $("#exam-practice-create-duration").val())) {
+						data.append("duration", $("#exam-practice-create-duration").val());
+						data.append("typeId", typeId);
+						data.append("examId", examId);
+						$.ajax({
+						    type: "POST",
+						    url: "/api/practice",
+						    data: data,
+						    enctype: 'multipart/form-data',
+						    contentType: false,
+					  		processData: false,
+						    success: function(response) { location.reload(); },
+						    error: function() { alert("Произошла ошибка при создании"); },
+						    timeout: 10000
+						});
+					} else { alert("Вы выбрали тест, но не указали его продолжительность"); }
 				} else { alert("Вы не выбрали время открытия или закрытия доступа к практической работе"); }
 			}
 		}]

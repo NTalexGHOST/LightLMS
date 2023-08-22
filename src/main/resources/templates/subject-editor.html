@@ -526,7 +526,34 @@
 								<div class="resource-type">
 									<div class="resource-type-title">
 										<h3>Практические работы</h3>
-										<button type="button">Добавить работу</button>
+										<button th:onclick="'openExamPracticeCreateDialog(' + ${exam.getId()} + ')'" type="button">Добавить работу</button>
+											<div id="exam-practice-create-dialog" class="popup-dialog">
+												<div class="dialog-item">
+													<p>Отображаемое название</p>
+													<input id="exam-practice-create-name" type="text">
+												</div>
+												<div class="dialog-item">
+													<p>Тип практической работы</p>
+													<select id="exam-practice-create-type">
+														<option value="5">Задание</option>
+														<option value="6">Тест</option>
+													</select>
+													<p class="info">
+														Задание будет доступно на отдельной странице, где можно будет дополнительно прикрепить описание, методические указания и сторонние ссылки. Студент в отведенный промежуток времени должен будет сдать свой ответ в виде файла или текста.
+													</p>
+													<p class="info">
+														При выборе теста вам станет доступен его редактор, также на отдельной странице. Можно создавать необходимое количество различных вопросов: с одиночным или множественным ответом, соотнесения или развернутый ответ. Студент должен будет начать выполнение теста в отведенное время, время прохождения будет ограничено параметром, который можно настроить далее.
+													</p>
+												</div>
+												<div class="dialog-grid">
+													<p>Время открытия</p>
+													<p>Время закрытия</p>
+													<p>Продолжительность выполнения</p>
+													<input id="exam-practice-create-opening" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
+													<input id="exam-practice-create-closing" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
+													<input id="exam-practice-create-duration" class="timepicker" type="text" placeholder="__:__">
+												</div>
+											</div>
 									</div>
 									<div class="resource-items">
 										<div th:if="${not exam.getPractices().isEmpty()}" th:each="practice : ${exam.getPractices()}" class="resource-item editor" th:id="'practice-' + ${practice.getId()}">
