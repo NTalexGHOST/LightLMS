@@ -11,6 +11,10 @@ function openTab(evt, tabName, tabContent, tabLinks) {
     evt.currentTarget.className += " active";
 }
 
+// Переключение блокировки заднего фона при открытии и закрытии всплывающего окна
+function blockBody() { document.body.style.overflowY="hidden"; }
+function unlockBody() { document.body.style.overflowY="auto"; }
+
 
 //  Группы
 //  Поиск по группам

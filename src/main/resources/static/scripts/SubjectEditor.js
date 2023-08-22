@@ -13,9 +13,15 @@ function deleteElement(id, elementType) {
 }
 
 
+// Переключение блокировки заднего фона при открытии и закрытии всплывающего окна
+function blockBody() { document.body.style.overflowY="hidden"; }
+function unlockBody() { document.body.style.overflowY="auto"; }
+
+
 //	Темы дисциплины
 //	Функция создания темы
 function openThemeCreateDialog(subjectId) {
+	blockBody();
 	$('#theme-create-dialog').dialog({
 		draggable: false,
 		resizable: false,
@@ -24,6 +30,7 @@ function openThemeCreateDialog(subjectId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -69,6 +76,7 @@ function updateExam(id) {
 //	Методические указания
 //	Функция создания методического указания для темы
 function openManualCreateDialog(subjectId, themeId) {
+	blockBody();
 	$('#manual-create-dialog-' + themeId).dialog({
 		draggable: false,
 		resizable: false,
@@ -77,6 +85,7 @@ function openManualCreateDialog(subjectId, themeId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -105,6 +114,7 @@ function openManualCreateDialog(subjectId, themeId) {
 }
 //	Функция создания методического указания для экзамена
 function openExamManualCreateDialog(subjectId, examId) {
+	blockBody();
 	$('#exam-manual-create-dialog').dialog({
 		draggable: false,
 		resizable: false,
@@ -113,6 +123,7 @@ function openExamManualCreateDialog(subjectId, examId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -141,6 +152,7 @@ function openExamManualCreateDialog(subjectId, examId) {
 }
 //	Функция изменения методического указания
 function openManualUpdateDialog(id, subjectId) {
+	blockBody();
 	$('#manual-update-dialog-' + id).dialog({
 		draggable: false,
 		resizable: false,
@@ -149,6 +161,7 @@ function openManualUpdateDialog(id, subjectId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Изменить",
 			click: function() {
@@ -189,6 +202,7 @@ function openManualUpdateDialog(id, subjectId) {
 //	Сторонние ресурсы
 //	Функция создания стороннего ресурса для темы
 function openExternalCreateDialog(themeId) {
+	blockBody();
 	$('#external-create-dialog-' + themeId).dialog({
 		draggable: false,
 		resizable: false,
@@ -197,6 +211,7 @@ function openExternalCreateDialog(themeId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -222,6 +237,7 @@ function openExternalCreateDialog(themeId) {
 }
 //	Функция создания стороннего ресурса для экзамена
 function openExamExternalCreateDialog(examId) {
+	blockBody();
 	$('#exam-external-create-dialog').dialog({
 		draggable: false,
 		resizable: false,
@@ -230,6 +246,7 @@ function openExamExternalCreateDialog(examId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -255,6 +272,7 @@ function openExamExternalCreateDialog(examId) {
 }
 //	Функция изменения стороннего ресурса
 function openExternalUpdateDialog(id) {
+	blockBody();
 	$('#external-update-dialog-' + id).dialog({
 		draggable: false,
 		resizable: false,
@@ -263,6 +281,7 @@ function openExternalUpdateDialog(id) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Изменить",
 			click: function() {
@@ -285,6 +304,7 @@ function openExternalUpdateDialog(id) {
 //	Практические работы
 //	Функция создания практической работы для темы
 function openPracticeCreateDialog(themeId) {
+	blockBody();
 	$('#practice-create-dialog-' + themeId).dialog({
 		draggable: false,
 		resizable: false,
@@ -293,6 +313,7 @@ function openPracticeCreateDialog(themeId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
@@ -325,6 +346,7 @@ function openPracticeCreateDialog(themeId) {
 }
 //	Функция создания практической работы для экзамена
 function openExamPracticeCreateDialog(examId) {
+	blockBody();
 	$('#exam-practice-create-dialog').dialog({
 		draggable: false,
 		resizable: false,
@@ -333,6 +355,7 @@ function openExamPracticeCreateDialog(examId) {
 		show: { effect: "fade", duration: 600 },
 		hide: { effect: "fade", duration: 500 },
 		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
 		buttons: [{
 			text: "Создать",
 			click: function() {
