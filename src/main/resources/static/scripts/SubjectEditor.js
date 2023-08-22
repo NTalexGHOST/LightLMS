@@ -479,9 +479,20 @@ $(document).ready(function() {
 		}    
 	});
 	$(".datetimepicker").datetimepicker({
-		dateFormat: "dd.mm.yy"
+		dateFormat: "dd.mm.yy",
+		beforeShow: function (input, inst) { setDatepickerPos(input, inst) }
 	});
 	$(".timepicker").timepicker({
-
+		beforeShow: function (input, inst) { setDatepickerPos(input, inst) }
 	});
 });
+
+
+// Исправляет положение выбора даты и времени
+function setDatepickerPos(input, inst) {
+    var rect = input.getBoundingClientRect();
+    setTimeout(function () {
+        var scrollTop = $("body").scrollTop();
+    	inst.dpDiv.css({ top: rect.top + input.offsetHeight + scrollTop });
+    }, 0);
+}
