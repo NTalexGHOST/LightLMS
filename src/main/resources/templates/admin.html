@@ -25,13 +25,7 @@
 	<body>
 		<div class="main-container">
 			<aside>
-				<!-- Логотип -->
-				<div class="top">
-					<div class="logo">
-						<img src="/images/logo.png">
-						<h2>Lightweight<span class="logo-color">LMS</span></h2>
-					</div>
-				</div>
+				<div th:replace="~{fragments/general :: logo}"></div>
 				<!-- Боковое меню -->
 				<div class="sidebar">
 					<a href="/">
@@ -50,23 +44,7 @@
 					<div class="title">
 						<h1>Админ-панель</h1>
 					</div>
-					<div class="right">
-						<div class="top">
-							<div class="profile">
-								<div class="info">
-									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
-									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
-								</div>
-								<div class="profile-photo">
-									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
-								</div>
-								<form th:action="@{/logout}" class="profile-logout" method="post">
-									<i class="fa-solid fa-right-from-bracket"></i>
-									<input type="submit" value="Выйти из аккаунта"/>
-								</form>
-							</div>
-						</div>
-					</div>
+					<div th:replace="~{fragments/general :: profile}"></div>
 				</div>
 				<main>
 					<div class="main-content" style="padding: 0 !important;">

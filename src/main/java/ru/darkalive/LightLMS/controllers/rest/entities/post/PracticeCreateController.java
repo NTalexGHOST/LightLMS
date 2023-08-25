@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.darkalive.LightLMS.entities.Practice;
 import ru.darkalive.LightLMS.repos.*;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @RestController
@@ -24,17 +27,23 @@ public class PracticeCreateController {
 
     @PostMapping(value = "/api/practice")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void createPractice(@RequestParam String displayName, @RequestParam Timestamp openingDate,
-                                             @RequestParam Timestamp closingDate, @RequestParam Time duration,
+    public @ResponseBody void createPractice(@RequestParam String displayName, @RequestParam String openingDate,
+                                             @RequestParam String closingDate, @RequestParam String duration,
                                              @RequestParam int typeId, @RequestParam(defaultValue = "0") int themeId,
-                                             @RequestParam(defaultValue = "0") int examId) {
+                                             @RequestParam(defaultValue = "0") int examId) throws ParseException {
 
         Practice practice = new Practice();
 
         practice.setDisplayName(displayName);
-        practice.setOpeningDate(openingDate);
-        practice.setClosingDate(closingDate);
-        practice.setDuration(duration);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        System.out.println(dateFormat.parse(openingDate).getTime());
+        practice.setOpeningDate(new Timestamp(dateFormat.parse(openingDate).getTime()));
+        practice.setClosingDate(new Timestamp(dateFormat.parse(closingDate).getTime()));
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+        practice.setDuration(new Time(timeFormat.parse(duration).getTime()));
+
         practice.setType(resourceTypeRepo.findFirstById(typeId));
 
         if (themeId != 0) createPracticeForTheme(practice, themeId);

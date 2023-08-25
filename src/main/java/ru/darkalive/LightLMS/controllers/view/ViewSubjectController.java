@@ -52,7 +52,6 @@ public class ViewSubjectController {
         Exam exam = examRepo.findFirstBySubject(subject);
         model.addAttribute("exam", exam);
 
-        printMessage("Вызов страницы /subjects/" + subjectId + " | " + subject.getName() + " | " + authorizedUser.getFullName());
         return "subject";
     }
 

@@ -40,7 +40,7 @@ public class DescriptionUpdateController {
         printMessage("Отработал PUT-запрос, обновлено описание темы - " + id);
     }
 
-    @PutMapping(value = "/api/task/{id}/description")
+    @PutMapping(value = "/api/practice/{id}/description")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public @ResponseBody void updateTaskDescription(@PathVariable int id, @RequestParam String description) {
 

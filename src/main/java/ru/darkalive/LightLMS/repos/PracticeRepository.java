@@ -13,8 +13,6 @@ public interface PracticeRepository extends CrudRepository<Practice, Integer> {
     Practice findFirstById(int id);
     @Query("SELECT MAX(position) FROM resource_practice WHERE theme.id=?1")
     Optional<Integer> lastPositionByTheme(int themeId);
-    @Query("SELECT MAX(position) FROM resource_practice WHERE task.id=?1")
-    Optional<Integer> lastPositionByTask(int taskId);
     @Query("SELECT MAX(position) FROM resource_practice WHERE exam.id=?1")
     Optional<Integer> lastPositionByExam(int examId);
 }

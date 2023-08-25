@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<body>
+
+		<!-- Форма для создания сторонних ресурсов внутри темы или задания -->
+		<div th:fragment="create-common" th:id="'external-create-dialog-' + ${theme.getId()}" class="popup-dialog">
+			<div class="dialog-item">
+				<p>Отображаемое название</p>
+				<input th:id="'external-create-name-' + ${theme.getId()}" type="text">
+			</div>
+			<div class="dialog-item">
+				<p>Тип стороннего ресурса</p>
+				<select th:id="'external-create-type-' + ${theme.getId()}">
+					<option value="3">Обычная ссылка</option>
+					<option value="4">YouTube видео</option>
+				</select>
+				<p class="info">
+					Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+				</p>
+				<p class="info">
+					YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+				</p>
+			</div>
+			<div class="dialog-item">
+				<p>Ссылка на сторонний ресурс</p>
+				<input th:id="'external-create-url-' + ${theme.getId()}" type="text">
+				<p class="info">
+					В случае обычной ссылки нужно указать полный URL-адрес.
+				</p>
+				<p class="info">
+					В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+				</p>
+			</div>
+		</div>
+
+		<!-- Форма для изменения данных сторонних ресурсов внутри темы или задания -->
+		<div th:fragment="update-common" th:id="'external-update-dialog-' + ${external.getId()}" class="popup-dialog">
+			<div class="dialog-item">
+				<p>Отображаемое название</p>
+				<input th:id="'external-update-name-' + ${external.getId()}" th:value="${external.getDisplayName()}" type="text">
+			</div>
+			<div class="dialog-item">
+				<p>Тип стороннего ресурса</p>
+				<select th:id="'external-update-type-' + ${external.getId()}">
+					<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
+					<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
+				</select>
+				<p class="info">
+					Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+				</p>
+				<p class="info">
+					YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+				</p>
+			</div>
+			<div class="dialog-item">
+				<p>Ссылка на сторонний ресурс</p>
+				<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
+				<p class="info">
+					В случае обычной ссылки нужно указать полный URL-адрес.
+				</p>
+				<p class="info">
+					В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+				</p>
+			</div>
+		</div>
+
+
+
+		<!-- Форма для создания сторонних ресурсов внутри экзамена -->
+		<div th:fragment="create-exam" id="exam-external-create-dialog" class="popup-dialog">
+			<div class="dialog-item">
+				<p>Отображаемое название</p>
+				<input id="exam-external-create-name" type="text">
+			</div>
+			<div class="dialog-item">
+				<p>Тип стороннего ресурса</p>
+				<select id="exam-external-create-type">
+					<option value="3">Обычная ссылка</option>
+					<option value="4">YouTube видео</option>
+				</select>
+				<p class="info">
+					Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+				</p>
+				<p class="info">
+					YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+				</p>
+			</div>
+			<div class="dialog-item">
+				<p>Ссылка на сторонний ресурс</p>
+				<input id="exam-external-create-url" type="text">
+				<p class="info">
+					В случае обычной ссылки нужно указать полный URL-адрес.
+				</p>
+				<p class="info">
+					В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+				</p>
+			</div>
+		</div>
+
+		<!-- Форма для изменения данных сторонних ресурсов внутри экзамена -->
+		<div th:fragment="update-exam" th:id="'external-update-dialog-' + ${external.getId()}" class="popup-dialog">
+			<div class="dialog-item">
+				<p>Отображаемое название</p>
+				<input th:id="'external-update-name-' + ${external.getId()}" th:value="${external.getDisplayName()}" type="text">
+			</div>
+			<div class="dialog-item">
+				<p>Тип стороннего ресурса</p>
+				<select th:id="'external-update-type-' + ${external.getId()}">
+					<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
+					<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
+				</select>
+				<p class="info">
+					Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
+				</p>
+				<p class="info">
+					YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
+				</p>
+			</div>
+			<div class="dialog-item">
+				<p>Ссылка на сторонний ресурс</p>
+				<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
+				<p class="info">
+					В случае обычной ссылки нужно указать полный URL-адрес.
+				</p>
+				<p class="info">
+					В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
+				</p>
+			</div>
+		</div>
+
+	</body>
+</html>

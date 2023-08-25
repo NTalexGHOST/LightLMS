@@ -27,13 +27,7 @@
 	<body>
 		<div class="main-container">
 			<aside>
-				<!-- Логотип -->
-				<div class="top">
-					<div class="logo">
-						<img th:src="@{/images/logo.png}">
-						<h2>Lightweight<span class="logo-color">LMS</span></h2>
-					</div>
-				</div>
+				<div th:replace="~{fragments/general :: logo}"></div>
 				<!-- Боковое меню -->
 				<div class="sidebar">
 					<a href="/" class="active arrow">
@@ -71,26 +65,7 @@
 					<div class="title">
 						<h1 th:text="${subject.getName()} + ' [Редактор]'"></h1>
 					</div>
-					<div class="right">
-						<div class="top">
-							<div class="profile">
-								<!-- ФИО и роль пользователя -->
-								<div class="info">
-									<p><b th:text="${authorizedUser.getFullName()}"></b></p>
-									<small class="text-muted" th:text="${authorizedUser.getRole().getName()}"></small>
-								</div>
-								<!-- Фотография пользователя на основе роли -->
-								<div class="profile-photo">
-									<img th:src="@{'/images/' + ${authorizedUser.getRole().getName()} + '.png'}">
-								</div>
-								<!-- Кнопка выхода из аккаунта -->
-								<form th:action="@{/logout}" class="profile-logout" method="post">
-									<i class="fa-solid fa-right-from-bracket"></i>
-									<input type="submit" value="Выйти из аккаунта"/>
-								</form>
-							</div>
-						</div>
-					</div>
+					<div th:replace="~{fragments/general :: profile}"></div>
 				</div>
 				<main>
 					<div id="main-content" class="main-content">
@@ -133,22 +108,7 @@
 										<div class="resource-type-title">
 											<h3>Методические указания</h3>
 											<button th:onclick="'openManualCreateDialog(' + ${subject.getId()} + ', ' + ${theme.getId()} + ')'" type="button">Добавить файл</button>
-											<div th:id="'manual-create-dialog-' + ${theme.getId()}" class="popup-dialog">
-												<div class="dialog-item">
-													<p>Отображаемое название</p>
-													<input th:id="'manual-create-name-' + ${theme.getId()}" type="text">
-												</div>
-												<div class="dialog-item">
-													<p>Выберите необходимый файл</p>
-													<input th:id="'manual-create-file-' + ${theme.getId()}" type="file">
-													<p class="info">
-														Файлы разделяются системой на 2 группы: PDF-документы и все остальные. Первые будут открываться прямо на сайте во всплывающем окне, когда как другие будут доступны исключительно для скачивания.
-													</p>
-													<p class="info">
-														Хранение файлов реализовано в двух репозиториях, соответствующие конкретной группе файлов, в каждой дисциплине отдельно. Таким образом, при закачке нового файла с таким же названием как у уже существующего, произойдет замена.
-													</p>
-												</div>
-											</div>
+											<div th:replace="~{fragments/manual-dialogs :: create-common}"></div>
 										</div>
 										<div class="resource-items">
 											<div th:each="manual : ${theme.getManualResources()}" class="resource-item editor" th:id="'manual-' + ${manual.getId()}">
@@ -172,25 +132,7 @@
 												<div class="resource-interactions">
 													<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
-														<div th:id="'manual-update-dialog-' + ${manual.getId()}" class="popup-dialog">
-															<div class="dialog-item">
-																<p>Отображаемое название</p>
-																<input th:value="${manual.getDisplayName()}" th:id="'manual-update-name-' + ${manual.getId()}" type="text">
-															</div>
-															<div class="dialog-item">
-																<p>Выберите необходимый файл</p>
-																<p class="info">
-																	Если файл не нуждается в изменении, оставьте поле пустым.
-																</p>
-																<input th:id="'manual-update-file-' + ${manual.getId()}" type="file">
-																<p class="info">
-																	Файлы разделяются системой на 2 группы: PDF-документы и все остальные. Первые будут открываться прямо на сайте во всплывающем окне, когда как другие будут доступны исключительно для скачивания.
-																</p>
-																<p class="info">
-																	Хранение файлов реализовано в двух репозиториях, соответствующие конкретной группе файлов, в каждой дисциплине отдельно. Таким образом, при закачке нового файла с таким же названием как у уже существующего, произойдет замена.
-																</p>
-															</div>
-														</div>
+														<div th:replace="~{fragments/manual-dialogs :: update-common}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -203,35 +145,7 @@
 										<div class="resource-type-title">
 											<h3>Сторонние ресурсы</h3>
 											<button th:onclick="'openExternalCreateDialog(' + ${theme.getId()} + ')'" type="button">Добавить ссылку</button>
-											<div th:id="'external-create-dialog-' + ${theme.getId()}" class="popup-dialog">
-												<div class="dialog-item">
-													<p>Отображаемое название</p>
-													<input th:id="'external-create-name-' + ${theme.getId()}" type="text">
-												</div>
-												<div class="dialog-item">
-													<p>Тип стороннего ресурса</p>
-													<select th:id="'external-create-type-' + ${theme.getId()}">
-														<option value="3">Обычная ссылка</option>
-														<option value="4">YouTube видео</option>
-													</select>
-													<p class="info">
-														Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
-													</p>
-													<p class="info">
-														YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
-													</p>
-												</div>
-												<div class="dialog-item">
-													<p>Ссылка на сторонний ресурс</p>
-													<input th:id="'external-create-url-' + ${theme.getId()}" type="text">
-													<p class="info">
-														В случае обычной ссылки нужно указать полный URL-адрес.
-													</p>
-													<p class="info">
-														В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
-													</p>
-												</div>
-											</div>
+											<div th:replace="~{fragments/external-dialogs :: create-common}"></div>
 										</div>
 										<div class="resource-items">
 											<div th:each="external : ${theme.getExternalResources()}" class="resource-item editor" th:id="'external-' + ${external.getId()}">
@@ -251,35 +165,7 @@
 												<div class="resource-interactions">
 													<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
-														<div th:id="'external-update-dialog-' + ${external.getId()}" class="popup-dialog">
-															<div class="dialog-item">
-																<p>Отображаемое название</p>
-																<input th:id="'external-update-name-' + ${external.getId()}" th:value="${external.getDisplayName()}" type="text">
-															</div>
-															<div class="dialog-item">
-																<p>Тип стороннего ресурса</p>
-																<select th:id="'external-update-type-' + ${external.getId()}">
-																	<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
-																	<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
-																</select>
-																<p class="info">
-																	Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
-																</p>
-																<p class="info">
-																	YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
-																</p>
-															</div>
-															<div class="dialog-item">
-																<p>Ссылка на сторонний ресурс</p>
-																<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
-																<p class="info">
-																	В случае обычной ссылки нужно указать полный URL-адрес.
-																</p>
-																<p class="info">
-																	В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
-																</p>
-															</div>
-														</div>
+														<div th:replace="~{fragments/external-dialogs :: update-common}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -292,33 +178,7 @@
 										<div class="resource-type-title">
 											<h3>Практические работы</h3>
 											<button th:onclick="'openPracticeCreateDialog(' + ${theme.getId()} + ')'" type="button">Добавить работу</button>
-											<div th:id="'practice-create-dialog-' + ${theme.getId()}" class="popup-dialog">
-												<div class="dialog-item">
-													<p>Отображаемое название</p>
-													<input th:id="'practice-create-name-' + ${theme.getId()}" type="text">
-												</div>
-												<div class="dialog-item">
-													<p>Тип практической работы</p>
-													<select th:id="'practice-create-type-' + ${theme.getId()}">
-														<option value="5">Задание</option>
-														<option value="6">Тест</option>
-													</select>
-													<p class="info">
-														Задание будет доступно на отдельной странице, где можно будет дополнительно прикрепить описание, методические указания и сторонние ссылки. Студент в отведенный промежуток времени должен будет сдать свой ответ в виде файла или текста.
-													</p>
-													<p class="info">
-														При выборе теста вам станет доступен его редактор, также на отдельной странице. Можно создавать необходимое количество различных вопросов: с одиночным или множественным ответом, соотнесения или развернутый ответ. Студент должен будет начать выполнение теста в отведенное время, время прохождения будет ограничено параметром, который можно настроить далее.
-													</p>
-												</div>
-												<div class="dialog-grid">
-													<p>Время открытия</p>
-													<p>Время закрытия</p>
-													<p>Продолжительность выполнения</p>
-													<input th:id="'practice-create-opening-' + ${theme.getId()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-													<input th:id="'practice-create-closing-' + ${theme.getId()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-													<input th:id="'practice-create-duration-' + ${theme.getId()}" class="timepicker" type="text" placeholder="__:__">
-												</div>
-											</div>
+											<div th:replace="~{fragments/practice-dialogs :: create-common}"></div>
 										</div>
 										<div class="resource-items">
 											<div th:if="${not theme.getPractices().isEmpty()}" th:each="practice : ${theme.getPractices()}" class="resource-item editor" th:id="'practice-' + ${practice.getId()}">
@@ -332,8 +192,9 @@
 													</button>
 												</div>
 												<div class="resource-interactions">
-													<button type="button">
+													<button th:onclick="'openPracticeUpdateDialog(' + ${practice.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
+														<div th:replace="~{fragments/practice-dialogs :: update-common}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${practice.getId()} + ', \'practice\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -368,22 +229,7 @@
 									<div class="resource-type-title">
 										<h3>Методические указания</h3>
 										<button th:onclick="'openExamManualCreateDialog(' + ${subject.getId()} + ', ' + ${exam.getId()} + ')'" type="button">Добавить файл</button>
-										<div id="exam-manual-create-dialog" class="popup-dialog">
-											<div class="dialog-item">
-												<p>Отображаемое название</p>
-												<input id="exam-manual-create-name" type="text">
-											</div>
-											<div class="dialog-item">
-												<p>Выберите необходимый файл</p>
-												<input id="exam-manual-create-file" type="file">
-												<p class="info">
-													Файлы разделяются системой на 2 группы: PDF-документы и все остальные. Первые будут открываться прямо на сайте во всплывающем окне, когда как другие будут доступны исключительно для скачивания.
-												</p>
-												<p class="info">
-													Хранение файлов реализовано в двух репозиториях, соответствующие конкретной группе файлов, в каждой дисциплине отдельно. Таким образом, при закачке нового файла с таким же названием как у уже существующего, произойдет замена.
-												</p>
-											</div>
-										</div>
+										<div th:replace="~{fragments/manual-dialogs :: create-exam}"></div>
 									</div>
 									<div class="resource-items">
 										<div th:each="manual : ${exam.getManualResources()}" class="resource-item editor" th:id="'manual-' + ${manual.getId()}">
@@ -407,25 +253,7 @@
 											<div class="resource-interactions">
 												<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
-													<div th:id="'manual-update-dialog-' + ${manual.getId()}" class="popup-dialog">
-														<div class="dialog-item">
-															<p>Отображаемое название</p>
-															<input th:value="${manual.getDisplayName()}" th:id="'manual-update-name-' + ${manual.getId()}" type="text">
-														</div>
-														<div class="dialog-item">
-															<p>Выберите необходимый файл</p>
-															<p class="info">
-																Если файл не нуждается в изменении, оставьте поле пустым.
-															</p>
-															<input th:id="'manual-update-file-' + ${manual.getId()}" type="file">
-															<p class="info">
-																Файлы разделяются системой на 2 группы: PDF-документы и все остальные. Первые будут открываться прямо на сайте во всплывающем окне, когда как другие будут доступны исключительно для скачивания.
-															</p>
-															<p class="info">
-																Хранение файлов реализовано в двух репозиториях, соответствующие конкретной группе файлов, в каждой дисциплине отдельно. Таким образом, при закачке нового файла с таким же названием как у уже существующего, произойдет замена.
-															</p>
-														</div>
-													</div>
+													<div th:replace="~{fragments/manual-dialogs :: update-exam}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
 													<i class="fa-solid fa-trash"></i>
@@ -438,35 +266,7 @@
 									<div class="resource-type-title">
 										<h3>Сторонние ресурсы</h3>
 										<button th:onclick="'openExamExternalCreateDialog(' + ${exam.getId()} + ')'" type="button">Добавить ссылку</button>
-										<div id="exam-external-create-dialog" class="popup-dialog">
-											<div class="dialog-item">
-												<p>Отображаемое название</p>
-												<input id="exam-external-create-name" type="text">
-											</div>
-											<div class="dialog-item">
-												<p>Тип стороннего ресурса</p>
-												<select id="exam-external-create-type">
-													<option value="3">Обычная ссылка</option>
-													<option value="4">YouTube видео</option>
-												</select>
-												<p class="info">
-													Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
-												</p>
-												<p class="info">
-													YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
-												</p>
-											</div>
-											<div class="dialog-item">
-												<p>Ссылка на сторонний ресурс</p>
-												<input id="exam-external-create-url" type="text">
-												<p class="info">
-													В случае обычной ссылки нужно указать полный URL-адрес.
-												</p>
-												<p class="info">
-													В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
-												</p>
-											</div>
-										</div>
+										<div th:replace="~{fragments/external-dialogs :: create-exam}"></div>
 									</div>
 									<div class="resource-items">
 										<div th:each="external : ${exam.getExternalResources()}" class="resource-item editor" th:id="'external-' + ${external.getId()}">
@@ -486,35 +286,7 @@
 											<div class="resource-interactions">
 												<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
-													<div th:id="'external-update-dialog-' + ${external.getId()}" class="popup-dialog">
-														<div class="dialog-item">
-															<p>Отображаемое название</p>
-															<input th:id="'external-update-name-' + ${external.getId()}" th:value="${external.getDisplayName()}" type="text">
-														</div>
-														<div class="dialog-item">
-															<p>Тип стороннего ресурса</p>
-															<select th:id="'external-update-type-' + ${external.getId()}">
-																<option th:attrappend="selected=${external.isLink()}?selected" value="3">Обычная ссылка</option>
-																<option th:attrappend="selected=${external.isYoutube()}?selected" value="4">YouTube видео</option>
-															</select>
-															<p class="info">
-																Обычная ссылка: при клике будет осуществлен переход на сторонний ресурс в новой вкладке.
-															</p>
-															<p class="info">
-																YouTube видео: при клике будет открываться соотвествующий ролик во всплывающем окне.
-															</p>
-														</div>
-														<div class="dialog-item">
-															<p>Ссылка на сторонний ресурс</p>
-															<input th:id="'external-update-url-' + ${external.getId()}" th:value="${external.getUrl()}" type="text">
-															<p class="info">
-																В случае обычной ссылки нужно указать полный URL-адрес.
-															</p>
-															<p class="info">
-																В случае YouTube видео, нужно кликнуть правой кнопкой мыши по нужному видео и скопировать его URL-адрес, можно с привязкой ко времени, и вставить адрес без https://youtu.be/
-															</p>
-														</div>
-													</div>
+													<div th:replace="~{fragments/external-dialogs :: update-exam}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
 													<i class="fa-solid fa-trash"></i>
@@ -527,33 +299,7 @@
 									<div class="resource-type-title">
 										<h3>Практические работы</h3>
 										<button th:onclick="'openExamPracticeCreateDialog(' + ${exam.getId()} + ')'" type="button">Добавить работу</button>
-											<div id="exam-practice-create-dialog" class="popup-dialog">
-												<div class="dialog-item">
-													<p>Отображаемое название</p>
-													<input id="exam-practice-create-name" type="text">
-												</div>
-												<div class="dialog-item">
-													<p>Тип практической работы</p>
-													<select id="exam-practice-create-type">
-														<option value="5">Задание</option>
-														<option value="6">Тест</option>
-													</select>
-													<p class="info">
-														Задание будет доступно на отдельной странице, где можно будет дополнительно прикрепить описание, методические указания и сторонние ссылки. Студент в отведенный промежуток времени должен будет сдать свой ответ в виде файла или текста.
-													</p>
-													<p class="info">
-														При выборе теста вам станет доступен его редактор, также на отдельной странице. Можно создавать необходимое количество различных вопросов: с одиночным или множественным ответом, соотнесения или развернутый ответ. Студент должен будет начать выполнение теста в отведенное время, время прохождения будет ограничено параметром, который можно настроить далее.
-													</p>
-												</div>
-												<div class="dialog-grid">
-													<p>Время открытия</p>
-													<p>Время закрытия</p>
-													<p>Продолжительность выполнения</p>
-													<input id="exam-practice-create-opening" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-													<input id="exam-practice-create-closing" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-													<input id="exam-practice-create-duration" class="timepicker" type="text" placeholder="__:__">
-												</div>
-											</div>
+										<div th:replace="~{fragments/practice-dialogs :: create-exam}"></div>
 									</div>
 									<div class="resource-items">
 										<div th:if="${not exam.getPractices().isEmpty()}" th:each="practice : ${exam.getPractices()}" class="resource-item editor" th:id="'practice-' + ${practice.getId()}">
@@ -567,8 +313,9 @@
 												</button>
 											</div>
 											<div class="resource-interactions">
-												<button type="button">
+												<button th:onclick="'openPracticeUpdateDialog(' + ${practice.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
+													<div th:replace="~{fragments/practice-dialogs :: update-exam}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${practice.getId()} + ', \'practice\')'" type="button">
 													<i class="fa-solid fa-trash"></i>
