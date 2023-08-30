@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<body>
+
+		<!-- Блок методических указаний в теме -->
+		<div th:fragment="theme" th:if="${not theme.getManualResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Методические указания</h3>
+			</div>
+			<div th:each="manual : ${theme.getManualResources()}" class="resource-item">
+				<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+					<i class="fa-solid fa-file-pdf"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+					<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+				</div>
+				<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+					<i class="fa-solid fa-download"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+					<div class="file-extension">
+						<i class="fa-solid fa-file"></i>
+						<h5 th:text="${manual.getFileExtension()}"></h5>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<!-- Блок методических указаний в задании -->
+		<div th:fragment="practice" th:if="${not practice.getManualResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Методические указания</h3>
+			</div>
+			<div th:each="manual : ${practice.getManualResources()}" class="resource-item">
+				<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+					<i class="fa-solid fa-file-pdf"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+					<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+				</div>
+				<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+					<i class="fa-solid fa-download"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+					<div class="file-extension">
+						<i class="fa-solid fa-file"></i>
+						<h5 th:text="${manual.getFileExtension()}"></h5>
+					</div>
+				</a>
+			</div>
+		</div>
+
+		<!-- Блок методических указаний в экзамене -->
+		<div th:fragment="exam" th:if="${not exam.getManualResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Методические указания</h3>
+			</div>
+			<div th:each="manual : ${exam.getManualResources()}" class="resource-item">
+				<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
+					<i class="fa-solid fa-file-pdf"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
+					<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
+				</div>
+				<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
+					<i class="fa-solid fa-download"></i>
+					<h4 th:text="${manual.getDisplayName()}"></h4>
+					<div class="file-extension">
+						<i class="fa-solid fa-file"></i>
+						<h5 th:text="${manual.getFileExtension()}"></h5>
+					</div>
+				</a>
+			</div>
+		</div>
+
+
+
+		<!-- Блок редактора методических указаний в теме -->
+		<div th:fragment="theme-editor" th:id="'manuals-' + ${theme.getId()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Методические указания</h3>
+				<button th:onclick="'openManualCreateDialog(' + ${subject.getId()} + ', ' + ${theme.getId()} + ')'" type="button">Добавить файл</button>
+				<div th:replace="~{fragments/manual-dialogs :: create-common}"></div>
+			</div>
+			<div class="resource-items">
+				<div th:each="manual : ${theme.getManualResources()}" class="resource-item editor" th:id="'manual-' + ${manual.getId()}">
+					<div class="resource-info">
+						<div class="movable-item">
+							<i class="fa-solid fa-up-down-left-right"></i>
+						</div>
+						<button th:if="${manual.isDoc()}" type="button">
+							<i class="fa-solid fa-file-pdf"></i>
+							<h4 th:text="${manual.getDisplayName()}"></h4>
+						</button>
+						<button th:if="${manual.isOther()}" type="button">
+							<i class="fa-solid fa-download"></i>
+							<h4 th:text="${manual.getDisplayName()}"></h4>
+							<div class="file-extension">
+								<i class="fa-solid fa-file"></i>
+								<h5 th:text="${manual.getFileExtension()}"></h5>
+							</div>
+						</button>
+					</div>
+					<div class="resource-interactions">
+						<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
+							<i class="fa-solid fa-pen"></i>
+							<div th:replace="~{fragments/manual-dialogs :: update}"></div>
+						</button>
+						<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Блок редактора методических указаний в задании -->
+
+
+		<!-- Блок редактора методических указаний в экзамене -->
+		<div th:fragment="exam-editor" id="exam-manuals" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Методические указания</h3>
+				<button th:onclick="'openExamManualCreateDialog(' + ${subject.getId()} + ', ' + ${exam.getId()} + ')'" type="button">Добавить файл</button>
+				<div th:replace="~{fragments/manual-dialogs :: create-exam}"></div>
+			</div>
+			<div class="resource-items">
+				<div th:each="manual : ${exam.getManualResources()}" class="resource-item editor" th:id="'manual-' + ${manual.getId()}">
+					<div class="resource-info">
+						<div class="movable-item">
+							<i class="fa-solid fa-up-down-left-right"></i>
+						</div>
+						<button th:if="${manual.isDoc()}" type="button">
+							<i class="fa-solid fa-file-pdf"></i>
+							<h4 th:text="${manual.getDisplayName()}"></h4>
+						</button>
+						<button th:if="${manual.isOther()}" type="button">
+							<i class="fa-solid fa-download"></i>
+							<h4 th:text="${manual.getDisplayName()}"></h4>
+							<div class="file-extension">
+								<i class="fa-solid fa-file"></i>
+								<h5 th:text="${manual.getFileExtension()}"></h5>
+							</div>
+						</button>
+					</div>
+					<div class="resource-interactions">
+						<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
+							<i class="fa-solid fa-pen"></i>
+							<div th:replace="~{fragments/manual-dialogs :: update}"></div>
+						</button>
+						<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

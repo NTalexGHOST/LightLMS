@@ -80,57 +80,9 @@
 								<div th:if="${theme.isDescriptionExist()}" class="resource-type">
 									<div th:utext="${theme.getDescription()}" class="chapter-description"></div>
 								</div>
-								<div th:if="${not theme.getManualResources().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Методические указания</h3>
-									</div>
-									<div th:each="manual : ${theme.getManualResources()}" class="resource-item">
-										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
-											<i class="fa-solid fa-file-pdf"></i>
-											<h4 th:text="${manual.getDisplayName()}"></h4>
-										</button>
-										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
-											<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
-										</div>
-										<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
-											<i class="fa-solid fa-download"></i>
-											<h4 th:text="${manual.getDisplayName()}"></h4>
-											<div class="file-extension">
-												<i class="fa-solid fa-file"></i>
-												<h5 th:text="${manual.getFileExtension()}"></h5>
-											</div>
-										</a>
-									</div>
-								</div>
-								<div th:if="${not theme.getExternalResources().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Сторонние ресурсы</h3>
-									</div>
-									<div th:each="external : ${theme.getExternalResources()}" class="resource-item">
-										<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
-											<i class="fa-brands fa-youtube"></i>
-											<h4 th:text="${external.getDisplayName()}"></h4>
-										</button>
-										<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
-											<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
-										</div>
-										<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
-											<i class="fa-solid fa-arrow-up-right-from-square"></i>
-											<h4 th:text="${external.getDisplayName()}"></h4>
-										</a>
-									</div>
-								</div>
-								<div th:if="${not theme.getPractices().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Практические работы</h3>
-									</div>	
-									<div th:if="${not theme.getPractices().isEmpty()}" th:each="practice : ${theme.getPractices()}" class="resource-item">
-										<a th:href="@{'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()}}">
-											<i class="fa-solid fa-file-export"></i>
-											<h4 th:text="${practice.getDisplayName()}"></h4>
-										</a>
-									</div>
-								</div>
+								<div th:replace="~{fragments/manual-blocks :: theme}"></div>
+								<div th:replace="~{fragments/external-blocks :: theme}"></div>
+								<div th:replace="~{fragments/practice-blocks :: theme}"></div>
 							</div>
 						</div>
 						<div class="subject-chapter" id="exam">
@@ -141,57 +93,9 @@
 								<div th:if="${exam.isDescriptionExist()}" class="resource-type">
 									<div th:utext="${exam.getDescription()}" class="chapter-description"></div>
 								</div>
-								<div th:if="${not exam.getManualResources().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Методические указания</h3>
-									</div>
-									<div th:each="manual : ${exam.getManualResources()}" class="resource-item">
-										<button th:if="${manual.isDoc()}" th:onclick="'openDoc(' + ${manual.getId()} + ')'" type="button">
-											<i class="fa-solid fa-file-pdf"></i>
-											<h4 th:text="${manual.getDisplayName()}"></h4>
-										</button>
-										<div th:if="${manual.isDoc()}" th:id="'doc-dialog-' + ${manual.getId()}" class="popup-dialog">
-											<iframe th:src="@{'/subjects/' + ${subject.getId()} + '/' + ${manual.getFileName()}}"></iframe>
-										</div>
-										<a th:if="${manual.isOther()}" th:href="@{'/subjects/' + ${subject.getId()} + '/download/' + ${manual.getFileName()}}">
-											<i class="fa-solid fa-download"></i>
-											<h4 th:text="${manual.getDisplayName()}"></h4>
-											<div class="file-extension">
-												<i class="fa-solid fa-file"></i>
-												<h5 th:text="${manual.getFileExtension()}"></h5>
-											</div>
-										</a>
-									</div>
-								</div>
-								<div th:if="${not exam.getExternalResources().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Сторонние ресурсы</h3>
-									</div>
-									<div th:each="external : ${exam.getExternalResources()}" class="resource-item">
-										<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
-											<i class="fa-brands fa-youtube"></i>
-											<h4 th:text="${external.getDisplayName()}"></h4>
-										</button>
-										<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
-											<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
-										</div>
-										<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
-											<i class="fa-solid fa-arrow-up-right-from-square"></i>
-											<h4 th:text="${external.getDisplayName()}"></h4>
-										</a>
-									</div>
-								</div>
-								<div th:if="${not exam.getPractices().isEmpty()}" class="resource-type">
-									<div class="resource-type-title">
-										<h3>Практические работы</h3>
-									</div>	
-									<div th:if="${not exam.getPractices().isEmpty()}" th:each="practice : ${exam.getPractices()}" class="resource-item">
-										<a th:href="@{'/subjects/' + ${subject.getId()} + '/practice/' + ${practice.getId()}}">
-											<i class="fa-solid fa-file-export"></i>
-											<h4 th:text="${practice.getDisplayName()}"></h4>
-										</a>
-									</div>
-								</div>
+								<div th:replace="~{fragments/manual-blocks :: exam}"></div>
+								<div th:replace="~{fragments/external-blocks :: exam}"></div>
+								<div th:replace="~{fragments/practice-blocks :: exam}"></div>
 							</div>
 						</div>
 					</div>

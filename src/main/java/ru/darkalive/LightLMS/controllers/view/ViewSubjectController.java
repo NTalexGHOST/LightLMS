@@ -69,23 +69,19 @@ public class ViewSubjectController {
         Practice practice = practiceRepo.findFirstById(practiceId);
         model.addAttribute("practice", practice);
 
-        if (practice.isTask()) {
-            if (linkUserSubjectRepo.countByUserAndSubjectAndRole(authorizedUser, subject, roleRepo.findFirstById(2)) < 1) {
-                LinkUserPractice linkUserPractice = linkUserPracticeRepo.findFirstByUserAndPractice(authorizedUser, practice);
-                if (linkUserPractice == null) {
-                    linkUserPractice = new LinkUserPractice();
-                    linkUserPractice.setUser(authorizedUser);
-                    linkUserPractice.setPractice(practice);
-                    linkUserPracticeRepo.save(linkUserPractice);
-                }
-                model.addAttribute("linkUserPractice", linkUserPractice);
-                model.addAttribute("isTeacher", false);
-            } else { model.addAttribute("isTeacher", true); }
-            return "task";
-        } else {
-
-            return "test";
-        }
+        if (linkUserSubjectRepo.countByUserAndSubjectAndRole(authorizedUser, subject, roleRepo.findFirstById(2)) < 1) {
+            LinkUserPractice linkUserPractice = linkUserPracticeRepo.findFirstByUserAndPractice(authorizedUser, practice);
+            if (linkUserPractice == null) {
+                linkUserPractice = new LinkUserPractice();
+                linkUserPractice.setUser(authorizedUser);
+                linkUserPractice.setPractice(practice);
+                linkUserPracticeRepo.save(linkUserPractice);
+            }
+            model.addAttribute("linkUserPractice", linkUserPractice);
+            model.addAttribute("isTeacher", false);
+        } else { model.addAttribute("isTeacher", true); }
+        
+        return "practice";
     }
 
     @GetMapping("subjects/{subjectId}/performance")

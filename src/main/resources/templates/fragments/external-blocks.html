@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<body>
+
+		<!-- Блок сторонних ресурсов в теме -->
+		<div th:fragment="theme" th:if="${not theme.getExternalResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Сторонние ресурсы</h3>
+			</div>
+			<div th:each="external : ${theme.getExternalResources()}" class="resource-item">
+				<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+					<i class="fa-brands fa-youtube"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+					<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+				</div>
+				<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</a>
+			</div>
+		</div>
+
+		<!-- Блок сторонних ресурсов в задании -->
+		<div th:fragment="practice" th:if="${not practice.getExternalResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Сторонние ресурсы</h3>
+			</div>
+			<div th:each="external : ${practice.getExternalResources()}" class="resource-item">
+				<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+					<i class="fa-brands fa-youtube"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+					<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+				</div>
+				<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</a>
+			</div>
+		</div>
+
+		<!-- Блок сторонних ресурсов в экзамене -->
+		<div th:fragment="exam" th:if="${not exam.getExternalResources().isEmpty()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Сторонние ресурсы</h3>
+			</div>
+			<div th:each="external : ${exam.getExternalResources()}" class="resource-item">
+				<button th:if="${external.isYoutube()}" th:onclick="'openVideo(' + ${external.getId()} + ')'" type="button">
+					<i class="fa-brands fa-youtube"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</button>
+				<div th:if="${external.isYoutube()}" th:id="'video-dialog-' + ${external.getId()}" class="popup-dialog">
+					<iframe th:src="'https://www.youtube.com/embed/' + ${external.getUrl()}"></iframe>
+				</div>
+				<a th:if="${external.isLink()}" th:href="${external.getUrl()}" target="_blank">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i>
+					<h4 th:text="${external.getDisplayName()}"></h4>
+				</a>
+			</div>
+		</div>
+
+
+
+		<!-- Блок редактора сторонних ресурсов в теме -->
+		<div th:fragment="theme-editor" th:id="'externals-' + ${theme.getId()}" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Сторонние ресурсы</h3>
+				<button th:onclick="'openExternalCreateDialog(' + ${theme.getId()} + ')'" type="button">Добавить ссылку</button>
+				<div th:replace="~{fragments/external-dialogs :: create-common}"></div>
+			</div>
+			<div class="resource-items">
+				<div th:each="external : ${theme.getExternalResources()}" class="resource-item editor" th:id="'external-' + ${external.getId()}">
+					<div class="resource-info">
+						<div class="movable-item">
+							<i class="fa-solid fa-up-down-left-right"></i>
+						</div>
+						<button type="button">
+							<i th:if="${external.isYoutube()}" class="fa-brands fa-youtube"></i>
+							<i th:if="${external.isLink()}" class="fa-solid fa-arrow-up-right-from-square"></i>
+							<h4 th:text="${external.getDisplayName()}"></h4>
+						</button>
+					</div>
+					<div class="resource-interactions">
+						<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
+							<i class="fa-solid fa-pen"></i>
+							<div th:replace="~{fragments/external-dialogs :: update}"></div>
+						</button>
+						<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Блок редактора сторонних ресурсов в задании -->
+
+
+		<!-- Блок редактора сторонних ресурсов в экзамене -->
+		<div th:fragment="exam-editor" id="exam-externals" class="resource-type">
+			<div class="resource-type-title">
+				<h3>Сторонние ресурсы</h3>
+				<button th:onclick="'openExamExternalCreateDialog(' + ${exam.getId()} + ')'" type="button">Добавить ссылку</button>
+				<div th:replace="~{fragments/external-dialogs :: create-exam}"></div>
+			</div>
+			<div class="resource-items">
+				<div th:each="external : ${exam.getExternalResources()}" class="resource-item editor" th:id="'external-' + ${external.getId()}">
+					<div class="resource-info">
+						<div class="movable-item">
+							<i class="fa-solid fa-up-down-left-right"></i>
+						</div>
+						<button type="button">
+							<i th:if="${external.isYoutube()}" class="fa-brands fa-youtube"></i>
+							<i th:if="${external.isLink()}" class="fa-solid fa-arrow-up-right-from-square"></i>
+							<h4 th:text="${external.getDisplayName()}"></h4>
+						</button>
+					</div>
+					<div class="resource-interactions">
+						<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
+							<i class="fa-solid fa-pen"></i>
+							<div th:replace="~{fragments/external-dialogs :: update}"></div>
+						</button>
+						<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</body>
+</html>
