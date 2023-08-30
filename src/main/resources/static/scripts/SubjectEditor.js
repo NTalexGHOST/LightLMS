@@ -386,6 +386,47 @@ function openExamPracticeCreateDialog(examId) {
 		}]
 	});
 }
+//	Функция обновления практической работы для экзамена
+function openPracticeUpdateDialog(id) {
+	blockBody();
+	$('#practice-update-dialog-' + id).dialog({
+		draggable: false,
+		resizable: false,
+		modal: true,
+		width: "auto",
+		show: { effect: "fade", duration: 600 },
+		hide: { effect: "fade", duration: 500 },
+		position: { my: "center", at: "center", of: window },
+		close: function(event, ui) { unlockBody(); },
+		buttons: [{
+			text: "Создать",
+			click: function() {
+				if ($("#practice-update-opening-" + id).val() && $("#practice-update-closing-" + id).val()) {
+					var data = new FormData();
+					data.append("displayName", $("#practice-update-name-" + id).val());
+					data.append("openingDate", $("#practice-update-opening-" + id).val());
+					data.append("closingDate", $("#practice-update-closing-" + id).val());
+					var typeId = $("#practice-update-type-" + id).val();
+					if (typeId == 5 || (typeId == 6 && $("#practice-update-duration-" + id).val())) {
+						data.append("duration", $("#practice-update-duration-" + id).val());
+						data.append("typeId", typeId);
+						$.ajax({
+						    type: "PUT",
+						    url: "/api/practice/" + id,
+						    data: data,
+						    enctype: 'multipart/form-data',
+						    contentType: false,
+					  		processData: false,
+						    success: function(response) { location.reload(); },
+						    error: function() { alert("Произошла ошибка при создании"); },
+						    timeout: 10000
+						});
+					} else { alert("Вы выбрали тест, но не указали его продолжительность"); }
+				} else { alert("Вы не выбрали время открытия или закрытия доступа к практической работе"); }
+			}
+		}]
+	});
+}
 
 
 //	Функция фиксирования навигации по темам при скролле страницы

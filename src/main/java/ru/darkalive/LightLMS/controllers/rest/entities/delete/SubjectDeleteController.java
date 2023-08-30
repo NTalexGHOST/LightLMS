@@ -21,8 +21,6 @@ public class SubjectDeleteController {
     private ExternalResourceRepository externalResourceRepo;
     @Autowired
     private PracticeRepository practiceRepo;
-    @Autowired
-    private LinkUserPracticeRepository linkUserPracticeRepo;
 
     @DeleteMapping(value = "/api/subject", params = "id")
     @ResponseBody
@@ -36,7 +34,7 @@ public class SubjectDeleteController {
         file.delete();
 
         subjectRepo.delete(subject);
-        printMessage("Отработал DELETE-запрос, удалена дисциплина - " + subject.getName());
+        printMessage("Удалена дисциплина - " + subject.getName());
     }
 
     @DeleteMapping(value = "/api/theme", params = "id")
@@ -46,11 +44,11 @@ public class SubjectDeleteController {
         Theme theme = themeRepo.findFirstById(id);
 
         theme.getManualResources().forEach(manualResource -> deleteManual(manualResource.getId()));
-        theme.getExternalResources().forEach(externalResource -> externalResourceRepo.delete(externalResource));
+        theme.getExternalResources().forEach(externalResource -> deleteExternal(externalResource.getId()));
         theme.getPractices().forEach(practice -> deletePractice(practice.getId()));
 
         themeRepo.delete(theme);
-        printMessage("Отработал DELETE-запрос, удалена тема - " + theme.getName());
+        printMessage("Удалена тема - " + theme.getName());
     }
 
     @DeleteMapping(value = "/api/manual", params = "id")
@@ -67,7 +65,7 @@ public class SubjectDeleteController {
         file.delete();
 
         manualResourceRepo.delete(manual);
-        printMessage("Отработал DELETE-запрос, удален Word-файл - " + manual.getDisplayName());
+        printMessage("Удален PDF-файл - " + manual.getDisplayName());
     }
 
     @DeleteMapping(value = "/api/external", params = "id")
@@ -77,7 +75,7 @@ public class SubjectDeleteController {
         ExternalResource external = externalResourceRepo.findFirstById(id);
 
         externalResourceRepo.delete(external);
-        printMessage("Отработал DELETE-запрос, удалена сторонняя ссылка - " + external.getDisplayName());
+        printMessage("Удалена сторонняя ссылка - " + external.getDisplayName());
     }
 
     @DeleteMapping(value = "/api/practice", params = "id")
@@ -87,12 +85,10 @@ public class SubjectDeleteController {
         Practice practice = practiceRepo.findFirstById(id);
 
         practice.getManualResources().forEach(manualResource -> deleteManual(manualResource.getId()));
-        practice.getExternalResources().forEach(externalResource -> externalResourceRepo.delete(externalResource));
-
-
+        practice.getExternalResources().forEach(externalResource -> deleteExternal(externalResource.getId()));
 
         practiceRepo.delete(practice);
-        printMessage("Отработал DELETE-запрос, удалена практическая работа - " + practice.getDisplayName());
+        printMessage("Удалена практическая работа - " + practice.getDisplayName());
     }
 
     private void printMessage(String message) { System.out.println("[LightLMS - Delete]\t" + message); }

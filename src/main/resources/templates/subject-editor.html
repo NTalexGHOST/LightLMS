@@ -132,7 +132,7 @@
 												<div class="resource-interactions">
 													<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
-														<div th:replace="~{fragments/manual-dialogs :: update-common}"></div>
+														<div th:replace="~{fragments/manual-dialogs :: update}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -165,7 +165,7 @@
 												<div class="resource-interactions">
 													<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
-														<div th:replace="~{fragments/external-dialogs :: update-common}"></div>
+														<div th:replace="~{fragments/external-dialogs :: update}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -194,7 +194,7 @@
 												<div class="resource-interactions">
 													<button th:onclick="'openPracticeUpdateDialog(' + ${practice.getId()} + ')'" type="button">
 														<i class="fa-solid fa-pen"></i>
-														<div th:replace="~{fragments/practice-dialogs :: update-common}"></div>
+														<div th:replace="~{fragments/practice-dialogs :: update}"></div>
 													</button>
 													<button th:onclick="'deleteElement(' + ${practice.getId()} + ', \'practice\')'" type="button">
 														<i class="fa-solid fa-trash"></i>
@@ -253,7 +253,7 @@
 											<div class="resource-interactions">
 												<button th:onclick="'openManualUpdateDialog(' + ${manual.getId()} + ', ' + ${subject.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
-													<div th:replace="~{fragments/manual-dialogs :: update-exam}"></div>
+													<div th:replace="~{fragments/manual-dialogs :: update}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${manual.getId()} + ', \'manual\')'" type="button">
 													<i class="fa-solid fa-trash"></i>
@@ -286,7 +286,7 @@
 											<div class="resource-interactions">
 												<button th:onclick="'openExternalUpdateDialog(' + ${external.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
-													<div th:replace="~{fragments/external-dialogs :: update-exam}"></div>
+													<div th:replace="~{fragments/external-dialogs :: update}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${external.getId()} + ', \'external\')'" type="button">
 													<i class="fa-solid fa-trash"></i>
@@ -315,7 +315,7 @@
 											<div class="resource-interactions">
 												<button th:onclick="'openPracticeUpdateDialog(' + ${practice.getId()} + ')'" type="button">
 													<i class="fa-solid fa-pen"></i>
-													<div th:replace="~{fragments/practice-dialogs :: update-exam}"></div>
+													<div th:replace="~{fragments/practice-dialogs :: update}"></div>
 												</button>
 												<button th:onclick="'deleteElement(' + ${practice.getId()} + ', \'practice\')'" type="button">
 													<i class="fa-solid fa-trash"></i>

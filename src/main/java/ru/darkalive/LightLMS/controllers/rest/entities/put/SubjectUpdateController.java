@@ -16,6 +16,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +62,7 @@ public class SubjectUpdateController {
         theme.setName(name);
         themeRepo.save(theme);
 
-        printMessage("Отработал PUT-запрос, обновлена тема - " + theme.getName());
+        printMessage("Обновлена тема - " + theme.getName());
     }
 
     @PutMapping(value = "/api/manual", params = { "id", "displayName" })
@@ -69,7 +73,7 @@ public class SubjectUpdateController {
         manual.setDisplayName(displayName);
         manualResourceRepo.save(manual);
 
-        printMessage("Отработал PUT-запрос, обновлено методическое указание - " + manual.getDisplayName());
+        printMessage("Обновлено методическое указание - " + manual.getDisplayName());
     }
 
     @PutMapping(value = "/api/manual/{id}")
@@ -107,12 +111,13 @@ public class SubjectUpdateController {
         manual.setFileName(fileName);
 
         manualResourceRepo.save(manual);
-        printMessage("Отработал PUT-запрос, обновлено методическое указание - " + manual.getDisplayName());
+        printMessage("Обновлено методическое указание - " + manual.getDisplayName());
     }
 
     @PutMapping(value = "/api/external", params = { "id", "displayName", "url", "typeId" })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateExternal(@RequestParam int id, @RequestParam String displayName, @RequestParam String url, @RequestParam int typeId) {
+    public void updateExternal(@RequestParam int id, @RequestParam String displayName, @RequestParam String url,
+                               @RequestParam int typeId) {
 
         ExternalResource external = externalResourceRepo.findFirstById(id);
 
@@ -121,10 +126,34 @@ public class SubjectUpdateController {
         external.setType(resourceTypeRepo.findFirstById(typeId));
 
         externalResourceRepo.save(external);
-        printMessage("Отработал PUT-запрос, обновлена сторонняя ссылка - " + external.getDisplayName());
+        printMessage("Обновлена сторонняя ссылка - " + external.getDisplayName());
     }
 
-    @PutMapping(value = "/api/exam", params = { "id", "name" })
+    @PutMapping(value = "/api/practice/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public @ResponseBody void updatePractice(@PathVariable int id, @RequestParam String displayName,
+                                             @RequestParam String openingDate, @RequestParam String closingDate,
+                                             @RequestParam String duration, @RequestParam int typeId) throws ParseException {
+
+        Practice practice = practiceRepo.findFirstById(id);
+
+        practice.setDisplayName(displayName);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        System.out.println(dateFormat.parse(openingDate).getTime());
+        practice.setOpeningDate(new Timestamp(dateFormat.parse(openingDate).getTime()));
+        practice.setClosingDate(new Timestamp(dateFormat.parse(closingDate).getTime()));
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+        practice.setDuration(new Time(timeFormat.parse(duration).getTime()));
+
+        practice.setType(resourceTypeRepo.findFirstById(typeId));
+
+        practiceRepo.save(practice);
+        printMessage("Обновлена практическая работа - " + practice.getDisplayName());
+    }
+
+        @PutMapping(value = "/api/exam", params = { "id", "name" })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateExam(@RequestParam int id, @RequestParam String name) {
 
@@ -132,8 +161,8 @@ public class SubjectUpdateController {
         exam.setName(name);
 
         examRepo.save(exam);
-        printMessage("Отработал PUT-запрос, обновлен экзамен - " + exam.getName());
+        printMessage("Обновлен экзамен - " + exam.getName());
     }
 
-    private void printMessage(String message) { System.out.println("[LightLMS - SubjectEditor]\t" + message); }
+    private void printMessage(String message) { System.out.println("[LightLMS - Update]\t" + message); }
 }

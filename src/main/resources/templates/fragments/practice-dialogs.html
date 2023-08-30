@@ -31,37 +31,6 @@
 			</div>
 		</div>
 
-		<!-- Форма для изменения данных практических работ внутри темы или задания -->
-		<div th:fragment="update-common" th:id="'practice-update-dialog-' + ${theme.getId()}" class="popup-dialog">
-			<div class="dialog-item">
-				<p>Отображаемое название</p>
-				<input th:id="'practice-update-name-' + ${theme.getId()}" th:value="${practice.getDisplayName()}" type="text">
-			</div>
-			<div class="dialog-item">
-				<p>Тип практической работы</p>
-				<select th:id="'practice-update-type-' + ${theme.getId()}">
-					<option th:attrappend="selected=${external.isTask()}?selected" value="5">Задание</option>
-					<option th:attrappend="selected=${external.isTest()}?selected" value="6">Тест</option>
-				</select>
-				<p class="info">
-					Задание будет доступно на отдельной странице, где можно будет дополнительно прикрепить описание, методические указания и сторонние ссылки. Студент в отведенный промежуток времени должен будет сдать свой ответ в виде файла или текста.
-				</p>
-				<p class="info">
-					При выборе теста вам станет доступен его редактор, также на отдельной странице. Можно создавать необходимое количество различных вопросов: с одиночным или множественным ответом, соотнесения или развернутый ответ. Студент должен будет начать выполнение теста в отведенное время, время прохождения будет ограничено параметром, который можно настроить далее.
-				</p>
-			</div>
-			<div class="dialog-grid">
-				<p>Время открытия</p>
-				<p>Время закрытия</p>
-				<p>Продолжительность выполнения</p>
-				<input th:id="'practice-update-opening-' + ${theme.getId()}" th:value="${practice.getOpeningDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-				<input th:id="'practice-update-closing-' + ${theme.getId()}" th:value="${practice.getClosingDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-				<input th:id="'practice-update-duration-' + ${theme.getId()}" th:value="${practice.getDuration()}" class="timepicker" type="text" placeholder="__:__">
-			</div>
-		</div>
-
-
-
 		<!-- Форма для создания практических работ внутри экзамена -->
 		<div th:fragment="create-exam" id="exam-practice-create-dialog" class="popup-dialog">
 			<div class="dialog-item">
@@ -92,15 +61,17 @@
 			</div>
 		</div>
 
-		<!-- Форма для изменения данных практических работ внутри экзамена -->
-		<div th:fragment="update-exam" th:id="'exam-practice-update-dialog-' + ${theme.getId()}" class="popup-dialog">
+
+
+		<!-- Форма для изменения данных практических работ -->
+		<div th:fragment="update" th:id="'practice-update-dialog-' + ${theme.getId()}" class="popup-dialog">
 			<div class="dialog-item">
 				<p>Отображаемое название</p>
-				<input th:id="'exam-practice-update-name-' + ${theme.getId()}" th:value="${practice.getDisplayName()}" type="text">
+				<input th:id="'practice-update-name-' + ${theme.getId()}" th:value="${practice.getDisplayName()}" type="text">
 			</div>
 			<div class="dialog-item">
 				<p>Тип практической работы</p>
-				<select th:id="'exam-practice-update-type-' + ${theme.getId()}">
+				<select th:id="'practice-update-type-' + ${theme.getId()}">
 					<option th:attrappend="selected=${external.isTask()}?selected" value="5">Задание</option>
 					<option th:attrappend="selected=${external.isTest()}?selected" value="6">Тест</option>
 				</select>
@@ -115,9 +86,9 @@
 				<p>Время открытия</p>
 				<p>Время закрытия</p>
 				<p>Продолжительность выполнения</p>
-				<input th:id="'exam-practice-update-opening-' + ${theme.getId()}" th:value="${practice.getOpeningDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-				<input th:id="'exam-practice-update-closing-' + ${theme.getId()}" th:value="${practice.getClosingDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
-				<input th:id="'exam-practice-update-duration-' + ${theme.getId()}" th:value="${practice.getDuration()}" class="timepicker" type="text" placeholder="__:__">
+				<input th:id="'practice-update-opening-' + ${theme.getId()}" th:value="${practice.getOpeningDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
+				<input th:id="'practice-update-closing-' + ${theme.getId()}" th:value="${practice.getClosingDate()}" class="datetimepicker" type="text" placeholder="__.__.____ __:__">
+				<input th:id="'practice-update-duration-' + ${theme.getId()}" th:value="${practice.getDuration()}" class="timepicker" type="text" placeholder="__:__">
 			</div>
 		</div>
 

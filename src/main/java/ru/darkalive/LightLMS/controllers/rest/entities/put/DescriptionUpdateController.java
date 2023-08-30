@@ -42,7 +42,7 @@ public class DescriptionUpdateController {
 
     @PutMapping(value = "/api/practice/{id}/description")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public @ResponseBody void updateTaskDescription(@PathVariable int id, @RequestParam String description) {
+    public @ResponseBody void updatePracticeDescription(@PathVariable int id, @RequestParam String description) {
 
         Practice task = practiceRepo.findFirstById(id);
 
